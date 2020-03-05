@@ -6,7 +6,7 @@ variable "app_name" {
 
 variable "identifier_uris" {
   type = list(string)
-  description = "URI's for app"
+  description = "URI's for app."
   default = [
     "https://securityaudit.lacework.net"
   ]
@@ -14,13 +14,13 @@ variable "identifier_uris" {
 
 variable "key_vault_ids" {
   type = list(string)
-  description = "Key Vault Ids"
+  description = "Key Vault Ids."
   default = []
 }
 
 variable "prefix" {
   type = string
-  description = "The Prefix used for all resources in this example"
+  description = "The Prefix used for all resources in this example."
   default = "dev"
 }
 
@@ -62,7 +62,7 @@ variable "log_profile" {
 
 variable "log_profile_locations" {
   type = list(string)
-  description = "Locations for log profile"
+  description = "Locations for log profile."
   default = [
     "eastasia",
     "southeastasia",
