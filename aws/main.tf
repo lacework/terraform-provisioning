@@ -136,7 +136,7 @@ resource "aws_iam_role" "lacework_iam_role" {
   "Statement": {
     "Effect": "Allow",
     "Principal": {
-      "AWS": "arn:aws:iam::434813966438:root"
+      "AWS": "arn:aws:iam::${var.lacework_aws_account_id}:root"
     },
     "Action": "sts:AssumeRole"
   }

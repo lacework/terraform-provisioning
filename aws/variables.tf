@@ -34,6 +34,10 @@ variable "force_destroy_bucket" {
   default = false
 }
 
+variable "lacework_aws_account_id" {
+  default = "434813966438"
+}
+
 
 
 ////////////////////////////////
