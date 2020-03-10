@@ -19,7 +19,7 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "lacework_cloudtrail_bucket" {
   bucket        = "${var.bucket_name}-${random_id.instance_id.hex}"
-  force_destroy = true
+  force_destroy = var.force_destroy_bucket
 }
 
 resource "aws_s3_bucket_policy" "lacework_cloudtrail_bucket_policy" {

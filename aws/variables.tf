@@ -30,6 +30,10 @@ variable "cloudtrail_name" {
   default = "lacework-cloudtrail"
 }
 
+variable "force_destroy_bucket" {
+  default = false
+}
+
 
 
 ////////////////////////////////
