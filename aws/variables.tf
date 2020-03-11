@@ -19,6 +19,10 @@ variable "bucket_name" {
   default = "lacework-cloudtrail-bucket"
 }
 
+variable "iam_role_name" {
+  default = "lacework_iam_role"
+}
+
 variable "sns_topic_name" {
   default = "lacework-sns-topic"
 }

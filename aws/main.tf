@@ -129,7 +129,7 @@ resource "aws_cloudtrail" "lacework_cloudtrail" {
 }
 
 resource "aws_iam_role" "lacework_iam_role" {
-  name = "lacework_iam_role"
+  name = var.iam_role_name
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

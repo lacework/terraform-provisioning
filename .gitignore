@@ -35,5 +35,8 @@ override.tf.json
 # Local testing variables
 *.tfvars
 
+# vim
+*.swp
+
 /.idea/
 .DS_Store
