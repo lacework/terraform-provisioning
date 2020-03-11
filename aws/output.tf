@@ -18,6 +18,6 @@ output "sqs_sqs_arn" {
   value = aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn
 }
 
-output "iam_role_id" {
-  value = aws_iam_role.lacework_iam_role.id
+output "iam_role_arn" {
+  value = aws_iam_role.lacework_iam_role.arn
 }
