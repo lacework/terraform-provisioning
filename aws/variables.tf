@@ -37,28 +37,3 @@ variable "force_destroy_bucket" {
 variable "lacework_aws_account_id" {
   default = "434813966438"
 }
-
-
-
-////////////////////////////////
-// Tags
-
-variable "tag_customer" {}
-
-variable "tag_project" {}
-
-variable "tag_name" {}
-
-variable "tag_dept" {}
-
-variable "tag_contact" {}
-
-variable "tag_application" {}
-
-variable "tag_ttl" {
-  default = 4
-}
-
-variable "aws_key_pair_file" {}
-
-variable "aws_key_pair_name" {}

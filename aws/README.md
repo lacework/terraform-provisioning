@@ -25,8 +25,10 @@ From the AWS console go to Services > Security, Identity, & Compliance > IAM. Th
 From the left nav bar select “Roles” which will display the IAM Roles
 Select the Blue “Create Role” button
 You will have the choice of 4 types of Trusted Entities. Select “Another AWS Account”
+
 (More info on this role type can be found here >> https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html?icmpid=docs_iam_console)
-		From here you will need the following
+From here you will need the following
+
 The AWS account ID that is using the cross account role
 This is the Lacework AWS caller account ID
 434813966438
