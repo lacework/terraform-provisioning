@@ -62,6 +62,7 @@ resource "google_storage_bucket" "lacework_bucket" {
   count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
 
   name = "${var.prefix}-${var.project_id}-lacework-bucket"
+  force_destroy = var.force_destroy_bucket
 }
 
 resource "google_storage_bucket_iam_member" "bucket_object_viewer" {
