@@ -126,7 +126,7 @@ resource "google_storage_notification" "lacework_notification" {
   topic = google_pubsub_topic.lacework_topic[count.index].name
   event_types = ["OBJECT_FINALIZE"]
 
-  depends_on = [google_pubsub_topic_iam_member.topic_publisher]
+  depends_on = [google_pubsub_topic_iam_member.topic_publisher, google_storage_bucket_iam_binding.legacy_bucket_owner, google_storage_bucket_iam_binding.legacy_bucket_reader, google_storage_bucket_iam_member.bucket_object_viewer, google_storage_bucket_iam_member.project_sink_writer, google_storage_bucket_iam_member.organization_sink_writer]
 }
 
 resource "google_logging_project_sink" "lacework_project_sink" {
