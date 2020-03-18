@@ -46,3 +46,8 @@ variable "existing_bucket_name" {
   description = "Name of an existing bucket you want to send the logs to"
   default = ""
 }
+
+variable "force_destroy_bucket" {
+  type = bool
+  default = false
+}
