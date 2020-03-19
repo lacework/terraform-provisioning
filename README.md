@@ -1,6 +1,6 @@
 <a href="https://lacework.com"><img src="https://techally-content.s3-us-west-1.amazonaws.com/public-content/lacework_logo_full.png" width="600"></a>
 
-# Terraform Provisioning Lacework
+# Lacework Provisioning with Terraform
 This repository contains [Terraform](https://terraform.io) code for provisioning resources required to integrate public cloud environments (AWS, GCP, Azure) into Lacewwork's automated security platform. For more information visit [support.lacework.net](https://support.lacework.net)  
 
 ## Requirements
