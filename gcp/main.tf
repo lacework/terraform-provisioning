@@ -59,20 +59,22 @@ resource "google_service_account_key" "service-account-key-lacework" {
 }
 
 resource "google_storage_bucket" "lacework_bucket" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   name = "${var.prefix}-${var.project_id}-lacework-bucket"
   force_destroy = var.force_destroy_bucket
 }
 
 resource "google_storage_bucket_iam_member" "bucket_object_viewer" {
-  bucket = var.existing_bucket_name != "" && var.audit_log ? var.existing_bucket_name : google_storage_bucket.lacework_bucket[0].name
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
+
+  bucket = google_storage_bucket.lacework_bucket[count.index].name
   member = "serviceAccount:${google_service_account.service_account.email}"
   role = "roles/storage.objectViewer"
 }
 
 resource "google_storage_bucket_iam_binding" "legacy_bucket_owner" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   bucket = google_storage_bucket.lacework_bucket[count.index].name
   role = "roles/storage.legacyBucketOwner"
@@ -80,7 +82,7 @@ resource "google_storage_bucket_iam_binding" "legacy_bucket_owner" {
 }
 
 resource "google_storage_bucket_iam_binding" "legacy_bucket_reader" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   bucket = google_storage_bucket.lacework_bucket[count.index].name
   role = "roles/storage.legacyBucketReader"
@@ -88,13 +90,13 @@ resource "google_storage_bucket_iam_binding" "legacy_bucket_reader" {
 }
 
 resource "google_pubsub_topic" "lacework_topic" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   name = "${var.prefix}-${var.project_id}-lacework-topic"
 }
 
 resource "google_pubsub_topic_iam_member" "topic_publisher" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   member = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
   role = "roles/pubsub.publisher"
@@ -102,7 +104,7 @@ resource "google_pubsub_topic_iam_member" "topic_publisher" {
 }
 
 resource "google_pubsub_subscription" "lacework_subscription" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   name = "${var.prefix}-${var.project_id}-lacework-subscription"
   topic = google_pubsub_topic.lacework_topic[count.index].name
@@ -111,7 +113,7 @@ resource "google_pubsub_subscription" "lacework_subscription" {
 }
 
 resource "google_pubsub_subscription_iam_member" "pubsub_subscriber" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   member = "serviceAccount:${google_service_account.service_account.email}"
   role = "roles/pubsub.subscriber"
@@ -119,7 +121,7 @@ resource "google_pubsub_subscription_iam_member" "pubsub_subscriber" {
 }
 
 resource "google_storage_notification" "lacework_notification" {
-  count = var.existing_bucket_name != "" && var.audit_log ? 0 : 1
+  count = var.existing_bucket_name == "" && var.audit_log ? 1 : 0
 
   bucket = google_storage_bucket.lacework_bucket[count.index].name
   payload_format = "JSON_API_V1"
@@ -130,7 +132,7 @@ resource "google_storage_notification" "lacework_notification" {
 }
 
 resource "google_logging_project_sink" "lacework_project_sink" {
-  count = var.org_integration && var.audit_log ? 0 : 1
+  count = var.org_integration == false && var.audit_log == true ? 1 : 0
 
   destination = "storage.googleapis.com/${var.existing_bucket_name != "" ? var.existing_bucket_name : google_storage_bucket.lacework_bucket[0].name}"
   name = "${var.prefix}-${var.project_id}-lacework-sink"
@@ -139,7 +141,7 @@ resource "google_logging_project_sink" "lacework_project_sink" {
 }
 
 resource "google_storage_bucket_iam_member" "project_sink_writer" {
-  count = var.org_integration && var.audit_log ? 0 : 1
+  count = var.org_integration == false && var.audit_log == true ? 1 : 0
 
   bucket = var.existing_bucket_name != "" ? var.existing_bucket_name : google_storage_bucket.lacework_bucket[0].name
   role = "roles/storage.objectCreator"

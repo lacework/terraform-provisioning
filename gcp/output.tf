@@ -3,7 +3,7 @@ output "privateKey" {
 }
 
 output "subscription" {
-  value = "projects/test-project-mobeen/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}"
+  value = var.existing_bucket_name == "" && var.audit_log ? "projects/test-project-mobeen/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}" : ""
   depends_on = [google_pubsub_subscription.lacework_subscription]
 }
 
