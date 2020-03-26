@@ -138,7 +138,12 @@ resource "aws_iam_role" "lacework_iam_role" {
     "Principal": {
       "AWS": "arn:aws:iam::${var.lacework_aws_account_id}:root"
     },
-    "Action": "sts:AssumeRole"
+    "Action": "sts:AssumeRole",
+    "Condition": {
+      "StringEquals": {
+        "sts:ExternalId": "${var.external_id}"
+      }
+    }
   }
 }
 EOF
