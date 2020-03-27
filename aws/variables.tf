@@ -19,6 +19,10 @@ variable "bucket_name" {
   default = "lacework-cloudtrail-bucket"
 }
 
+variable "external_id" {
+  default = "12345"
+}
+
 variable "iam_role_name" {
   default = "lacework_iam_role"
 }
