@@ -1,9 +1,5 @@
-output "privateKey" {
-  value = base64decode(google_service_account_key.service-account-key-lacework.private_key)
-}
-
 output "subscription" {
-  value = var.existing_bucket_name == "" && var.audit_log ? "projects/test-project-mobeen/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}" : ""
+  value = var.existing_bucket_name == "" && var.audit_log ? "projects/${var.project_id}/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}" : ""
   depends_on = [google_pubsub_subscription.lacework_subscription]
 }
 
