@@ -165,3 +165,49 @@ resource "google_storage_bucket_iam_member" "organization_sink_writer" {
   role = "roles/storage.objectCreator"
   member = google_logging_organization_sink.lacework_organization_sink[count.index].writer_identity
 }
+
+data "null_data_source" "google_service_account_private_key" {
+  inputs = {
+    json = base64decode(google_service_account_key.service-account-key-lacework.private_key)
+  }
+}
+
+provider "lacework" {
+  account = var.lacework_account
+  api_key = var.lacework_api_key
+  api_secret = var.lacework_api_secret
+}
+
+resource "lacework_integration_gcp_cfg" "gcp_cfg" {
+  name = var.lacework_integration_config_name
+  enabled = true
+  credentials {
+    client_id      = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_id
+    private_key_id = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key_id
+    client_email   = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_email
+    private_key    = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key
+  }
+  resource_id = var.project_id
+  depends_on = [
+    google_project_iam_member.project_viewer_binding,
+    google_project_iam_member.project_security_reviewer_binding
+  ]
+}
+
+resource "lacework_integration_gcp_at" "gcp_at" {
+  name = var.lacework_integration_auditlog_name
+  enabled = true
+  credentials {
+    client_id      = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_id
+    private_key_id = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key_id
+    client_email   = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_email
+    private_key    = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key
+  }
+  resource_id = var.project_id
+  subscription = "projects/${var.project_id}/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}"
+  depends_on = [
+    google_project_iam_member.project_viewer_binding,
+    google_storage_notification.lacework_notification,
+    google_project_iam_member.project_security_reviewer_binding
+  ]
+}
