@@ -1,3 +1,25 @@
+variable "lacework_account" {
+  type = string
+}
+
+variable "lacework_api_key" {
+  type = string
+}
+
+variable "lacework_api_secret" {
+  type = string
+}
+
+variable "lacework_integration_config_name" {
+  type = string
+  default = "GCP config"
+}
+
+variable "lacework_integration_auditlog_name" {
+  type = string
+  default = "GCP auditlog"
+}
+
 variable "prefix" {
   type = string
   description = "The Prefix used for all resources in this example"

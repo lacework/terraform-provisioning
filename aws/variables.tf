@@ -1,4 +1,29 @@
 ////////////////////////////////
+// Lacework
+//
+variable "lacework_account" {
+  type = string
+}
+
+variable "lacework_api_key" {
+  type = string
+}
+
+variable "lacework_api_secret" {
+  type = string
+}
+
+variable "lacework_integration_config_name" {
+  type = string
+  default = "AWS config"
+}
+
+variable "lacework_integration_cloudtrail_name" {
+  type = string
+  default = "AWS cloundtrail"
+}
+
+////////////////////////////////
 // AWS Connection
 
 variable "aws_profile" {
