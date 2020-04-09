@@ -199,3 +199,30 @@ resource "azurerm_role_assignment" "default" {
   principal_id = azuread_service_principal.default.id
   scope = data.azurerm_subscription.primary.id
 }
+
+provider "lacework" {
+  account    = var.lacework_account
+  api_key    = var.lacework_api_key
+  api_secret = var.lacework_api_secret
+}
+
+resource "lacework_integration_azure_cfg" "default" {
+  name      = var.lacework_integration_config_name
+  tenant_id = data.azurerm_subscription.primary.tenant_id
+  credentials {
+      client_id     = azuread_application.default.application_id
+      client_secret = azuread_application_password.client_secret.value
+  }
+  depends_on = [ azurerm_eventgrid_event_subscription.default ]
+}
+
+resource "lacework_integration_azure_al" "default" {
+  name      = var.lacework_integration_activitylog_name
+  tenant_id = data.azurerm_subscription.primary.tenant_id
+  queue_url = "https://${azurerm_storage_account.default.name}.queue.core.windows.net/${azurerm_storage_queue.default.name}"
+  credentials {
+      client_id     = azuread_application.default.application_id
+      client_secret = azuread_application_password.client_secret.value
+  }
+  depends_on = [ azurerm_eventgrid_event_subscription.default ]
+}

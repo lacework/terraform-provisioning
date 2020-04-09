@@ -1,9 +1,38 @@
+////////////////////////////////
+// Lacework
+//
+variable "lacework_account" {
+  type = string
+}
+
+variable "lacework_api_key" {
+  type = string
+}
+
+variable "lacework_api_secret" {
+  type = string
+}
+
+variable "lacework_integration_config_name" {
+  type = string
+  default = "Azure config"
+}
+
+variable "lacework_integration_activitylog_name" {
+  type = string
+  default = "Azure Activity Log"
+}
+
+////////////////////////////////
+// Azure Configuration
+
 variable "app_name" {
   type = string
   description = "Name of the Azure Active Directory App."
   default = "LaceworkSAAudit"
 }
 
+# TODO @afiune why do we need this?
 variable "identifier_uris" {
   type = list(string)
   description = "URI's for app."
@@ -12,6 +41,7 @@ variable "identifier_uris" {
   ]
 }
 
+# Must provide if the user has key vault
 variable "key_vault_ids" {
   type = list(string)
   description = "Key Vault Ids."
