@@ -242,12 +242,12 @@ resource "aws_iam_role_policy_attachment" "lacework_crossaccount_iam_role_policy
 }
 
 provider "lacework" {
-  account = var.lacework_account
-  api_key = var.lacework_api_key
+  account    = var.lacework_account
+  api_key    = var.lacework_api_key
   api_secret = var.lacework_api_secret
 }
 
-resource "lacework_integration_aws_cfg" "example" {
+resource "lacework_integration_aws_cfg" "default" {
   name = var.lacework_integration_config_name
   credentials {
       role_arn    = aws_iam_role.lacework_iam_role.arn

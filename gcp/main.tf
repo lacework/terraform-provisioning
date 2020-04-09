@@ -178,7 +178,7 @@ provider "lacework" {
   api_secret = var.lacework_api_secret
 }
 
-resource "lacework_integration_gcp_cfg" "gcp_cfg" {
+resource "lacework_integration_gcp_cfg" "default" {
   name = var.lacework_integration_config_name
   enabled = true
   credentials {
@@ -194,7 +194,7 @@ resource "lacework_integration_gcp_cfg" "gcp_cfg" {
   ]
 }
 
-resource "lacework_integration_gcp_at" "gcp_at" {
+resource "lacework_integration_gcp_at" "default" {
   name = var.lacework_integration_auditlog_name
   enabled = true
   credentials {
