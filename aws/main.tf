@@ -261,3 +261,19 @@ resource "lacework_integration_aws_cfg" "default" {
     aws_cloudtrail.lacework_cloudtrail
   ]
 }
+
+resource "lacework_integration_aws_ct" "default" {
+  name      = var.lacework_integration_cloudtrail_name
+  queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn
+  credentials {
+      role_arn    = aws_iam_role.lacework_iam_role.arn
+      external_id = var.external_id
+  }
+  depends_on = [
+    aws_iam_role_policy_attachment.security_audit_iam_role_policy_attachment,
+    aws_sns_topic_subscription.lacework_sns_topic_sub,
+    aws_sqs_queue_policy.lacework_sqs_queue_policy,
+    aws_iam_policy.cross_account_policy,
+    aws_cloudtrail.lacework_cloudtrail
+  ]
+}
