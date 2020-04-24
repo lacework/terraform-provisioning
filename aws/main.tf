@@ -264,7 +264,7 @@ resource "lacework_integration_aws_cfg" "default" {
 
 resource "lacework_integration_aws_ct" "default" {
   name      = var.lacework_integration_cloudtrail_name
-  queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn
+  queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.id
   credentials {
       role_arn    = aws_iam_role.lacework_iam_role.arn
       external_id = var.external_id
