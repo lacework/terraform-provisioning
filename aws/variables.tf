@@ -68,6 +68,10 @@ variable "force_destroy_bucket" {
   default = false
 }
 
+variable "cross_account_policy_name" {
+  default = "lacework-cross-account-policy"
+}
+
 variable "lacework_aws_account_id" {
   default = "434813966438"
 }

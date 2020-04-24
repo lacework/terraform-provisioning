@@ -155,7 +155,7 @@ resource "aws_iam_role_policy_attachment" "security_audit_iam_role_policy_attach
 }
 
 resource "aws_iam_policy" "cross_account_policy" {
-  name        = "lacework-cross-account-policy"
+  name        = var.cross_account_policy_name
   description = "A cross account policy to allow Lacework to pull config and cloudtrail"
 
   policy = <<EOF
