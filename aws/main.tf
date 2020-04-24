@@ -14,7 +14,6 @@ resource "random_id" "instance_id" {
   byte_length = 4
 }
 
-
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "lacework_cloudtrail_bucket" {
@@ -274,6 +273,7 @@ resource "lacework_integration_aws_ct" "default" {
     aws_sns_topic_subscription.lacework_sns_topic_sub,
     aws_sqs_queue_policy.lacework_sqs_queue_policy,
     aws_iam_policy.cross_account_policy,
+    lacework_integration_aws_cfg.default,
     aws_cloudtrail.lacework_cloudtrail
   ]
 }
