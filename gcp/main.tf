@@ -208,6 +208,7 @@ resource "lacework_integration_gcp_at" "default" {
   depends_on = [
     google_project_iam_member.project_viewer_binding,
     google_storage_notification.lacework_notification,
-    google_project_iam_member.project_security_reviewer_binding
+    google_project_iam_member.project_security_reviewer_binding,
+    lacework_integration_gcp_cfg.default
   ]
 }
