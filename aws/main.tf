@@ -154,7 +154,7 @@ resource "aws_iam_role_policy_attachment" "security_audit_iam_role_policy_attach
 }
 
 resource "aws_iam_policy" "cross_account_policy" {
-  name        = "lacework-cross-account-policy"
+  name        = var.cross_account_policy_name
   description = "A cross account policy to allow Lacework to pull config and cloudtrail"
 
   policy = <<EOF
@@ -263,7 +263,7 @@ resource "lacework_integration_aws_cfg" "default" {
 
 resource "lacework_integration_aws_ct" "default" {
   name      = var.lacework_integration_cloudtrail_name
-  queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn
+  queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.id
   credentials {
       role_arn    = aws_iam_role.lacework_iam_role.arn
       external_id = var.external_id
