@@ -37,7 +37,13 @@ lacework_api_secret = "<THE API SECRET FROM LACEWORK JSON FILE>"
 lacework_integration_config_name   = "<NAME FOR THIS INTEGRATION>"
 lacework_integration_auditlog_name = "<NAME FOR THIS INTEGRATION>"
 ```
+or use environment variables to avoid hardcoding API keys and secrets.
 
+```
+export TF_VARS_lacework_api_key=<THE API KEY FROM LACEWORK JSON FILE>
+export TF_VARS_lacework_api_secret=<THE API SECRET FROM LACEWORK JSON FILE>
+```
+ 
 5. Run `terraform init`
 6. Run `terraform apply`
 
