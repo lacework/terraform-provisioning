@@ -73,3 +73,21 @@ variable "force_destroy_bucket" {
   type = bool
   default = false
 }
+
+variable "required_apis" {
+  type = map
+  default = {
+    iam = "iam.googleapis.com"
+    resource_manager = "cloudresourcemanager.googleapis.com"
+    kms = "cloudkms.googleapis.com"
+    compute = "compute.googleapis.com"
+    dns = "dns.googleapis.com"
+    monitoring = "monitoring.googleapis.com"
+    logging = "logging.googleapis.com"
+    storage_component = "storage-component.googleapis.com"
+    service_usage = "serviceusage.googleapis.com"
+    containers = "container.googleapis.com"
+  }
+  
+}
+

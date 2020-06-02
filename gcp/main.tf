@@ -14,6 +14,14 @@ resource "google_service_account" "service_account" {
   display_name = "${var.prefix}-lacework-cfg-sa"
 }
 
+resource "google_project_service" "required_apis" {
+  for_each = var.required_apis
+  project = var.project_id
+  service = each.value
+
+  disable_on_destroy = false
+}
+
 resource "google_project_iam_member" "project_viewer_binding" {
   count = var.org_integration ? 0 : 1
 
