@@ -88,6 +88,4 @@ variable "required_apis" {
     service_usage = "serviceusage.googleapis.com"
     containers = "container.googleapis.com"
   }
-  
 }
-
