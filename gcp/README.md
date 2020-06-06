@@ -9,16 +9,16 @@ configuration assessment, as well as GCP Audit Trail analysis.
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens) 
 
 ## Organziation Integration
-The following section covers how to use Terraform to integrate GCP configuration assessment and Audit Trail for an entire GCP Org
+The following section covers how to use Terraform to integrate GCP configuration assessment and Audit Trail for an entire GCP Organization
 
 ### Setup GCP Service Account
-In order to integrate Lacework with a GCP Organization you will need to first create a GCP service account with the the following permissions:
+In order to integrate Lacework with a GCP Organization you will need a GCP service account with the following permissions:
 - Organziation Admin
 - Logs Configuration Writer
 
-Download the service account `json` file to your workstation and move on to the next section
+Download the service account `json` file to your workstation and move on to the next section.
 
-More information on GCP sevice accounts can be found [here](https://cloud.google.com/iam/docs/service-accounts)
+More information on how to download a GCP service account key can be found [here](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
 
 ### Run Terraform
 1. Clone this repository: https://github.com/lacework/terraform-provisioning
@@ -54,10 +54,10 @@ More information on adding GCP credentials for Terraform can be found [here](htt
 The following section covers how to use Terraform to integrate GCP configuration assessment and Audit Trail on a per project basis. 
 
 ### Setup GCP Service Account
-In order to integrate Lacework with a GCP Project you will need to first create a GCP service account in each project you intend to integrate with the the following permissions:
+In order to integrate Lacework with a GCP Project you will need a GCP service account in each project you intend to integrate with the following permissions:
 - Project Admin
 
-Download the service account `json` file to your workstation and move on to the next section
+Download the service account `json` file to your workstation and move on to the next section.
 
 More information on GCP sevice accounts can be found [here](https://cloud.google.com/iam/docs/service-accounts)
 
