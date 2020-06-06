@@ -59,7 +59,7 @@ In order to integrate Lacework with a GCP Project you will need a GCP service ac
 
 Download the service account `json` file to your workstation and move on to the next section.
 
-More information on GCP sevice accounts can be found [here](https://cloud.google.com/iam/docs/service-accounts)
+More information on how to download a GCP service account key can be found [here](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
 
 ### Run Terraform
 1. Clone this repository: https://github.com/lacework/terraform-provisioning
