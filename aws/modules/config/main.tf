@@ -8,6 +8,7 @@ module "lacework_cfg_iam_role" {
 resource "aws_iam_role_policy_attachment" "security_audit_policy_attachment" {
 	role       = module.lacework_cfg_iam_role.name
 	policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
+	depends_on = [module.lacework_cfg_iam_role]
 }
 
 # wait for 5 seconds for things to settle down in the AWS side
