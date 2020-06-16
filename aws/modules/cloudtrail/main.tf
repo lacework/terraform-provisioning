@@ -201,6 +201,17 @@ resource "aws_iam_role_policy_attachment" "lacework_cross_account_iam_role_polic
 	policy_arn = aws_iam_policy.cross_account_policy.arn 
 }
 
+# wait for 5 seconds for things to settle down in the AWS side
+# before trying to create the Lacework external integration
+resource "time_sleep" "wait_5_seconds" {
+	create_duration = "5s"
+	depends_on      = [
+		aws_iam_role_policy_attachment.lacework_cross_account_iam_role_policy,
+		aws_sns_topic_subscription.lacework_sns_topic_sub,
+		aws_cloudtrail.lacework_cloudtrail
+	]
+}
+
 resource "lacework_integration_aws_ct" "default" {
 	name      = var.lacework_integration_name
 	queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.id
@@ -208,9 +219,5 @@ resource "lacework_integration_aws_ct" "default" {
 		role_arn    = module.lacework_iam_role.arn
 		external_id = local.external_id
 	}
-	depends_on = [
-		aws_iam_role_policy_attachment.lacework_cross_account_iam_role_policy,
-		aws_sns_topic_subscription.lacework_sns_topic_sub,
-		aws_cloudtrail.lacework_cloudtrail
-	]
+	depends_on = [time_sleep.wait_5_seconds]
 }
