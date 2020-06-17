@@ -16,7 +16,7 @@ resource "random_id" "uniq" {
 }
 
 resource "aws_cloudtrail" "lacework_cloudtrail" {
-	count                 = var.use_existing_cloudtrail ? 1 : 0
+	count                 = var.use_existing_cloudtrail ? 0 : 1
 	name                  = var.cloudtrail_name
 	is_multi_region_trail = true
 	s3_bucket_name        = local.bucket_name
