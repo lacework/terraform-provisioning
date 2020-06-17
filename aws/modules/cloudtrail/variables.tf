@@ -46,10 +46,10 @@ variable "sqs_queue_name" {
 	default = ""
 }
 
-variable "enable_cloudtrail" {
+variable "use_existing_cloudtrail" {
 	type        = bool
-	default     = true
-	description = "Set this to false to use an existing cloudtrail"
+	default     = false
+	description = "Set this to true to use an existing cloudtrail. Default behavior enables new cloudtrail"
 }
 
 variable "cloudtrail_name" {
