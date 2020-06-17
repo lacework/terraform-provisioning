@@ -2,6 +2,6 @@ provider "lacework" { }
 
 provider "aws" { }
 
-module "aws_cloudtrial" {
+module "aws_cloudtrail" {
 	source = "../../"
 }
