@@ -16,7 +16,7 @@ resource "random_id" "uniq" {
 }
 
 resource "aws_cloudtrail" "lacework_cloudtrail" {
-	count                 = var.enable_cloudtrail ? 1 : 0
+	count                 = var.use_existing_cloudtrail ? 0 : 1
 	name                  = var.cloudtrail_name
 	is_multi_region_trail = true
 	s3_bucket_name        = local.bucket_name
@@ -27,7 +27,7 @@ resource "aws_cloudtrail" "lacework_cloudtrail" {
 # we need the identity of the caller to get their account_id for the s3 bucket
 data "aws_caller_identity" "current" {}
 resource "aws_s3_bucket" "cloudtrail_bucket" {
-	count         = var.enable_cloudtrail ? 1 : 0
+	count         = var.use_existing_cloudtrail ? 0 : 1
 	bucket        = local.bucket_name
 	force_destroy = var.bucket_force_destroy
 	policy        = <<POLICY

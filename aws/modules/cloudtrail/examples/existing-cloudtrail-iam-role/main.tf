@@ -6,9 +6,9 @@ module "aws_cloudtrail" {
 	source = "../../"
 
 	# Use an existing CloudTrail
-	enable_cloudtrail    = false
-	bucket_name          = "lacework-ct-bucket-7bb591f4"
-	sns_topic_name       = "lacework-ct-sns-7bb591f4"
+	use_existing_cloudtrail    = true
+	bucket_name                = "lacework-ct-bucket-7bb591f4"
+	sns_topic_name             = "lacework-ct-sns-7bb591f4"
 
 	# Use an existing IAM role
 	use_existing_iam_role = true
