@@ -17,7 +17,7 @@ variable "iam_role_external_id" {
 variable "external_id_length" {
 	type        = number
 	default     = 16
-	description = "The length of the external ID to generate"
+	description = "The length of the external ID to generate. Max length is 1224"
 }
 
 variable "prefix" {
