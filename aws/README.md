@@ -1,36 +1,96 @@
-# Lacework for AWS
-The following are the manual steps to connect an AWS account into Lacework
+# Lacework Terraform Provisioning for AWS
+Terraform modules that create AWS resources required to integrate AWS accounts with the Lacework Cloud Security Platform.
 
-### Step 1: Create CloudTrail Trail
-From the AWS console select “CloudTrail”
-From the left navbar select “Trails” and then the blue  “Create Trail” button
-Enter a trail name
-NOTE: Is is an AWS security best practice to apply trail to all regions
-From the “Storage location” section at the bottom of the page
-Select to create a new S3 bucket of use an existing bucket
-Create new SNS Topic and enter a topic name
-Click blue “Create” button on the bottom right of the page
+## AWS Config and CloudTrail Integration Overview
+In order for Lacework to monitor AWS configuration and CloudTrail activity, the following must be configured your AWS account: 
 
-### Step 2; Create SQS Queue
-From AWS console go to the Simple Queue Service(SQS)
-Click the blue “Create New Queue”
-Enter queue name
-Standard Queue type is fine
-Click blue “Quick-Create Queue” from bottom right of page
-From the SQS queue list click to select the new queue you’ve created and then click the grey “Queue Actions” button and select “Subscribe Queue to SNS Topic”
-Choose the SNS Topic created with the CloudTrail trail
+#### Required Resources
+- **Cross Account IAM Role** - Delegate access to Lacework to monitor resource configurations within customer's AWS account. This role is used for both the Config and CloudTrail
+  - `SecurityAudit` Policy - AWS managed policy to allow Lacework to assess configuration. Policy is applied for configuration assessment only.
+  - Custom IAM Policy - Delegate access to Lacework to monitor CloudTrail Activity. Policy is attached to the IAM role when for CloudTrail is configured.
+- **CloudTrail** - Enable a new CloudTrail or use an existing
+  - **S3 Bucket** - Used to store CloudTrail logs. Create a new S3 bucket, or use an existing
+  - **SNS Topic** - Used to send notifications when CloudTrail publishes new log files to the configured S3 bucket. Use existing or create a new SNS topic.
+  - **SQS Queue** - SQS queue subscribed to CloudTrail SNS topic for Lacework  
+- **Lacework AWS CFG Integration** - Configures AWS CFG integration between Lacework and customer AWS account
+- **Lacework AWS CT Integration** - Configures AWS CT integration between Lacework and customer AWS account
 
-### Step 3: Create IAM (Cross-Account)Role (Enhance for govcloud)
-From the AWS console go to Services > Security, Identity, & Compliance > IAM. The Welcome to Identity and Access Management page
-From the left nav bar select “Roles” which will display the IAM Roles
-Select the Blue “Create Role” button
-You will have the choice of 4 types of Trusted Entities. Select “Another AWS Account”
+## Requirements
+Before you begin the following must be configured on the workstation running Terraform
 
-(More info on this role type can be found here >> https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html?icmpid=docs_iam_console)
-From here you will need the following
+- [AWS API Access Key, Secret Access Key](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/)
+- [Terraform](terraform.io/downloads.html) `0.12.x`
+- [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens)
 
-The AWS account ID that is using the cross account role
-This is the Lacework AWS caller account ID
-434813966438
-Under “Options” click in the box to enable “Require external ID (Best practice when a third party will assume this role)”
-Create an External ID
+## Usage
+
+### Enable New CloudTrail Configuration
+This example enables a new CloudTrail, IAM Role for Lacework, and then configures both integrations with Lacework
+
+```hcl
+provider "aws" {}
+
+provider "lacework" {}
+
+module "aws_config" {
+  source = "./modules/config"
+}
+
+module "aws_cloudtrail" {
+  source                = "./modules/cloudtrail"
+  bucket_force_destroy  = true
+  use_existing_iam_role = true
+  iam_role_name         = module.aws_config.iam_role_name
+  iam_role_external_id  = module.aws_config.external_id
+}
+```
+
+### Integrate Existing CloudTrail with Lacework
+This example uses an existing CloudTrail, S3 bucket, and SNS topic passed as inputs to the module. The example creates the SQS queue and IAM Role for Lacework, and then configures both integrations with Lacework
+
+```hcl
+provider "aws" {}
+
+provider "lacework" {}
+
+module "aws_config" {
+  source = "./modules/config"
+}
+
+module "aws_cloudtrail" {
+  source                = "./modules/cloudtrail"
+  use_existing_cloudtrail    = true
+  bucket_name                = "lacework-ct-bucket-8805c0bf"
+  sns_topic_name             = "lacework-ct-sns-8805c0bf
+  bucket_force_destroy       = true
+  use_existing_iam_role      = true
+  iam_role_name              = module.aws_config.iam_role_name
+  iam_role_external_id       = module.aws_config.external_id
+}
+```
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| bucket_force_destroy | Force destroy bucket (Required when bucket not empty) | `bool` | false | no |
+| bucket_name | Name of S3 bucket | `string` | lacework- | no |
+| cloudtrail_name | Name of existing cloudtrail | `string` | "lacework-cloudtrail" | no |
+| external_id_length | Length of External ID (max 1224) | `number` | 16 | no |
+| iam_role_external_id | External ID for IAM Role | `string` | "" | no |
+| iam_role_name |  The IAM role name | `string` | "lacework_iam_role" | no |
+| lacework_account_id | The Lacework AWS account that the IAM role will grant access | `string` | 434813966438 | no |
+| lacework_integration_name | The name of the integration in Lacework. This input is available in both the config, and the cloudtrail module | `string` | TF config | no |
+| prefix | The prefix that will be use at the beginning of every generated resource | `string` | lacework-ct | no |
+| sns_topic_name | SNS topic name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |
+| sqs_queue_name | SQS queue name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |
+| use_existing_cloudtrail | Set this to `true` to use an existing cloudtrail. When set to `true` you must provide both the `bucket_name` and `sns_topic_name` | `bool` | `false` | no |
+| use_existing_iam_role | Set this to `true` to use an existing IAM role. When set to `true` you must provide both the `iam_role_name` and `iam_role_external_id` | `bool` | `false` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| external_id | Dynamically generated external_id | 
+| iam_role_name | IAM Role name generated | 
+| iam_role_arn | IAM Role arn | 
