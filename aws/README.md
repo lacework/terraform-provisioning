@@ -45,9 +45,8 @@ module "aws_cloudtrail" {
 }
 ```
 
-### Integrate Existing CloudTrail with Lacework
-This example uses an existing CloudTrail, S3 bucket, and SNS topic passed as inputs to the module. The example creates the SQS queue and IAM Role for Lacework, and then configures both integrations with Lacework
-
+### Integrate Existing CloudTrail Without SNS Delivey with Lacework
+This example uses an existing CloudTrail and S3 bucket passed as inputs to the module. The example creates the SNS topic, SQS queue, and IAM Role for Lacework, and then configures both integrations with Lacework.
 ```hcl
 provider "aws" {}
 
@@ -58,16 +57,46 @@ module "aws_config" {
 }
 
 module "aws_cloudtrail" {
-  source                = "./modules/cloudtrail"
-  use_existing_cloudtrail    = true
-  bucket_name                = "lacework-ct-bucket-8805c0bf"
-  sns_topic_name             = "lacework-ct-sns-8805c0bf
-  bucket_force_destroy       = true
-  use_existing_iam_role      = true
-  iam_role_name              = module.aws_config.iam_role_name
-  iam_role_external_id       = module.aws_config.external_id
+  source = "./modules/cloudtrail"
+
+  use_existing_cloudtrail = true
+  bucket_name             = "lacework-ct-bucket-8805c0bf"
+
+  use_existing_iam_role = true
+  iam_role_name         = module.aws_config.iam_role_name
+  iam_role_external_id  = module.aws_config.external_id
 }
 ```
+
+**NOTE: This example does not modify your CloudTrail, therefore, you have to enable SNS delivery notifications manually and point to the generated SNS topic.**
+
+![](img/cloudtrail_enable_sns_delivery_notifications.gif)
+
+### Integrate Existing CloudTrail With SNS Delivey Enabled with Lacework
+This example uses an existing CloudTrail, S3 bucket, and SNS topic passed as inputs to the module. The example creates the SQS queue and IAM Role for Lacework, and then configures both integrations with Lacework.
+```hcl
+provider "aws" {}
+
+provider "lacework" {}
+
+module "aws_config" {
+  source = "./modules/config"
+}
+
+module "aws_cloudtrail" {
+  source = "./modules/cloudtrail"
+
+  use_existing_cloudtrail = true
+  bucket_name             = "lacework-ct-bucket-8805c0bf"
+  sns_topic_name          = "lacework-ct-sns-8805c0bf"
+
+  use_existing_iam_role = true
+  iam_role_name         = module.aws_config.iam_role_name
+  iam_role_external_id  = module.aws_config.external_id
+}
+```
+
+**NOTE: This example assumes that your CloudTrail is already sending delivery notifications to the provided SNS topic.**
 
 ## Inputs
 
