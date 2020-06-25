@@ -1,3 +1,7 @@
+locals {
+	resource_level = var.org_integration ? "ORGANIZATION" : "PROJECT"
+}
+
 provider "google" {
   credentials = file(var.credentials_file)
 
@@ -6,8 +10,7 @@ provider "google" {
   zone = var.zone
 }
 
-data "google_project" "project" {
-}
+data "google_project" "project" { }
 
 resource "google_service_account" "service_account" {
   account_id = "${var.prefix}-lacework-cfg-sa"
@@ -195,7 +198,8 @@ resource "lacework_integration_gcp_cfg" "default" {
     client_email   = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_email
     private_key    = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key
   }
-  resource_id = var.project_id
+  resource_id    = var.project_id
+  resource_level = local.resource_level
   depends_on = [
     google_project_iam_member.project_viewer_binding,
     google_project_iam_member.project_security_reviewer_binding
@@ -211,9 +215,10 @@ resource "lacework_integration_gcp_at" "default" {
     client_email   = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_email
     private_key    = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key
   }
-  resource_id = var.project_id
+  resource_id    = var.project_id
+  resource_level = local.resource_level
   subscription = "projects/${var.project_id}/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}"
-  depends_on = [
+  depends_on   = [
     google_project_iam_member.project_viewer_binding,
     google_storage_notification.lacework_notification,
     google_project_iam_member.project_security_reviewer_binding,
