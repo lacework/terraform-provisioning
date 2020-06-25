@@ -1,5 +1,6 @@
 locals {
 	resource_level = var.org_integration ? "ORGANIZATION" : "PROJECT"
+	resource_id    = var.org_integration ? var.organization_id : var.project_id
 }
 
 provider "google" {
@@ -13,8 +14,9 @@ provider "google" {
 data "google_project" "project" { }
 
 resource "google_service_account" "service_account" {
-  account_id = "${var.prefix}-lacework-cfg-sa"
+  account_id   = "${var.prefix}-lacework-cfg-sa"
   display_name = "${var.prefix}-lacework-cfg-sa"
+  depends_on   = [google_project_service.required_apis]
 }
 
 resource "google_project_service" "required_apis" {
@@ -198,7 +200,7 @@ resource "lacework_integration_gcp_cfg" "default" {
     client_email   = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_email
     private_key    = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key
   }
-  resource_id    = var.project_id
+  resource_id    = local.resource_id
   resource_level = local.resource_level
   depends_on = [
     google_project_iam_member.project_viewer_binding,
@@ -215,7 +217,7 @@ resource "lacework_integration_gcp_at" "default" {
     client_email   = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).client_email
     private_key    = jsondecode(data.null_data_source.google_service_account_private_key.outputs["json"]).private_key
   }
-  resource_id    = var.project_id
+  resource_id    = local.resource_id
   resource_level = local.resource_level
   subscription = "projects/${var.project_id}/subscriptions/${google_pubsub_subscription.lacework_subscription[0].name}"
   depends_on   = [
