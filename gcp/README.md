@@ -13,8 +13,9 @@ The following section covers how to use Terraform to integrate GCP configuration
 
 ### Setup GCP Service Account
 In order to integrate Lacework with a GCP Organization you will need a GCP service account with the following permissions:
-- Organziation Admin
 - Logs Configuration Writer
+- Organziation Admin
+- Project Owner
 
 Download the service account `json` file to your workstation and move on to the next section.
 
@@ -55,7 +56,7 @@ The following section covers how to use Terraform to integrate GCP configuration
 
 ### Setup GCP Service Account
 In order to integrate Lacework with a GCP Project you will need a GCP service account in each project you intend to integrate with the following permissions:
-- Project Admin
+- Project Owner
 
 Download the service account `json` file to your workstation and move on to the next section.
 
