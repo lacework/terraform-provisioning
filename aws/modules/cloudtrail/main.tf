@@ -24,36 +24,45 @@ resource "aws_cloudtrail" "lacework_cloudtrail" {
 	depends_on            = [aws_s3_bucket.cloudtrail_bucket]
 }
 
-# we need the identity of the caller to get their account_id for the s3 bucket
-data "aws_caller_identity" "current" {}
 resource "aws_s3_bucket" "cloudtrail_bucket" {
 	count         = var.use_existing_cloudtrail ? 0 : 1
 	bucket        = local.bucket_name
 	force_destroy = var.bucket_force_destroy
-	policy        = <<POLICY
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "AWSCloudTrailAclCheck20150319",
-			"Effect": "Allow",
-			"Principal": {"Service": "cloudtrail.amazonaws.com"},
-			"Action": "s3:GetBucketAcl",
-			"Resource": "arn:aws:s3:::${local.bucket_name}"
-		},
-		{
-			"Sid": "AWSCloudTrailWrite20150319",
-			"Effect": "Allow",
-			"Principal": {"Service": "cloudtrail.amazonaws.com"},
-			"Action": "s3:PutObject",
-			"Resource": "arn:aws:s3:::${local.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
-			"Condition": {
-				"StringEquals": {"s3:x-amz-acl": "bucket-owner-full-control"}
-			}
-		}
-	]
+	policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json
 }
-POLICY
+
+# we need the identity of the caller to get their account_id for the s3 bucket
+data "aws_caller_identity" "current" {}
+data "aws_iam_policy_document" "cloudtrail_s3_policy" {
+	version = "2012-10-17"
+
+	statement {
+		sid       = "AWSCloudTrailAclCheck20150319"
+		actions   = ["s3:GetBucketAcl"]
+		resources = ["arn:aws:s3:::${local.bucket_name}"]
+
+		principals {
+			type        = "Service"
+			identifiers = ["cloudtrail.amazonaws.com"]
+		}
+	}
+
+	statement {
+		sid       = "AWSCloudTrailWrite20150319"
+		actions   = ["s3:PutObject"]
+		resources = var.consolidated_trail ? (["arn:aws:s3:::${local.bucket_name}/AWSLogs/*"]) : (["arn:aws:s3:::${local.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"])
+
+		principals {
+			type        = "Service"
+			identifiers = ["cloudtrail.amazonaws.com"]
+		}
+
+		condition {
+			test     = "StringEquals"
+			variable = "s3:x-amz-acl"
+			values   = ["bucket-owner-full-control"]
+		}
+	}
 }
 
 # we use this data source to point to the S3 ARN for the cross-account policy,
@@ -151,7 +160,7 @@ data "aws_iam_policy_document" "cross_account_policy" {
 
 	statement { 
 		sid       = "ConsumeNotifications"
-		resources = [aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn]
+		resources = flatten([var.sqs_queues, [aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn]])
 		actions   = [
 			"sqs:GetQueueAttributes",
 			"sqs:GetQueueUrl",
@@ -213,6 +222,10 @@ resource "time_sleep" "wait_5_seconds" {
 }
 
 resource "lacework_integration_aws_ct" "default" {
+	// do not create a CT integration if the user provides multiple
+	// SQS queues to configure, it means that they want to fan-out
+	// with a lambda function that acks like a gateway
+	count     = length(var.sqs_queues) > 0 ? 0 : 1
 	name      = var.lacework_integration_name
 	queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.id
 	credentials {
