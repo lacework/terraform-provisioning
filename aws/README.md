@@ -33,11 +33,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "./modules/config"
+  source = "github.com/lacework/terraform-provisioning/aws/modules/config"
 }
 
 module "aws_cloudtrail" {
-  source                = "./modules/cloudtrail"
+  source                = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
   bucket_force_destroy  = true
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name
@@ -53,11 +53,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "./modules/config"
+  source = "github.com/lacework/terraform-provisioning/aws/modules/config"
 }
 
 module "aws_cloudtrail" {
-  source = "./modules/cloudtrail"
+  source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
 
   use_existing_cloudtrail = true
   bucket_name             = "lacework-ct-bucket-8805c0bf"
@@ -80,11 +80,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "./modules/config"
+  source = "github.com/lacework/terraform-provisioning/aws/modules/config"
 }
 
 module "aws_cloudtrail" {
-  source = "./modules/cloudtrail"
+  source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
 
   use_existing_cloudtrail = true
   bucket_name             = "lacework-ct-bucket-8805c0bf"
@@ -97,6 +97,41 @@ module "aws_cloudtrail" {
 ```
 
 **NOTE: This example assumes that your CloudTrail is already sending delivery notifications to the provided SNS topic.**
+
+### Enable New Consolidated CloudTrail Configuration
+This example enables a new Consolidated CloudTrail and IAM Role for Lacework, then configures both integrations with Lacework,
+finally, it configures a new CloudTrail in an AWS sub-account that points to the main CloudTrail.
+
+```hcl
+provider "lacework" {
+  alias = "main"
+}
+
+provider "aws" {
+  alias = "main"
+}
+
+module "main_cloudtrail" {
+  source    = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+  providers = {
+    aws      = aws.main
+    lacework = lacework.main
+  }
+  consolidated_trail = true
+}
+
+provider "aws" {
+  alias = "sub_account"
+}
+
+resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
+  provider              = aws.sub_account
+  name                  = "lacework-sub-trail"
+  is_multi_region_trail = true
+  s3_bucket_name        = module.main_cloudtrail.bucket_name
+  sns_topic_name        = module.main_cloudtrail.sns_arn
+}
+```
 
 ## Inputs
 
@@ -113,6 +148,8 @@ module "aws_cloudtrail" {
 | prefix | The prefix that will be use at the beginning of every generated resource | `string` | lacework-ct | no |
 | sns_topic_name | SNS topic name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |
 | sqs_queue_name | SQS queue name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |
+| sqs_queues | List of SQS queues to configure in the Lacework cross-account policy. | `list(string)` | `[]` | no |
+| consolidated_trail | Set this to `true` to configure a consolidated cloudtrail. | `bool` | `false` | no |
 | use_existing_cloudtrail | Set this to `true` to use an existing cloudtrail. When set to `true` you must provide both the `bucket_name` and `sns_topic_name` | `bool` | `false` | no |
 | use_existing_iam_role | Set this to `true` to use an existing IAM role. When set to `true` you must provide both the `iam_role_name` and `iam_role_external_id` | `bool` | `false` | no |
 
@@ -120,6 +157,9 @@ module "aws_cloudtrail" {
 
 | Name | Description |
 |------|-------------|
-| external_id | Dynamically generated external_id | 
-| iam_role_name | IAM Role name generated | 
-| iam_role_arn | IAM Role arn | 
+| external_id | Dynamically generated External ID configured into the IAM role |
+| iam_role_name | IAM Role name generated |
+| iam_role_arn | IAM Role arn |
+| bucket_name | S3 Bucket name |
+| sqs_name | SQS Queue name |
+| sns_arn | SNS Topic Arn |

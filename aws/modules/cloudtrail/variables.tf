@@ -1,3 +1,9 @@
+variable "consolidated_trail" {
+	type        = bool
+	default     = false
+	description = "Set this to true to configure a consolidated cloudtrail"
+}
+
 variable "use_existing_iam_role" {
 	type        = bool
 	default     = false
@@ -60,6 +66,12 @@ variable "cloudtrail_name" {
 variable "cross_account_policy_name" {
 	type    = string
 	default = ""
+}
+
+variable "sqs_queues" {
+	type        = list(string)
+	default     = []
+	description = "List of SQS queues to configure in the Lacework cross-account policy"
 }
 
 variable "lacework_integration_name" {

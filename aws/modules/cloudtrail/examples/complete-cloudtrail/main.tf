@@ -3,5 +3,5 @@ provider "lacework" { }
 provider "aws" { }
 
 module "aws_cloudtrail" {
-	source = "../../"
+	source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
 }

@@ -3,7 +3,7 @@ provider "lacework" { }
 provider "aws" { }
 
 module "aws_cloudtrail" {
-	source = "../../"
+	source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
 
 	# Use an existing CloudTrail
 	use_existing_cloudtrail    = true
