@@ -17,7 +17,7 @@ variable "aws_accounts" {
 
 resource "aws_sqs_queue" "lw_ct_sqs_sub_accounts" {
 	provider = aws.main
-  count    = length(var.aws_accounts)
+	count    = length(var.aws_accounts)
 	name     = "lw-ct-sqs-${var.aws_accounts[count.index]}"
 }
 
