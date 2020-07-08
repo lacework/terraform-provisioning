@@ -8,6 +8,11 @@ output "sqs_name" {
 	description = "SQS Queue name"
 }
 
+output "sqs_arn" {
+	value       = aws_sqs_queue.lacework_cloudtrail_sqs_queue.arn
+	description = "SQS Queue ARN"
+}
+
 output "sns_arn" {
 	value       = aws_sns_topic.lacework_cloudtrail_sns_topic.arn
 	description = "SNS Topic ARN"

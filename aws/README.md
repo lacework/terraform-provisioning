@@ -159,7 +159,8 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 |------|-------------|
 | external_id | Dynamically generated External ID configured into the IAM role |
 | iam_role_name | IAM Role name generated |
-| iam_role_arn | IAM Role arn |
+| iam_role_arn | IAM Role ARN |
 | bucket_name | S3 Bucket name |
 | sqs_name | SQS Queue name |
-| sns_arn | SNS Topic Arn |
+| sqs_arn | SQS Queue ARN |
+| sns_arn | SNS Topic ARN |
