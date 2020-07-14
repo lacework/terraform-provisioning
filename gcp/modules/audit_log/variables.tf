@@ -7,8 +7,6 @@ variable "required_apis" {
 	  logging           = "logging.googleapis.com"
 	  containers        = "container.googleapis.com"
 	  monitoring        = "monitoring.googleapis.com"
-	  service_usage     = "serviceusage.googleapis.com"
-	  resource_manager  = "cloudresourcemanager.googleapis.com"
 	  storage_component = "storage-component.googleapis.com"
 	}
 }
