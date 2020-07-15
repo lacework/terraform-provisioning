@@ -1,6 +1,6 @@
 locals {
 	resource_level = var.org_integration ? "ORGANIZATION" : "PROJECT"
-	resource_id    = var.org_integration ? var.organization_id : module.lacework_svc_account.project_id
+	resource_id    = var.org_integration ? var.organization_id : module.lacework_at_svc_account.project_id
 	bucket_name    = length(var.existing_bucket_name) > 0 ? var.existing_bucket_name : google_storage_bucket.lacework_bucket[0].name
 	project_id     = data.google_project.selected.project_id
 	project_number = data.google_project.selected.number
@@ -18,7 +18,7 @@ data "google_project" "selected" {
 	project_id = var.project_id
 }
 
-module "lacework_svc_account" {
+module "lacework_at_svc_account" {
 	source               = "../service_account"
 	create               = var.use_existing_service_account ? false : true
 	service_account_name = local.service_account_name
@@ -86,14 +86,14 @@ resource "google_logging_organization_sink" "lacework_organization_sink" {
 
 resource "google_pubsub_subscription_iam_member" "lacework" {
 	role         = "roles/pubsub.subscriber"
-	member       = "serviceAccount:${module.lacework_svc_account.email}"
+	member       = "serviceAccount:${module.lacework_at_svc_account.email}"
 	subscription = google_pubsub_subscription.lacework_subscription.name
 }
 
 resource "google_storage_bucket_iam_member" "object_viewer" {
 	role   = "roles/storage.objectViewer"
 	bucket = local.bucket_name
-	member = "serviceAccount:${module.lacework_svc_account.email}"
+	member = "serviceAccount:${module.lacework_at_svc_account.email}"
 }
 
 resource "google_storage_bucket_iam_member" "sink_writer" {
@@ -119,7 +119,7 @@ resource "google_storage_notification" "lacework_notification" {
 
 data "null_data_source" "lacework_service_account_private_key" {
 	inputs = {
-		json = base64decode(module.lacework_svc_account.private_key)
+		json = base64decode(module.lacework_at_svc_account.private_key)
 	}
 }
 

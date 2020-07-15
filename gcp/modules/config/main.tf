@@ -1,12 +1,12 @@
 locals {
 	resource_level        = var.org_integration ? "ORGANIZATION" : "PROJECT"
-	resource_id           = var.org_integration ? var.organization_id : module.lacework_svc_account.project_id
+	resource_id           = var.org_integration ? var.organization_id : module.lacework_cfg_svc_account.project_id
 	service_account_name  = var.use_existing_service_account ? var.service_account_name : (
 		length(var.service_account_name) > 0 ? var.service_account_name : "lacework-svc-account"
 	)
 }
 
-module "lacework_svc_account" {
+module "lacework_cfg_svc_account" {
 	source               = "../service_account"
 	create               = var.use_existing_service_account ? false : true
 	service_account_name = local.service_account_name
@@ -17,7 +17,7 @@ module "lacework_svc_account" {
 
 data "null_data_source" "lacework_service_account_private_key" {
 	inputs = {
-		json = base64decode(module.lacework_svc_account.private_key)
+		json = base64decode(module.lacework_cfg_svc_account.private_key)
 	}
 }
 
