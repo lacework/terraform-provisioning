@@ -16,6 +16,17 @@ variable "project_id" {
 	description = "A project ID different from the default defined inside the provider"
 }
 
+variable "service_account_name" {
+	type    = string
+	default = ""
+}
+
+variable "use_existing_service_account" {
+	type        = bool
+	default     = false
+	description = "Set this to true to use an existing Service Account"
+}
+
 variable "lacework_integration_name" {
 	type    = string
 	default = "TF config"

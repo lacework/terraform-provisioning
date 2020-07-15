@@ -1,13 +1,18 @@
 locals {
-	resource_level = var.org_integration ? "ORGANIZATION" : "PROJECT"
-	resource_id    = var.org_integration ? var.organization_id : module.lacework_svc_account.project_id
+	resource_level        = var.org_integration ? "ORGANIZATION" : "PROJECT"
+	resource_id           = var.org_integration ? var.organization_id : module.lacework_svc_account.project_id
+	service_account_name  = var.use_existing_service_account ? var.service_account_name : (
+		length(var.service_account_name) > 0 ? var.service_account_name : "lacework-svc-account"
+	)
 }
 
 module "lacework_svc_account" {
-	source          = "../service_account"
-	org_integration = var.org_integration
-	organization_id = var.organization_id
-	project_id      = var.project_id
+	source               = "../service_account"
+	create               = var.use_existing_service_account ? false : true
+	service_account_name = local.service_account_name
+	org_integration      = var.org_integration
+	organization_id      = var.organization_id
+	project_id           = var.project_id
 }
 
 data "null_data_source" "lacework_service_account_private_key" {
