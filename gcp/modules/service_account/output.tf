@@ -4,12 +4,12 @@ output "created" {
 }
 
 output "name" {
-	value       = local.svc_name
+	value       = local.service_account_name
 	description = "The Service Account name"
 }
 
 output "email" {
-	value       = local.svc_email
+	value       = local.service_account_email
 	description = "The Service Account email"
 }
 
