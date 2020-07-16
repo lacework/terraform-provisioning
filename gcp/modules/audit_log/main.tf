@@ -62,16 +62,28 @@ resource "google_storage_bucket_iam_binding" "legacy_bucket_reader" {
 	members = ["projectViewer:${local.project_id}"]
 }
 
+resource "google_storage_bucket_iam_binding" "object_viewer" {
+	role    = "roles/storage.objectViewer"
+	bucket  = local.bucket_name
+	members = ["serviceAccount:${module.lacework_at_svc_account.email}"]
+}
+
+resource "google_storage_bucket_iam_binding" "sink_writer" {
+	role    = "roles/storage.objectCreator"
+	bucket  = local.bucket_name
+	members = [local.logging_sink_writer_identity]
+}
+
 resource "google_pubsub_topic" "lacework_topic" {
 	name       = "${var.prefix}-lacework-topic"
 	project    = local.project_id
 	depends_on = [google_project_service.required_apis]
 }
 
-resource "google_pubsub_topic_iam_member" "topic_publisher" {
-	member = "serviceAccount:service-${local.project_number}@gs-project-accounts.iam.gserviceaccount.com"
-	role   = "roles/pubsub.publisher"
-	topic  = google_pubsub_topic.lacework_topic.name
+resource "google_pubsub_topic_iam_binding" "topic_publisher" {
+	members = ["serviceAccount:service-${local.project_number}@gs-project-accounts.iam.gserviceaccount.com"]
+	role    = "roles/pubsub.publisher"
+	topic   = google_pubsub_topic.lacework_topic.name
 }
 
 resource "google_pubsub_subscription" "lacework_subscription" {
@@ -101,22 +113,10 @@ resource "google_logging_organization_sink" "lacework_organization_sink" {
 	filter = "protoPayload.@type=type.googleapis.com/google.cloud.audit.AuditLog AND NOT protoPayload.methodName:'storage.objects'"
 }
 
-resource "google_pubsub_subscription_iam_member" "lacework" {
+resource "google_pubsub_subscription_iam_binding" "lacework" {
 	role         = "roles/pubsub.subscriber"
-	member       = "serviceAccount:${module.lacework_at_svc_account.email}"
+	members      = ["serviceAccount:${module.lacework_at_svc_account.email}"]
 	subscription = google_pubsub_subscription.lacework_subscription.name
-}
-
-resource "google_storage_bucket_iam_member" "object_viewer" {
-	role   = "roles/storage.objectViewer"
-	bucket = local.bucket_name
-	member = "serviceAccount:${module.lacework_at_svc_account.email}"
-}
-
-resource "google_storage_bucket_iam_member" "sink_writer" {
-	role   = "roles/storage.objectCreator"
-	bucket = local.bucket_name
-	member = local.logging_sink_writer_identity
 }
 
 resource "google_storage_notification" "lacework_notification" {
@@ -126,11 +126,11 @@ resource "google_storage_notification" "lacework_notification" {
 	event_types    = ["OBJECT_FINALIZE"]
 
 	depends_on = [
-		google_pubsub_topic_iam_member.topic_publisher,
-		google_storage_bucket_iam_binding.legacy_bucket_owner, 
-		google_storage_bucket_iam_binding.legacy_bucket_reader, 
-		google_storage_bucket_iam_member.object_viewer, 
-		google_storage_bucket_iam_member.sink_writer
+		google_pubsub_topic_iam_binding.topic_publisher,
+		google_storage_bucket_iam_binding.legacy_bucket_owner,
+		google_storage_bucket_iam_binding.legacy_bucket_reader,
+		google_storage_bucket_iam_binding.object_viewer,
+		google_storage_bucket_iam_binding.sink_writer
 	]
 }
 
@@ -140,7 +140,7 @@ resource "time_sleep" "wait_5_seconds" {
 	create_duration = "5s"
 	depends_on      = [
 		google_storage_notification.lacework_notification,
-		google_pubsub_subscription_iam_member.lacework,
+		google_pubsub_subscription_iam_binding.lacework,
 		module.lacework_at_svc_account
 	]
 }
