@@ -18,8 +18,8 @@ In order for Lacework to monitor AWS configuration and CloudTrail activity, the 
 ## Requirements
 Before you begin the following must be configured on the workstation running Terraform
 
+- [Terraform](terraform.io/downloads.html) `v0.12.x`
 - [AWS API Access Key, Secret Access Key](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/)
-- [Terraform](terraform.io/downloads.html) `0.12.x`
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens)
 
 ## Usage
