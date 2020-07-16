@@ -19,6 +19,15 @@ locals {
 	) : (
 		base64decode(module.lacework_at_svc_account.private_key)
 	))
+	bucket_roles = {
+		"roles/storage.objectViewer"       = ["serviceAccount:${module.lacework_at_svc_account.email}"]
+		"roles/storage.objectCreator"      = [local.logging_sink_writer_identity]
+		"roles/storage.legacyBucketReader" = ["projectViewer:${local.project_id}"]
+		"roles/storage.legacyBucketOwner"  = [
+			"projectEditor:${local.project_id}",
+			"projectOwner:${local.project_id}"
+		]
+	}
 }
 
 data "google_project" "selected" {
@@ -50,28 +59,11 @@ resource "google_storage_bucket" "lacework_bucket" {
 	depends_on    = [google_project_service.required_apis]
 }
 
-resource "google_storage_bucket_iam_binding" "legacy_bucket_owner" {
-	bucket  = local.bucket_name
-	role    = "roles/storage.legacyBucketOwner"
-	members = ["projectEditor:${local.project_id}", "projectOwner:${local.project_id}"]
-}
-
-resource "google_storage_bucket_iam_binding" "legacy_bucket_reader" {
-	bucket  = local.bucket_name
-	role    = "roles/storage.legacyBucketReader"
-	members = ["projectViewer:${local.project_id}"]
-}
-
-resource "google_storage_bucket_iam_binding" "object_viewer" {
-	role    = "roles/storage.objectViewer"
-	bucket  = local.bucket_name
-	members = ["serviceAccount:${module.lacework_at_svc_account.email}"]
-}
-
-resource "google_storage_bucket_iam_binding" "sink_writer" {
-	role    = "roles/storage.objectCreator"
-	bucket  = local.bucket_name
-	members = [local.logging_sink_writer_identity]
+resource "google_storage_bucket_iam_binding" "policies" {
+	for_each = local.bucket_roles
+	role     = each.key
+	members  = each.value
+	bucket   = local.bucket_name
 }
 
 resource "google_pubsub_topic" "lacework_topic" {
@@ -127,10 +119,7 @@ resource "google_storage_notification" "lacework_notification" {
 
 	depends_on = [
 		google_pubsub_topic_iam_binding.topic_publisher,
-		google_storage_bucket_iam_binding.legacy_bucket_owner,
-		google_storage_bucket_iam_binding.legacy_bucket_reader,
-		google_storage_bucket_iam_binding.object_viewer,
-		google_storage_bucket_iam_binding.sink_writer
+		google_storage_bucket_iam_binding.policies
 	]
 }
 
