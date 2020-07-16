@@ -79,6 +79,7 @@ resource "google_pubsub_topic_iam_binding" "topic_publisher" {
 }
 
 resource "google_pubsub_subscription" "lacework_subscription" {
+	project                    = var.project_id
 	name                       = "${var.prefix}-${local.project_id}-lacework-subscription"
 	topic                      = google_pubsub_topic.lacework_topic.name
 	ack_deadline_seconds       = 300
@@ -138,7 +139,7 @@ resource "lacework_integration_gcp_at" "default" {
 	name           = var.lacework_integration_name
 	resource_id    = local.resource_id
 	resource_level = local.resource_level
-	subscription   = google_pubsub_subscription.lacework_subscription.path
+	subscription   = google_pubsub_subscription.lacework_subscription.id
 	credentials {
 		client_id      = local.service_account_json_key.client_id
 		private_key_id = local.service_account_json_key.private_key_id
