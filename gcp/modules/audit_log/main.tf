@@ -9,13 +9,28 @@ locals {
 	) : (
 		google_logging_project_sink.lacework_project_sink[0].writer_identity
 	)
-	service_account_name  = var.use_existing_service_account ? var.service_account_name : (
+	service_account_name  = var.use_existing_service_account ? (
+		var.service_account_name
+	) : (
 		length(var.service_account_name) > 0 ? var.service_account_name : "${var.prefix}-lacework-svc-account"
 	)
+	service_account_json_key = jsondecode(var.use_existing_service_account ? (
+		base64decode(var.service_account_private_key)
+	) : (
+		base64decode(module.lacework_at_svc_account.private_key)
+	))
 }
 
 data "google_project" "selected" {
 	project_id = var.project_id
+}
+
+resource "google_project_service" "required_apis" {
+	for_each = var.required_apis
+	project  = local.project_id
+	service  = each.value
+
+	disable_on_destroy = false
 }
 
 module "lacework_at_svc_account" {
@@ -32,6 +47,7 @@ resource "google_storage_bucket" "lacework_bucket" {
 	project       = local.project_id
 	name          = "${var.prefix}-lacework-bucket"
 	force_destroy = var.bucket_force_destroy
+	depends_on    = [google_project_service.required_apis]
 }
 
 resource "google_storage_bucket_iam_binding" "legacy_bucket_owner" {
@@ -47,8 +63,9 @@ resource "google_storage_bucket_iam_binding" "legacy_bucket_reader" {
 }
 
 resource "google_pubsub_topic" "lacework_topic" {
-	name    = "${var.prefix}-lacework-topic"
-	project = local.project_id
+	name       = "${var.prefix}-lacework-topic"
+	project    = local.project_id
+	depends_on = [google_project_service.required_apis]
 }
 
 resource "google_pubsub_topic_iam_member" "topic_publisher" {
@@ -117,20 +134,14 @@ resource "google_storage_notification" "lacework_notification" {
 	]
 }
 
-data "null_data_source" "lacework_service_account_private_key" {
-	inputs = {
-		json = base64decode(module.lacework_at_svc_account.private_key)
-	}
-}
-
 # wait for 5 seconds for things to settle down in the GCP side
 # before trying to create the Lacework external integration
 resource "time_sleep" "wait_5_seconds" {
 	create_duration = "5s"
 	depends_on      = [
-		data.null_data_source.lacework_service_account_private_key,
 		google_storage_notification.lacework_notification,
-		google_pubsub_subscription_iam_member.lacework
+		google_pubsub_subscription_iam_member.lacework,
+		module.lacework_at_svc_account
 	]
 }
 
@@ -140,10 +151,10 @@ resource "lacework_integration_gcp_at" "default" {
 	resource_level = local.resource_level
 	subscription   = google_pubsub_subscription.lacework_subscription.path
 	credentials {
-		client_id      = jsondecode(data.null_data_source.lacework_service_account_private_key.outputs["json"]).client_id
-		private_key_id = jsondecode(data.null_data_source.lacework_service_account_private_key.outputs["json"]).private_key_id
-		client_email   = jsondecode(data.null_data_source.lacework_service_account_private_key.outputs["json"]).client_email
-		private_key    = jsondecode(data.null_data_source.lacework_service_account_private_key.outputs["json"]).private_key
+		client_id      = local.service_account_json_key.client_id
+		private_key_id = local.service_account_json_key.private_key_id
+		client_email   = local.service_account_json_key.client_email
+		private_key    = local.service_account_json_key.private_key
 	}
 	depends_on = [time_sleep.wait_5_seconds]
 }

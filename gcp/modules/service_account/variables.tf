@@ -1,16 +1,7 @@
 variable "required_apis" {
 	type = map
 	default = {
-	  iam               = "iam.googleapis.com"
-	  kms               = "cloudkms.googleapis.com"
-	  dns               = "dns.googleapis.com"
-	  compute           = "compute.googleapis.com"
-	  logging           = "logging.googleapis.com"
-	  containers        = "container.googleapis.com"
-	  monitoring        = "monitoring.googleapis.com"
-	  service_usage     = "serviceusage.googleapis.com"
-	  resource_manager  = "cloudresourcemanager.googleapis.com"
-	  storage_component = "storage-component.googleapis.com"
+	  iam = "iam.googleapis.com"
 	}
 }
 

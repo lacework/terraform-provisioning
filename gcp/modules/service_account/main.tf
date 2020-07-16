@@ -1,16 +1,18 @@
 locals {
-	project_roles = var.org_integration ? [] : [
+	default_project_roles = [
 		"roles/viewer",
 		"roles/iam.securityReviewer"
 	]
-	organization_roles = var.org_integration ? [
+	default_organization_roles = [
 		"roles/viewer",
 		"roles/iam.securityReviewer",
 		"roles/resourcemanager.organizationViewer"
-	] : [] 
-	project_id = data.google_project.selected.project_id
-	service_account_name   = var.create ? google_service_account.lacework[0].display_name  : data.google_service_account.selected.display_name
-	service_account_email  = var.create ? google_service_account.lacework[0].email : data.google_service_account.selected.email
+	]
+	project_roles         = var.org_integration ? [] : (var.create ? local.default_project_roles : [])
+	organization_roles    = var.create && var.org_integration ? local.default_organization_roles : [] 
+	project_id            = data.google_project.selected.project_id
+	service_account_name  = var.create ? google_service_account.lacework[0].display_name  : data.google_service_account.selected.display_name
+	service_account_email = var.create ? google_service_account.lacework[0].email : data.google_service_account.selected.email
 }
 
 data "google_project" "selected" {
@@ -49,6 +51,7 @@ resource "google_organization_iam_member" "for_lacework_service_account" {
 }
 
 resource "google_service_account_key" "lacework" {
+	count              = var.create ? 1 : 0
 	service_account_id = local.service_account_name
 	depends_on         = [
 		google_organization_iam_member.for_lacework_service_account,
@@ -58,6 +61,7 @@ resource "google_service_account_key" "lacework" {
 
 # wait for 5 seconds for the role to be created before trying to query it
 resource "time_sleep" "wait_5_seconds" {
+	count           = var.create ? 1 : 0
 	create_duration = "5s"
 	depends_on      = [google_service_account.lacework]
 }

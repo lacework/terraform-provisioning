@@ -1,3 +1,18 @@
+variable "required_apis" {
+	type = map
+	default = {
+	  kms               = "cloudkms.googleapis.com"
+	  dns               = "dns.googleapis.com"
+	  compute           = "compute.googleapis.com"
+	  logging           = "logging.googleapis.com"
+	  containers        = "container.googleapis.com"
+	  monitoring        = "monitoring.googleapis.com"
+	  service_usage     = "serviceusage.googleapis.com"
+	  resource_manager  = "cloudresourcemanager.googleapis.com"
+	  storage_component = "storage-component.googleapis.com"
+	}
+}
+
 variable "org_integration" {
 	type        = bool
 	default     = false
@@ -23,8 +38,15 @@ variable "use_existing_service_account" {
 }
 
 variable "service_account_name" {
-	type    = string
-	default = ""
+	type        = string
+	default     = ""
+	description = "The Service Account name (required when use_existing_service_account is set to true)"
+}
+
+variable "service_account_private_key" {
+	type        = string
+	default     = ""
+	description = "The private key in JSON format, base64 encoded (required when use_existing_service_account is set to true)"
 }
 
 variable "existing_bucket_name" {
@@ -40,7 +62,7 @@ variable "bucket_force_destroy" {
 
 variable "prefix" {
 	type        = string
-	default     = "lacework-audit"
+	default     = "lw-at"
 	description = "The prefix that will be use at the beginning of every generated resource"
 }
 
