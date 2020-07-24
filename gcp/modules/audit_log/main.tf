@@ -1,7 +1,9 @@
 locals {
 	resource_level = var.org_integration ? "ORGANIZATION" : "PROJECT"
 	resource_id    = var.org_integration ? var.organization_id : module.lacework_at_svc_account.project_id
-	bucket_name    = length(var.existing_bucket_name) > 0 ? var.existing_bucket_name : google_storage_bucket.lacework_bucket[0].name
+	bucket_name    = length(var.existing_bucket_name) > 0 ? var.existing_bucket_name : (
+		length(google_storage_bucket.lacework_bucket) > 0 ? google_storage_bucket.lacework_bucket[0].name : var.existing_bucket_name
+	)
 	project_id     = data.google_project.selected.project_id
 	project_number = data.google_project.selected.number
 	logging_sink_writer_identity = var.org_integration ? (
@@ -126,8 +128,8 @@ resource "google_storage_notification" "lacework_notification" {
 
 # wait for 5 seconds for things to settle down in the GCP side
 # before trying to create the Lacework external integration
-resource "time_sleep" "wait_5_seconds" {
-	create_duration = "5s"
+resource "time_sleep" "wait_10_seconds" {
+	create_duration = "10s"
 	depends_on      = [
 		google_storage_notification.lacework_notification,
 		google_pubsub_subscription_iam_binding.lacework,
