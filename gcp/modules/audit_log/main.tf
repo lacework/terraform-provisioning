@@ -148,5 +148,5 @@ resource "lacework_integration_gcp_at" "default" {
 		client_email   = local.service_account_json_key.client_email
 		private_key    = local.service_account_json_key.private_key
 	}
-	depends_on = [time_sleep.wait_5_seconds]
+	depends_on = [time_sleep.wait_10_seconds]
 }
