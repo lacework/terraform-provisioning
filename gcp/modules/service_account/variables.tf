@@ -1,7 +1,9 @@
 variable "required_apis" {
 	type = map
 	default = {
-	  iam = "iam.googleapis.com"
+	  iam             = "iam.googleapis.com"
+	  serviceusage    = "serviceusage.googleapis.com"
+	  resourcemanager = "cloudresourcemanager.googleapis.com"
 	}
 }
 
