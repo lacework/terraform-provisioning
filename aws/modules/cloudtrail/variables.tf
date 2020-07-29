@@ -37,6 +37,21 @@ variable "bucket_name" {
 	default = ""
 }
 
+variable "bucket_enable_encryption" {
+	type    = bool
+	default = true
+}
+
+variable "bucket_enable_logs" {
+	type    = bool
+	default = true
+}
+
+variable "bucket_enable_versioning" {
+	type    = bool
+	default = true
+}
+
 variable "bucket_force_destroy" {
 	type    = bool
 	default = false
@@ -46,6 +61,11 @@ variable "bucket_sse_algorithm" {
 	type        = string
 	default     = "AES256"
 	description = "The encryption algorithm to use for S3 bucket server-side encryption"
+}
+
+variable "log_bucket_name" {
+	type    = string
+	default = ""
 }
 
 variable "sns_topic_name" {
