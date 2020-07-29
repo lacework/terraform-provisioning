@@ -1,7 +1,8 @@
 locals {
-	bucket_name    = length(var.bucket_name) > 0 ?    var.bucket_name :    "${var.prefix}-bucket-${random_id.uniq.hex}"
-	sns_topic_name = length(var.sns_topic_name) > 0 ? var.sns_topic_name : "${var.prefix}-sns-${random_id.uniq.hex}"
-	sqs_queue_name = length(var.sqs_queue_name) > 0 ? var.sqs_queue_name : "${var.prefix}-sqs-${random_id.uniq.hex}"
+	bucket_name     = length(var.bucket_name) > 0 ?     var.bucket_name :     "${var.prefix}-bucket-${random_id.uniq.hex}"
+	log_bucket_name = length(var.log_bucket_name) > 0 ? var.log_bucket_name : "${local.bucket_name}-access-logs"
+	sns_topic_name  = length(var.sns_topic_name) > 0 ?  var.sns_topic_name :  "${var.prefix}-sns-${random_id.uniq.hex}"
+	sqs_queue_name  = length(var.sqs_queue_name) > 0 ?  var.sqs_queue_name :  "${var.prefix}-sqs-${random_id.uniq.hex}"
 	cross_account_policy_name = (
 		length(var.cross_account_policy_name) > 0 ? var.cross_account_policy_name : "${var.prefix}-cross-acct-policy-${random_id.uniq.hex}"
 	)
@@ -29,11 +30,48 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
 	bucket        = local.bucket_name
 	force_destroy = var.bucket_force_destroy
 	policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json
+	depends_on    = [aws_s3_bucket.cloudtrail_log_bucket]
 
-	server_side_encryption_configuration {
-		rule {
-			apply_server_side_encryption_by_default {
-				sse_algorithm = var.bucket_sse_algorithm
+	dynamic "bucket_versioning" {
+		count = var.bucket_enable_versioning
+		versioning {
+			enabled = true
+		}
+	}
+
+	dynamic "bucket_logging" {
+		count = var.bucket_enable_logs
+		logging {
+			target_bucket = "${aws_s3_bucket.cloudtrail_log_bucket.id}"
+			target_prefix = "log/"
+		}
+	}
+
+	dynamic "bucket_encryption" {
+		count = var.bucket_enable_encryption
+		server_side_encryption_configuration {
+			rule {
+				apply_server_side_encryption_by_default {
+					sse_algorithm = var.bucket_sse_algorithm
+				}
+			}
+		}
+	}
+}
+
+resource "aws_s3_bucket" "cloudtrail_log_bucket" {
+	count         = var.use_existing_cloudtrail ? 0 : 1
+	bucket        = local.log_bucket_name
+	force_destroy = var.bucket_force_destroy
+	acl           = "log-delivery-write"
+
+	dynamic "bucket_encryption" {
+		count = var.bucket_enable_encryption
+		server_side_encryption_configuration {
+			rule {
+				apply_server_side_encryption_by_default {
+					sse_algorithm = var.bucket_sse_algorithm
+				}
 			}
 		}
 	}
@@ -69,6 +107,29 @@ data "aws_iam_policy_document" "cloudtrail_s3_policy" {
 			test     = "StringEquals"
 			variable = "s3:x-amz-acl"
 			values   = ["bucket-owner-full-control"]
+		}
+	}
+
+	statement {
+		sid = "ForceSSLOnlyAccess"
+		effect = "Deny"
+
+		principals {
+			type        = "AWS"
+			identifiers = ["*"]
+		}
+
+		actions = ["s3:*"]
+
+		resources = [
+			aws_s3_bucket.lacework_cloudtrail[0].arn,
+			"${aws_s3_bucket.lacework_cloudtrail[0].arn}/*",
+		]
+
+		condition {
+			test     = "Bool"
+			variable = "aws:SecureTransport"
+			values   = ["false"]
 		}
 	}
 }
