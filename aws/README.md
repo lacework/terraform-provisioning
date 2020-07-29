@@ -139,6 +139,7 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 |------|-------------|------|---------|:--------:|
 | bucket_force_destroy | Force destroy bucket (Required when bucket not empty) | `bool` | false | no |
 | bucket_name | Name of S3 bucket | `string` | lacework- | no |
+| bucket_sse_algorithm | Name of the server-side encryption algorithm to use ("AES256" or "aws:kms") | `string` | AES256 | no |
 | cloudtrail_name | Name of existing cloudtrail | `string` | "lacework-cloudtrail" | no |
 | external_id_length | Length of External ID (max 1224) | `number` | 16 | no |
 | iam_role_external_id | External ID for IAM Role | `string` | "" | no |
