@@ -32,24 +32,21 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
 	policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json
 	depends_on    = [aws_s3_bucket.cloudtrail_log_bucket]
 
-	dynamic "bucket_versioning" {
-		count = var.bucket_enable_versioning
-		versioning {
-			enabled = true
-		}
+	versioning {
+		enabled = var.bucket_enable_versioning
 	}
 
-	dynamic "bucket_logging" {
-		count = var.bucket_enable_logs
-		logging {
-			target_bucket = "${aws_s3_bucket.cloudtrail_log_bucket.id}"
+	dynamic "logging" {
+		for_each = var.bucket_enable_logs == true ? [1] : []
+		content {
+			target_bucket = aws_s3_bucket.cloudtrail_log_bucket[0].id
 			target_prefix = "log/"
 		}
 	}
 
-	dynamic "bucket_encryption" {
-		count = var.bucket_enable_encryption
-		server_side_encryption_configuration {
+	dynamic "server_side_encryption_configuration" {
+		for_each = var.bucket_enable_encryption == true ? [1] : []
+		content {
 			rule {
 				apply_server_side_encryption_by_default {
 					sse_algorithm = var.bucket_sse_algorithm
@@ -65,9 +62,13 @@ resource "aws_s3_bucket" "cloudtrail_log_bucket" {
 	force_destroy = var.bucket_force_destroy
 	acl           = "log-delivery-write"
 
-	dynamic "bucket_encryption" {
-		count = var.bucket_enable_encryption
-		server_side_encryption_configuration {
+	versioning {
+		enabled = var.bucket_enable_versioning
+	}
+
+	dynamic "server_side_encryption_configuration" {
+		for_each = var.bucket_enable_encryption == true ? [1] : []
+		content {
 			rule {
 				apply_server_side_encryption_by_default {
 					sse_algorithm = var.bucket_sse_algorithm
@@ -111,20 +112,19 @@ data "aws_iam_policy_document" "cloudtrail_s3_policy" {
 	}
 
 	statement {
-		sid = "ForceSSLOnlyAccess"
-		effect = "Deny"
+		sid     = "ForceSSLOnlyAccess"
+		actions = ["s3:*"]
+		effect  = "Deny"
+
+		resources = [
+			"arn:aws:s3:::${local.bucket_name}",
+			"arn:aws:s3:::${local.bucket_name}/*",
+		]
 
 		principals {
 			type        = "AWS"
 			identifiers = ["*"]
 		}
-
-		actions = ["s3:*"]
-
-		resources = [
-			aws_s3_bucket.lacework_cloudtrail[0].arn,
-			"${aws_s3_bucket.lacework_cloudtrail[0].arn}/*",
-		]
 
 		condition {
 			test     = "Bool"
