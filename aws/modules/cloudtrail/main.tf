@@ -29,6 +29,14 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
 	bucket        = local.bucket_name
 	force_destroy = var.bucket_force_destroy
 	policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json
+
+	server_side_encryption_configuration {
+		rule {
+			apply_server_side_encryption_by_default {
+				sse_algorithm = var.bucket_sse_algorithm
+			}
+		}
+	}
 }
 
 # we need the identity of the caller to get their account_id for the s3 bucket

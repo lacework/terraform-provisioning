@@ -42,6 +42,12 @@ variable "bucket_force_destroy" {
 	default = false
 }
 
+variable "bucket_sse_algorithm" {
+	type        = string
+	default     = "AES256"
+	description = "The encryption algorithm to use for S3 bucket server-side encryption"
+}
+
 variable "sns_topic_name" {
 	type    = string
 	default = ""
