@@ -5,7 +5,7 @@ This repository contains [Terraform](https://terraform.io) code for provisioning
 required to integrate public cloud environments (AWS, GCP, Azure) into Lacework's automated
 security platform.
 
-For more information visit [support.lacework.net](https://support.lacework.net).
+For more information visit [support.lacework.com](https://support.lacework.com/).
 
 ## Requirements
 - [Terraform](https://terraform.io) 0.12.x
