@@ -39,17 +39,17 @@ variable "bucket_name" {
 
 variable "bucket_enable_encryption" {
 	type    = bool
-	default = true
+	default = false
 }
 
 variable "bucket_enable_logs" {
 	type    = bool
-	default = true
+	default = false
 }
 
 variable "bucket_enable_versioning" {
 	type    = bool
-	default = true
+	default = false
 }
 
 variable "bucket_force_destroy" {
