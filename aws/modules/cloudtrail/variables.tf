@@ -63,6 +63,12 @@ variable "bucket_sse_algorithm" {
 	description = "The encryption algorithm to use for S3 bucket server-side encryption"
 }
 
+variable "bucket_sse_key_arn" {
+	type        = string
+	default     = ""
+	description = "The ARN of the KMS encryption key to be used (Required when using 'aws:kms')"
+}
+
 variable "log_bucket_name" {
 	type    = string
 	default = ""

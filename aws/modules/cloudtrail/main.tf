@@ -21,6 +21,7 @@ resource "aws_cloudtrail" "lacework_cloudtrail" {
 	name                  = var.cloudtrail_name
 	is_multi_region_trail = true
 	s3_bucket_name        = local.bucket_name
+	kms_key_id            = var.bucket_sse_key_arn
 	sns_topic_name        = aws_sns_topic.lacework_cloudtrail_sns_topic.arn
 	depends_on            = [aws_s3_bucket.cloudtrail_bucket]
 }
@@ -48,6 +49,7 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
 		content {
 			rule {
 				apply_server_side_encryption_by_default {
+					kms_master_key_id = var.bucket_sse_key_arn
 					sse_algorithm = var.bucket_sse_algorithm
 				}
 			}
@@ -70,6 +72,7 @@ resource "aws_s3_bucket" "cloudtrail_log_bucket" {
 		content {
 			rule {
 				apply_server_side_encryption_by_default {
+					kms_master_key_id = var.bucket_sse_key_arn
 					sse_algorithm = var.bucket_sse_algorithm
 				}
 			}
@@ -206,6 +209,15 @@ data "aws_iam_policy_document" "cross_account_policy" {
 		sid       = "ReadLogFiles"
 		actions   = ["s3:Get*"]
 		resources = ["${data.aws_s3_bucket.selected.arn}/*"]
+	}
+
+	dynamic "statement" {
+		for_each = var.bucket_enable_encryption == true ? (var.bucket_sse_algorithm == "aws:kms" ? [1] : []) : []
+		content {
+			sid = "DecryptLogFiles"
+			actions = ["kms:Decrypt"]
+			resources = [var.bucket_sse_key_arn]
+		}
 	}
 
 	statement { 

@@ -143,6 +143,7 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 | bucket_enable_logs | Set this to `true` to enable access logging on a created S3 bucket | `bool` | false | no |
 | bucket_enable_versioning | Set this to `true` to enable access logging on a created S3 bucket | `bool` | false | no |
 | bucket_sse_algorithm | Name of the server-side encryption algorithm to use ("AES256" or "aws:kms") | `string` | AES256 | no |
+| bucket_sse_key_arn | The ARN of the KMS encryption key to be used (Required when using "aws:kms") | `string` | "" | no |
 | cloudtrail_name | Name of existing cloudtrail | `string` | "lacework-cloudtrail" | no |
 | external_id_length | Length of External ID (max 1224) | `number` | 16 | no |
 | iam_role_external_id | External ID for IAM Role | `string` | "" | no |
