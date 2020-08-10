@@ -157,7 +157,7 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 | sqs_queues | List of SQS queues to configure in the Lacework cross-account policy. | `list(string)` | `[]` | no |
 | consolidated_trail | Set this to `true` to configure a consolidated cloudtrail. | `bool` | `false` | no |
 | use_existing_cloudtrail | Set this to `true` to use an existing cloudtrail. When set to `true` you must provide both the `bucket_name` and `sns_topic_name` | `bool` | `false` | no |
-| use_existing_iam_role | Set this to `true` to use an existing IAM role. When set to `true` you must provide both the `iam_role_name` and `iam_role_external_id` | `bool` | `false` | no |
+| use_existing_iam_role | Set this to `true` to use an existing IAM role. When set to `true` you must provide the `iam_role_name`, `iam_role_arn`, and `iam_role_external_id` | `bool` | `false` | no |
 
 ## Outputs
 

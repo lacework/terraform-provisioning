@@ -11,19 +11,27 @@ variable "use_existing_iam_role" {
 }
 
 variable "iam_role_name" {
-	type    = string
-	default = ""
+	type        = string
+	default     = ""
+	description = "The IAM role name. Required to match with iam_role_arn if use_existing_iam_role is set to true"
+}
+
+variable "iam_role_arn" {
+	type        = string
+	default     = ""
+	description = "The IAM role ARN is required when setting use_existing_iam_role to true"
 }
 
 variable "iam_role_external_id" {
-	type    = string
-	default = ""
+	type        = string
+	default     = ""
+	description = "The external ID configured inside the IAM role is required when setting use_existing_iam_role to true"
 }
 
 variable "external_id_length" {
 	type        = number
 	default     = 16
-	description = "The length of the external ID to generate. Max length is 1224"
+	description = "The length of the external ID to generate. Max length is 1224. Ignored when use_existing_iam_role is set to true"
 }
 
 variable "prefix" {

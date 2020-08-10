@@ -6,10 +6,11 @@ locals {
 	cross_account_policy_name = (
 		length(var.cross_account_policy_name) > 0 ? var.cross_account_policy_name : "${var.prefix}-cross-acct-policy-${random_id.uniq.hex}"
 	)
-	iam_role_name  = var.use_existing_iam_role ? var.iam_role_name : (
+	iam_role_arn         = module.lacework_ct_iam_role.created ? module.lacework_ct_iam_role.arn :         var.iam_role_arn
+	iam_role_external_id = module.lacework_ct_iam_role.created ? module.lacework_ct_iam_role.external_id : var.iam_role_external_id
+	iam_role_name        = var.use_existing_iam_role ? var.iam_role_name : (
 		length(var.iam_role_name) > 0 ? var.iam_role_name : "${var.prefix}-iam-${random_id.uniq.hex}"
 	)
-	external_id    = var.use_existing_iam_role ? var.iam_role_external_id : module.lacework_ct_iam_role.external_id
 }
 
 resource "random_id" "uniq" {
@@ -286,8 +287,9 @@ module "lacework_ct_iam_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "lacework_cross_account_iam_role_policy" {
-	role       = module.lacework_ct_iam_role.name
+	role       = local.iam_role_name
 	policy_arn = aws_iam_policy.cross_account_policy.arn 
+	depends_on = [module.lacework_ct_iam_role]
 }
 
 # wait for 5 seconds for things to settle down in the AWS side
@@ -309,8 +311,8 @@ resource "lacework_integration_aws_ct" "default" {
 	name      = var.lacework_integration_name
 	queue_url = aws_sqs_queue.lacework_cloudtrail_sqs_queue.id
 	credentials {
-		role_arn    = module.lacework_ct_iam_role.arn
-		external_id = local.external_id
+		role_arn    = local.iam_role_arn
+		external_id = local.iam_role_external_id
 	}
 	depends_on = [time_sleep.wait_5_seconds]
 }
