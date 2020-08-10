@@ -139,13 +139,18 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 |------|-------------|------|---------|:--------:|
 | bucket_force_destroy | Force destroy bucket (Required when bucket not empty) | `bool` | false | no |
 | bucket_name | Name of S3 bucket | `string` | lacework- | no |
+| bucket_enable_encryption | Set this to `true` to enable encryption on a created S3 bucket | `bool` | false | no |
+| bucket_enable_logs | Set this to `true` to enable access logging on a created S3 bucket | `bool` | false | no |
+| bucket_enable_versioning | Set this to `true` to enable access logging on a created S3 bucket | `bool` | false | no |
 | bucket_sse_algorithm | Name of the server-side encryption algorithm to use ("AES256" or "aws:kms") | `string` | AES256 | no |
+| bucket_sse_key_arn | The ARN of the KMS encryption key to be used (Required when using "aws:kms") | `string` | "" | no |
 | cloudtrail_name | Name of existing cloudtrail | `string` | "lacework-cloudtrail" | no |
 | external_id_length | Length of External ID (max 1224) | `number` | 16 | no |
 | iam_role_external_id | External ID for IAM Role | `string` | "" | no |
 | iam_role_name |  The IAM role name | `string` | "lacework_iam_role" | no |
 | lacework_account_id | The Lacework AWS account that the IAM role will grant access | `string` | 434813966438 | no |
 | lacework_integration_name | The name of the integration in Lacework. This input is available in both the config, and the cloudtrail module | `string` | TF config | no |
+| log_bucket_name | Name of the S3 bucket for access logs | `string` | "" | no |
 | prefix | The prefix that will be use at the beginning of every generated resource | `string` | lacework-ct | no |
 | sns_topic_name | SNS topic name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |
 | sqs_queue_name | SQS queue name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |

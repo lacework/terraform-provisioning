@@ -1,7 +1,8 @@
 locals {
-	bucket_name    = length(var.bucket_name) > 0 ?    var.bucket_name :    "${var.prefix}-bucket-${random_id.uniq.hex}"
-	sns_topic_name = length(var.sns_topic_name) > 0 ? var.sns_topic_name : "${var.prefix}-sns-${random_id.uniq.hex}"
-	sqs_queue_name = length(var.sqs_queue_name) > 0 ? var.sqs_queue_name : "${var.prefix}-sqs-${random_id.uniq.hex}"
+	bucket_name     = length(var.bucket_name) > 0 ?     var.bucket_name :     "${var.prefix}-bucket-${random_id.uniq.hex}"
+	log_bucket_name = length(var.log_bucket_name) > 0 ? var.log_bucket_name : "${local.bucket_name}-access-logs"
+	sns_topic_name  = length(var.sns_topic_name) > 0 ?  var.sns_topic_name :  "${var.prefix}-sns-${random_id.uniq.hex}"
+	sqs_queue_name  = length(var.sqs_queue_name) > 0 ?  var.sqs_queue_name :  "${var.prefix}-sqs-${random_id.uniq.hex}"
 	cross_account_policy_name = (
 		length(var.cross_account_policy_name) > 0 ? var.cross_account_policy_name : "${var.prefix}-cross-acct-policy-${random_id.uniq.hex}"
 	)
@@ -20,6 +21,7 @@ resource "aws_cloudtrail" "lacework_cloudtrail" {
 	name                  = var.cloudtrail_name
 	is_multi_region_trail = true
 	s3_bucket_name        = local.bucket_name
+	kms_key_id            = var.bucket_sse_key_arn
 	sns_topic_name        = aws_sns_topic.lacework_cloudtrail_sns_topic.arn
 	depends_on            = [aws_s3_bucket.cloudtrail_bucket]
 }
@@ -30,10 +32,49 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
 	force_destroy = var.bucket_force_destroy
 	policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json
 
-	server_side_encryption_configuration {
-		rule {
-			apply_server_side_encryption_by_default {
-				sse_algorithm = var.bucket_sse_algorithm
+	versioning {
+		enabled = var.bucket_enable_versioning
+	}
+
+	dynamic "logging" {
+		for_each = var.bucket_enable_logs == true ? [1] : []
+		content {
+			target_bucket = aws_s3_bucket.cloudtrail_log_bucket[0].id
+			target_prefix = "log/"
+		}
+	}
+
+	dynamic "server_side_encryption_configuration" {
+		for_each = var.bucket_enable_encryption == true ? [1] : []
+		content {
+			rule {
+				apply_server_side_encryption_by_default {
+					kms_master_key_id = var.bucket_sse_key_arn
+					sse_algorithm = var.bucket_sse_algorithm
+				}
+			}
+		}
+	}
+}
+
+resource "aws_s3_bucket" "cloudtrail_log_bucket" {
+	count         = var.use_existing_cloudtrail ? 0 : (var.bucket_enable_logs ? 1 : 0)
+	bucket        = local.log_bucket_name
+	force_destroy = var.bucket_force_destroy
+	acl           = "log-delivery-write"
+
+	versioning {
+		enabled = var.bucket_enable_versioning
+	}
+
+	dynamic "server_side_encryption_configuration" {
+		for_each = var.bucket_enable_encryption == true ? [1] : []
+		content {
+			rule {
+				apply_server_side_encryption_by_default {
+					kms_master_key_id = var.bucket_sse_key_arn
+					sse_algorithm = var.bucket_sse_algorithm
+				}
 			}
 		}
 	}
@@ -69,6 +110,28 @@ data "aws_iam_policy_document" "cloudtrail_s3_policy" {
 			test     = "StringEquals"
 			variable = "s3:x-amz-acl"
 			values   = ["bucket-owner-full-control"]
+		}
+	}
+
+	statement {
+		sid     = "ForceSSLOnlyAccess"
+		actions = ["s3:*"]
+		effect  = "Deny"
+
+		resources = [
+			"arn:aws:s3:::${local.bucket_name}",
+			"arn:aws:s3:::${local.bucket_name}/*",
+		]
+
+		principals {
+			type        = "AWS"
+			identifiers = ["*"]
+		}
+
+		condition {
+			test     = "Bool"
+			variable = "aws:SecureTransport"
+			values   = ["false"]
 		}
 	}
 }
@@ -146,6 +209,15 @@ data "aws_iam_policy_document" "cross_account_policy" {
 		sid       = "ReadLogFiles"
 		actions   = ["s3:Get*"]
 		resources = ["${data.aws_s3_bucket.selected.arn}/*"]
+	}
+
+	dynamic "statement" {
+		for_each = var.bucket_enable_encryption == true ? (var.bucket_sse_algorithm == "aws:kms" ? [1] : []) : []
+		content {
+			sid = "DecryptLogFiles"
+			actions = ["kms:Decrypt"]
+			resources = [var.bucket_sse_key_arn]
+		}
 	}
 
 	statement { 
