@@ -1,6 +1,8 @@
 locals {
 	bucket_name     = length(var.bucket_name) > 0 ?     var.bucket_name :     "${var.prefix}-bucket-${random_id.uniq.hex}"
-	bucket_arn      = var.use_existing_cloudtrail ?     var.bucket_arn  :     aws_s3_bucket.cloudtrail_bucket[0].arn
+	bucket_arn      = var.use_existing_s3_bucket ? var.bucket_arn  : (
+		var.use_existing_cloudtrail ? var.bucket_arn : aws_s3_bucket.cloudtrail_bucket[0].arn
+	)
 	log_bucket_name = length(var.log_bucket_name) > 0 ? var.log_bucket_name : "${local.bucket_name}-access-logs"
 	sns_topic_name  = length(var.sns_topic_name) > 0 ?  var.sns_topic_name :  "${var.prefix}-sns-${random_id.uniq.hex}"
 	sqs_queue_name  = length(var.sqs_queue_name) > 0 ?  var.sqs_queue_name :  "${var.prefix}-sqs-${random_id.uniq.hex}"
@@ -29,7 +31,7 @@ resource "aws_cloudtrail" "lacework_cloudtrail" {
 }
 
 resource "aws_s3_bucket" "cloudtrail_bucket" {
-	count         = var.use_existing_cloudtrail ? 0 : 1
+	count         = var.use_existing_s3_bucket ? 0 : 1
 	bucket        = local.bucket_name
 	force_destroy = var.bucket_force_destroy
 	policy        = data.aws_iam_policy_document.cloudtrail_s3_policy.json

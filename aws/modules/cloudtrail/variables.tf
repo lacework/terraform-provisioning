@@ -105,6 +105,11 @@ variable "use_existing_cloudtrail" {
 	description = "Set this to true to use an existing cloudtrail. Default behavior enables new cloudtrail"
 }
 
+variable "use_existing_s3_bucket" {
+	type        = bool
+	default     = false
+}
+
 variable "cloudtrail_name" {
 	type    = string
 	default = "lacework-cloudtrail"
