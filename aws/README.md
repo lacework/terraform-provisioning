@@ -41,6 +41,7 @@ module "aws_cloudtrail" {
   bucket_force_destroy  = true
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name
+  iam_role_arn          = module.aws_config.iam_role_arn
   iam_role_external_id  = module.aws_config.external_id
 }
 ```
@@ -60,10 +61,12 @@ module "aws_cloudtrail" {
   source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
 
   use_existing_cloudtrail = true
+  bucket_arn              = "arn:aws:s3:::lacework-ct-bucket-8805c0bf"
   bucket_name             = "lacework-ct-bucket-8805c0bf"
 
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name
+  iam_role_arn          = module.aws_config.iam_role_arn
   iam_role_external_id  = module.aws_config.external_id
 }
 ```
@@ -87,11 +90,13 @@ module "aws_cloudtrail" {
   source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
 
   use_existing_cloudtrail = true
+  bucket_arn              = "arn:aws:s3:::lacework-ct-bucket-8805c0bf"
   bucket_name             = "lacework-ct-bucket-8805c0bf"
   sns_topic_name          = "lacework-ct-sns-8805c0bf"
 
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name
+  iam_role_arn          = module.aws_config.iam_role_arn
   iam_role_external_id  = module.aws_config.external_id
 }
 ```
@@ -138,7 +143,8 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | bucket_force_destroy | Force destroy bucket (Required when bucket not empty) | `bool` | false | no |
-| bucket_name | Name of S3 bucket | `string` | lacework- | no |
+| bucket_name | Name of S3 bucket. Required when setting `use_existing_cloudtrail` to true | `string` | "" | no |
+| bucket_arn | The S3 bucket ARN is required only when setting `use_existing_cloudtrail` to true | `string` | "" | no |
 | bucket_enable_encryption | Set this to `true` to enable encryption on a created S3 bucket | `bool` | false | no |
 | bucket_enable_logs | Set this to `true` to enable access logging on a created S3 bucket | `bool` | false | no |
 | bucket_enable_versioning | Set this to `true` to enable access logging on a created S3 bucket | `bool` | false | no |

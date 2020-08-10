@@ -1,5 +1,6 @@
 locals {
 	bucket_name     = length(var.bucket_name) > 0 ?     var.bucket_name :     "${var.prefix}-bucket-${random_id.uniq.hex}"
+	bucket_arn      = var.use_existing_cloudtrail ?     var.bucket_arn  :     aws_s3_bucket.cloudtrail_bucket[0].arn
 	log_bucket_name = length(var.log_bucket_name) > 0 ? var.log_bucket_name : "${local.bucket_name}-access-logs"
 	sns_topic_name  = length(var.sns_topic_name) > 0 ?  var.sns_topic_name :  "${var.prefix}-sns-${random_id.uniq.hex}"
 	sqs_queue_name  = length(var.sqs_queue_name) > 0 ?  var.sqs_queue_name :  "${var.prefix}-sqs-${random_id.uniq.hex}"
@@ -137,13 +138,6 @@ data "aws_iam_policy_document" "cloudtrail_s3_policy" {
 	}
 }
 
-# we use this data source to point to the S3 ARN for the cross-account policy,
-# it is useful when the user has already CT enabled and we do NOT create a bucket
-data "aws_s3_bucket" "selected" {
-	bucket     = local.bucket_name
-	depends_on = [aws_s3_bucket.cloudtrail_bucket]
-}
-
 resource "aws_sns_topic" "lacework_cloudtrail_sns_topic" {
 	name   = local.sns_topic_name
 }
@@ -209,7 +203,7 @@ data "aws_iam_policy_document" "cross_account_policy" {
 	statement { 
 		sid       = "ReadLogFiles"
 		actions   = ["s3:Get*"]
-		resources = ["${data.aws_s3_bucket.selected.arn}/*"]
+		resources = ["${local.bucket_arn}/*"]
 	}
 
 	dynamic "statement" {
@@ -229,7 +223,7 @@ data "aws_iam_policy_document" "cross_account_policy" {
 
 	statement { 
 		sid       = "ListLogFiles"
-		resources = [data.aws_s3_bucket.selected.arn]
+		resources = [local.bucket_arn]
 		actions   = ["s3:ListBucket"]
 
 		condition {

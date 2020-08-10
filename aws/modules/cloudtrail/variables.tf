@@ -43,6 +43,13 @@ variable "prefix" {
 variable "bucket_name" {
 	type    = string
 	default = ""
+	description = "The S3 bucket name is required when setting use_existing_cloudtrail to true"
+}
+
+variable "bucket_arn" {
+	type    = string
+	default = ""
+	description = "The S3 bucket ARN is required when setting use_existing_cloudtrail to true"
 }
 
 variable "bucket_enable_encryption" {

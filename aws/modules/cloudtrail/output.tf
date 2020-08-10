@@ -3,6 +3,11 @@ output "bucket_name" {
 	description = "S3 Bucket name"
 }
 
+output "bucket_arn" {
+	value       = local.bucket_arn
+	description = "S3 Bucket ARN"
+}
+
 output "sqs_name" {
 	value       = local.sqs_queue_name
 	description = "SQS Queue name"
