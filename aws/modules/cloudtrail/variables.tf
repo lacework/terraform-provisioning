@@ -116,3 +116,9 @@ variable "lacework_aws_account_id" {
 	default     = "434813966438"
 	description = "The Lacework AWS account that the IAM role will grant access"
 }
+
+variable "wait_time" {
+	type = string
+	default = "10s"
+	description = "Amount of time to wait before the next resource is provisioned."
+}

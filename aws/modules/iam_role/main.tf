@@ -27,9 +27,9 @@ resource "aws_iam_role" "lacework_iam_role" {
 	assume_role_policy = data.aws_iam_policy_document.lacework_assume_role_policy.json
 }
 
-# wait for 5 seconds for the role to be created before trying to query it
-resource "time_sleep" "wait_5_seconds" {
-	create_duration = "5s"
+# wait for X seconds for the role to be created before trying to query it
+resource "time_sleep" "wait_time" {
+	create_duration = var.wait_time
 	depends_on      = [aws_iam_role.lacework_iam_role]
 }
 
@@ -37,5 +37,5 @@ resource "time_sleep" "wait_5_seconds" {
 # or the provided IAM Role name if the user decides not to create it
 data "aws_iam_role" "selected" {
 	name       = var.iam_role_name
-	depends_on = [time_sleep.wait_5_seconds]
+	depends_on = [time_sleep.wait_time]
 }
