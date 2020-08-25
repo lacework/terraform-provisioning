@@ -23,6 +23,6 @@ variable "external_id_length" {
 
 variable "wait_time" {
 	type = string
-	default = "5s"
+	default = "10s"
 	description = "Amount of time to wait before the next resource is provisioned."
 }
