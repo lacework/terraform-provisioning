@@ -20,3 +20,9 @@ variable "external_id_length" {
 	default     = 16
 	description = "The length of the external ID to generate. Max length is 1224"
 }
+
+variable "wait_time" {
+	type = string
+	default = "5s"
+	description = "Amount of time to wait before the next resource is provisioned."
+}

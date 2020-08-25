@@ -21,3 +21,9 @@ variable "create" {
 	default     = true
 	description = "Set to false to prevent the module from creating any resources"
 }
+
+variable "wait_time" {
+	type = string
+	default = "5s"
+	description = "Amount of time to wait before the next resource is provisioned."
+}

@@ -126,10 +126,10 @@ resource "google_storage_notification" "lacework_notification" {
 	]
 }
 
-# wait for 5 seconds for things to settle down in the GCP side
+# wait for X seconds for things to settle down in the GCP side
 # before trying to create the Lacework external integration
-resource "time_sleep" "wait_10_seconds" {
-	create_duration = "10s"
+resource "time_sleep" "wait_time" {
+	create_duration = var.wait_time
 	depends_on      = [
 		google_storage_notification.lacework_notification,
 		google_pubsub_subscription_iam_binding.lacework,
@@ -148,5 +148,5 @@ resource "lacework_integration_gcp_at" "default" {
 		client_email   = local.service_account_json_key.client_email
 		private_key    = local.service_account_json_key.private_key
 	}
-	depends_on = [time_sleep.wait_10_seconds]
+	depends_on = [time_sleep.wait_time]
 }
