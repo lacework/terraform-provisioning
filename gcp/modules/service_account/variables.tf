@@ -1,3 +1,5 @@
+# All these API are required by Lacework:
+# => https://support.lacework.com/hc/en-us/articles/360034310713-Enable-the-Required-GCP-APIs
 variable "required_apis" {
   type = map
   default = {
