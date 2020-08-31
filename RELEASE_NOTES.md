@@ -13,7 +13,7 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "git::github.com/lacework/terraform-provisioning.git//aws/modules/config?ref=master"
+  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/config?ref=master"
 }
 ```
 Module documentation https://github.com/lacework/terraform-provisioning/tree/master/aws
@@ -25,7 +25,7 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_cloudtrail" {
-  source                = "git::github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
+  source                = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
   bucket_force_destroy  = true
 }
 ```
@@ -38,7 +38,7 @@ provider "google" {}
 provider "lacework" {}
 
 module "gcp_organization_config" {
-	source          = "git::github.com/lacework/terraform-provisioning.git//gcp/modules/config?ref=master"
+	source          = "git::https://github.com/lacework/terraform-provisioning.git//gcp/modules/config?ref=master"
 	org_integration = true
 	organization_id = "my-organization-id"
 }
@@ -52,7 +52,7 @@ provider "google" {}
 provider "lacework" {}
 
 module "gcp_project_audit_log" {
-	source               = "git::github.com/lacework/terraform-provisioning.git//gcp/modules/audit_log?ref=master"
+	source               = "git::https://github.com/lacework/terraform-provisioning.git//gcp/modules/audit_log?ref=master"
 	bucket_force_destroy = true
 }
 ```
