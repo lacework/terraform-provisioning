@@ -28,6 +28,10 @@ Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk) be in
 
 ## Usage
 
+**IMPORTANT:** We use the `master` branch in source just as an example. In your code, *do NOT pin to master* because there may
+be breaking changes between releases. Instead we recommend to pin to the release tag (e.g. `?ref=tags/v0.1.0`) of one of
+our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
+
 ### Enable New CloudTrail Configuration
 This example creates a new CloudTrail Trail, an IAM Role for Lacework, and then configures both integrations with Lacework
 
@@ -37,11 +41,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "github.com/lacework/terraform-provisioning/aws/modules/config"
+  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/config?ref=master"
 }
 
 module "aws_cloudtrail" {
-  source                = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+  source                = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
   bucket_force_destroy  = true
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name
@@ -57,11 +61,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "github.com/lacework/terraform-provisioning/aws/modules/config"
+  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/config?ref=master"
 }
 
 module "aws_cloudtrail" {
-  source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
 
   use_existing_cloudtrail = true
   bucket_name             = "lacework-ct-bucket-8805c0bf"
@@ -84,11 +88,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "github.com/lacework/terraform-provisioning/aws/modules/config"
+  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/config?ref=master"
 }
 
 module "aws_cloudtrail" {
-  source = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
 
   use_existing_cloudtrail = true
   bucket_name             = "lacework-ct-bucket-8805c0bf"
@@ -116,7 +120,7 @@ provider "aws" {
 }
 
 module "main_cloudtrail" {
-  source    = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+  source    = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
   providers = {
     aws      = aws.main
     lacework = lacework.main

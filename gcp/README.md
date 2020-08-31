@@ -26,6 +26,10 @@ More information on how to download a GCP service account key can be found [here
 
 ### Usage
 
+**IMPORTANT:** We use the `master` branch in source just as an example. In your code, *do NOT pin to master* because there may
+be breaking changes between releases. Instead we recommend to pin to the release tag (e.g. `?ref=tags/v0.1.0`) of one of
+our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
+
 #### Enable New GCP Organization
 ```hcl
 provider "google" {}
@@ -33,13 +37,13 @@ provider "google" {}
 provider "lacework" {}
 
 module "gcp_organization_config" {
-	source          = "https://github.com/lacework/terraform-provisioning/gcp/modules/config"
+	source          = "git::https://github.com/lacework/terraform-provisioning.git//gcp/modules/config?ref=master"
 	org_integration = true
 	organization_id = "my-organization-id"
 }
 
 module "gcp_organization_audit_log" {
-	source                       = "https://github.com/lacework/terraform-provisioning/gcp/modules/audit_log"
+	source                       = "git::https://github.com/lacework/terraform-provisioning.git//gcp/modules/audit_log?ref=master"
 	bucket_force_destroy         = true
 	org_integration              = true
 	use_existing_service_account = true
@@ -65,6 +69,10 @@ More information on how to download a GCP service account key can be found [here
 
 ### Usage
 
+**IMPORTANT:** We use the `master` branch in source just as an example. In your code, *do NOT pin to master* because there may
+be breaking changes between releases. Instead we recommend to pin to the release tag (e.g. `?ref=tags/v0.1.0`) of one of
+our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
+
 #### Enable New GCP Project
 ```hcl
 provider "google" {}
@@ -72,11 +80,11 @@ provider "google" {}
 provider "lacework" {}
 
 module "gcp_project_config" {
-	source = "https://github.com/lacework/terraform-provisioning/gcp/modules/config"
+	source = "git::https://github.com/lacework/terraform-provisioning.git//gcp/modules/config?ref=master"
 }
 
 module "gcp_project_audit_log" {
-	source                       = "https://github.com/lacework/terraform-provisioning/gcp/modules/audit_log"
+	source                       = "git::https://github.com/lacework/terraform-provisioning.git//gcp/modules/audit_log?ref=master"
 	bucket_force_destroy         = true
 	use_existing_service_account = true
 	service_account_name         = module.gcp_project_config.service_account_name
