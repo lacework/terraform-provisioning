@@ -286,10 +286,10 @@ resource "aws_iam_role_policy_attachment" "lacework_cross_account_iam_role_polic
 	depends_on = [module.lacework_ct_iam_role]
 }
 
-# wait for 5 seconds for things to settle down in the AWS side
+# wait for X seconds for things to settle down in the AWS side
 # before trying to create the Lacework external integration
-resource "time_sleep" "wait_5_seconds" {
-	create_duration = "5s"
+resource "time_sleep" "wait_time" {
+	create_duration = var.wait_time
 	depends_on      = [
 		aws_iam_role_policy_attachment.lacework_cross_account_iam_role_policy,
 		aws_sns_topic_subscription.lacework_sns_topic_sub,
@@ -308,5 +308,5 @@ resource "lacework_integration_aws_ct" "default" {
 		role_arn    = local.iam_role_arn
 		external_id = local.iam_role_external_id
 	}
-	depends_on = [time_sleep.wait_5_seconds]
+	depends_on = [time_sleep.wait_time]
 }

@@ -98,6 +98,7 @@ More information on adding GCP credentials for Terraform can be found [here](htt
 | bucket_force_destroy | Force destroy storage bucket (Required when bucket not empty) | `bool` | false | no |
 | existing_bucket_name | The name of an existing bucket you want to send the logs to | `string` | "" | no |
 | lacework_integration_name | The name of the integration in Lacework. This input is available in both the config, and the audit_log module | `string` | TF config | no |
+| wait_time | Define a custom delay between cloud resource provision and Lacework external integration to avoid errors while things settle down. Use `10s` for 10 seconds, `5m` for 5 minutes. | `string` | `10s` | no |
 
 ## Outputs
 

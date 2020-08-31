@@ -2,16 +2,16 @@
 Terraform modules that create AWS resources required to integrate AWS accounts with the Lacework Cloud Security Platform.
 
 ## AWS Config and CloudTrail Integration Overview
-In order for Lacework to monitor AWS configuration and CloudTrail activity, the following must be configured your AWS account: 
+In order for Lacework to monitor AWS configuration and CloudTrail activity, the following must be configured for each AWS account:
 
 #### Required Resources
-- **Cross Account IAM Role** - Delegate access to Lacework to monitor resource configurations within customer's AWS account. This role is used for both the Config and CloudTrail
-  - `SecurityAudit` Policy - AWS managed policy to allow Lacework to assess configuration. Policy is applied for configuration assessment only.
-  - Custom IAM Policy - Delegate access to Lacework to monitor CloudTrail Activity. Policy is attached to the IAM role when for CloudTrail is configured.
-- **CloudTrail** - Enable a new CloudTrail or use an existing
-  - **S3 Bucket** - Used to store CloudTrail logs. Create a new S3 bucket, or use an existing
-  - **SNS Topic** - Used to send notifications when CloudTrail publishes new log files to the configured S3 bucket. Use existing or create a new SNS topic.
-  - **SQS Queue** - SQS queue subscribed to CloudTrail SNS topic for Lacework  
+- **Cross Account IAM Role** - Delegate access to Lacework to monitor resource configurations within customer's AWS account. This role is used for both the Config and CloudTrail Integrations
+  - `SecurityAudit` Policy - AWS managed policy used to allow Lacework to assess configuration metadata. Policy is applied for configuration assessment only.
+  - Custom IAM Policy - Delegate access to Lacework to monitor CloudTrail Activity. Policy is attached to the IAM role when CloudTrail is configured.
+- **CloudTrail** - Create a new CloudTrail Trail or use an existing Trail
+  - **S3 Bucket** - Used to store CloudTrail logs. Create a new S3 bucket, or use an existing bucket
+  - **SNS Topic** - Used to send notifications when CloudTrail publishes new log files to the configured S3 bucket. Use an existing or create a new SNS topic.
+  - **SQS Queue** - SQS queue subscribed to CloudTrail SNS topic used by Lacework to ingest CloudTrail logs
 - **Lacework AWS CFG Integration** - Configures AWS CFG integration between Lacework and customer AWS account
 - **Lacework AWS CT Integration** - Configures AWS CT integration between Lacework and customer AWS account
 
@@ -22,10 +22,14 @@ Before you begin the following must be configured on the workstation running Ter
 - [AWS API Access Key, Secret Access Key](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/)
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens)
 
+Typically, the [AWS CLI](https://aws.amazon.com/cli/) will have been previously installed and `aws configure` run and with `$AWS_PROFILE` set to the appropriate credential profile in `~/.aws/credentials`
+
+Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
+
 ## Usage
 
 ### Enable New CloudTrail Configuration
-This example enables a new CloudTrail, IAM Role for Lacework, and then configures both integrations with Lacework
+This example creates a new CloudTrail Trail, an IAM Role for Lacework, and then configures both integrations with Lacework
 
 ```hcl
 provider "aws" {}
@@ -46,8 +50,8 @@ module "aws_cloudtrail" {
 }
 ```
 
-### Integrate Existing CloudTrail Without SNS Delivey with Lacework
-This example uses an existing CloudTrail and S3 bucket passed as inputs to the module. The example creates the SNS topic, SQS queue, and IAM Role for Lacework, and then configures both integrations with Lacework.
+### Integrate Existing CloudTrail Without SNS Delivery with Lacework
+This example uses an existing CloudTrail Trail and S3 bucket passed as inputs to the module. The example creates the SNS topic, SQS queue, and IAM Role for Lacework, and then configures both integrations with Lacework.
 ```hcl
 provider "aws" {}
 
@@ -75,7 +79,7 @@ module "aws_cloudtrail" {
 
 ![](img/cloudtrail_enable_sns_delivery_notifications.gif)
 
-### Integrate Existing CloudTrail With SNS Delivey Enabled with Lacework
+### Integrate Existing CloudTrail With SNS Delivery Enabled with Lacework
 This example uses an existing CloudTrail, S3 bucket, and SNS topic passed as inputs to the module. The example creates the SQS queue and IAM Role for Lacework, and then configures both integrations with Lacework.
 ```hcl
 provider "aws" {}
@@ -104,8 +108,8 @@ module "aws_cloudtrail" {
 **NOTE: This example assumes that your CloudTrail is already sending delivery notifications to the provided SNS topic.**
 
 ### Enable New Consolidated CloudTrail Configuration
-This example enables a new Consolidated CloudTrail and IAM Role for Lacework, then configures both integrations with Lacework,
-finally, it configures a new CloudTrail in an AWS sub-account that points to the main CloudTrail.
+This example enables a new Consolidated CloudTrail and IAM Role for Lacework, then configures both integrations with Lacework.
+Finally, it configures a new CloudTrail Trail in an AWS sub-account that points to the main CloudTrail.
 
 ```hcl
 provider "lacework" {
@@ -162,8 +166,9 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 | sqs_queue_name | SQS queue name. Can be used when generating a new resource or when using an existing resource. | `string` | "" | no |
 | sqs_queues | List of SQS queues to configure in the Lacework cross-account policy. | `list(string)` | `[]` | no |
 | consolidated_trail | Set this to `true` to configure a consolidated cloudtrail. | `bool` | `false` | no |
-| use_existing_cloudtrail | Set this to `true` to use an existing cloudtrail. When set to `true` you must provide the `bucket_name`, `bucket_arn`, and `sns_topic_name` | `bool` | `false` | no |
-| use_existing_iam_role | Set this to `true` to use an existing IAM role. When set to `true` you must provide the `iam_role_name`, `iam_role_arn`, and `iam_role_external_id` | `bool` | `false` | no |
+| use_existing_cloudtrail | Set this to `true` to use an existing cloudtrail. When set to `true` you must provide both the `bucket_name` and `sns_topic_name` | `bool` | `false` | no |
+| use_existing_iam_role | Set this to `true` to use an existing IAM role. When set to `true` you must provide both the `iam_role_name` and `iam_role_external_id` | `bool` | `false` | no |
+| wait_time | Define a custom delay between cloud resource provision and Lacework external integration to avoid errors while things settle down. Use `10s` for 10 seconds, `5m` for 5 minutes. | `string` | `10s` | no |
 
 ## Outputs
 

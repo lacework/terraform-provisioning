@@ -38,3 +38,9 @@ variable "lacework_integration_name" {
 	type    = string
 	default = "TF config"
 }
+
+variable "wait_time" {
+	type = string
+	default = "10s"
+	description = "Amount of time to wait before the next resource is provisioned."
+}
