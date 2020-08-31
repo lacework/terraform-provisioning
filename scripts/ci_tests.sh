@@ -9,9 +9,11 @@ set -eou pipefail
 readonly project_name=terraform-provisioning
 
 MODULES=(
+  aws/
   aws/modules/iam_role
   aws/modules/config
   aws/modules/cloudtrail
+  gcp/
   gcp/modules/audit_log
   gcp/modules/config
   gcp/modules/service_account
