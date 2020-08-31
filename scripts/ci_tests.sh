@@ -42,6 +42,7 @@ integration_tests() {
     log "Running tests at $tcase"
     ( cd $tcase || exit 1
       terraform init
+      terraform validate
       terraform plan
     ) || exit 1
   done
