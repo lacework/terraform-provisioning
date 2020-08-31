@@ -34,7 +34,7 @@ module "main_cloudtrail" {
 resource "lacework_integration_aws_ct" "main" {
 	provider  = lacework.main
 	name      = "TF consolidated"
-	queue_url = aws_sqs_queue.lacework_ct_sqs_sub_accounts.0.id
+	queue_url = aws_sqs_queue.lw_ct_sqs_sub_accounts.0.id
 	credentials {
 		role_arn    = module.main_cloudtrail.iam_role_arn
 		external_id = module.main_cloudtrail.external_id

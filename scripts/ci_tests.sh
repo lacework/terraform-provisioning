@@ -20,6 +20,13 @@ MODULES=(
 TEST_CASES=(
   aws/modules/iam_role/examples/default-config
   aws/modules/iam_role/examples/custom-config
+  aws/modules/config/examples/custom-config
+  aws/modules/config/examples/default-config
+  aws/modules/cloudtrail/examples/complete-cloudtrail
+  aws/modules/cloudtrail/examples/consolidated-cloudtrail-multiple-lacework-tenants
+  aws/modules/cloudtrail/examples/consolidated-cloudtrail
+  aws/modules/cloudtrail/examples/existing-cloudtrail-iam-role
+  aws/modules/cloudtrail/examples/existing-cloudtrail
 )
 
 log() {
