@@ -12,18 +12,18 @@ orbs:
 executors:
   terraform:
     docker:
-      - image: hashicorp/terraform:light
+      - image: techallylw/terraform:latest
   alpine:
     docker:
       - image: cibuilds/base:latest
     resource_class: small
 
 jobs:
-  integration-test:
+  terraform-test:
     executor: terraform
     steps:
       - checkout
-      - run: scripts/integration_tests.sh
+      - run: scripts/ci_tests.sh
   verify-release:
     executor: alpine
     steps:
@@ -54,10 +54,10 @@ workflows:
   version: 2
   build_test_trigger-release:
     jobs:
-      - integration-test
+      - terraform-test
       - trigger-release:
           requires:
-            - integration-test
+            - terraform-test
           filters:
             branches:
               only: master
@@ -86,4 +86,4 @@ workflows:
             branches:
               only: master
     jobs:
-      - integration-test
+      - terraform-test
