@@ -1,7 +1,4 @@
-provider "google" {
-	credentials = file("account.json")
-	project     = "my-project"
-}
+provider "google" {}
 
 provider "lacework" {}
 

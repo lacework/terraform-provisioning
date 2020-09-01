@@ -22,7 +22,7 @@ locals {
     base64decode(module.lacework_at_svc_account.private_key)
   ))
   bucket_roles = {
-    "roles/storage.objectViewer"       = ["serviceAccount:${module.lacework_at_svc_account.email}"]
+    "roles/storage.objectViewer"       = ["serviceAccount:${local.service_account_json_key.client_email}"]
     "roles/storage.objectCreator"      = [local.logging_sink_writer_identity]
     "roles/storage.legacyBucketReader" = ["projectViewer:${local.project_id}"]
     "roles/storage.legacyBucketOwner" = [
@@ -110,7 +110,7 @@ resource "google_logging_organization_sink" "lacework_organization_sink" {
 
 resource "google_pubsub_subscription_iam_binding" "lacework" {
   role         = "roles/pubsub.subscriber"
-  members      = ["serviceAccount:${module.lacework_at_svc_account.email}"]
+  members      = ["serviceAccount:${local.service_account_json_key.client_email}"]
   subscription = google_pubsub_subscription.lacework_subscription.name
 }
 
