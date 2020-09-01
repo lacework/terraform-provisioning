@@ -13,12 +13,6 @@ variable "org_integration" {
   description = "If set to true, configure an organization level integration"
 }
 
-variable "existing_service_account" {
-  type        = string
-  default     = ""
-  description = "An existing Service Account ID to use"
-}
-
 variable "service_account_name" {
   type        = string
   default     = "lacework-svc-account"
