@@ -20,10 +20,12 @@ MODULES=(
 )
 
 TEST_CASES=(
-  aws/modules/iam_role/examples/default-config
-  aws/modules/iam_role/examples/custom-config
+  aws/modules/iam_role/examples/default-iam-role
+  aws/modules/iam_role/examples/custom-iam-role
+  aws/modules/iam_role/examples/skip-creation-iam-role
   aws/modules/config/examples/custom-config
   aws/modules/config/examples/default-config
+  aws/modules/config/examples/existing-iam-role-config
   aws/modules/cloudtrail/examples/complete-cloudtrail
   aws/modules/cloudtrail/examples/consolidated-cloudtrail-multiple-lacework-tenants
   aws/modules/cloudtrail/examples/consolidated-cloudtrail
