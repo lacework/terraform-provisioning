@@ -17,6 +17,10 @@ MODULES=(
   gcp/modules/audit_log
   gcp/modules/config
   gcp/modules/service_account
+  azure/
+  azure/modules/ad_application
+  azure/modules/config
+  azure/modules/activity_log
 )
 
 TEST_CASES=(
@@ -41,6 +45,8 @@ TEST_CASES=(
   #gcp/modules/audit_log/examples/existing-service-account-org-level-audit-log
   gcp/modules/audit_log/examples/organization-level-audit-log
   gcp/modules/audit_log/examples/project-level-audit-log
+  #azure/
+  #azure/modules/ad_application/examples/default-config
 )
 
 log() {
