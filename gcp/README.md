@@ -9,6 +9,8 @@ Before using these modules you must meet the following requirements:
 - [GCP Service Account](https://cloud.google.com/iam/docs/service-accounts)
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens) 
 
+Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk/wiki/CLI-Documentation) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
+
 ## GCP Organziation Level Integrations
 The following section covers how to integrate GCP configuration assessment and Audit Log for
 an entire Google Cloud Organization
@@ -26,7 +28,7 @@ More information on how to download a GCP service account key can be found [here
 
 ### Usage
 
-**IMPORTANT:** We use the `master` branch in source just as an example. In your code, *do NOT pin to master* because there may
+**IMPORTANT:** We use the `master` branch in source just as an example. In your code, **do NOT pin to master** because there may
 be breaking changes between releases. Instead we recommend to pin to the release tag (e.g. `?ref=tags/v0.1.0`) of one of
 our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
 
