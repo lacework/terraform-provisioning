@@ -17,9 +17,14 @@ MODULES=(
   gcp/modules/audit_log
   gcp/modules/config
   gcp/modules/service_account
+  azure/
+  azure/modules/ad_application
+  azure/modules/config
+  azure/modules/activity_log
 )
 
 TEST_CASES=(
+  aws/
   aws/modules/iam_role/examples/default-iam-role
   aws/modules/iam_role/examples/custom-iam-role
   aws/modules/iam_role/examples/skip-creation-iam-role
@@ -31,6 +36,19 @@ TEST_CASES=(
   aws/modules/cloudtrail/examples/consolidated-cloudtrail
   aws/modules/cloudtrail/examples/existing-cloudtrail-iam-role
   aws/modules/cloudtrail/examples/existing-cloudtrail
+  gcp/
+  gcp/modules/service_account/examples/default-project-level-service-account
+  #gcp/modules/service_account/examples/custom-organization-level-service-account
+  gcp/modules/config/examples/environment-variables-project-level-config
+  #gcp/modules/config/examples/existing-service-account-org-level-config
+  gcp/modules/config/examples/organization-level-config
+  gcp/modules/config/examples/project-level-config
+  gcp/modules/audit_log/examples/environment-variables-project-level-audit-log
+  #gcp/modules/audit_log/examples/existing-service-account-org-level-audit-log
+  gcp/modules/audit_log/examples/organization-level-audit-log
+  gcp/modules/audit_log/examples/project-level-audit-log
+  #azure/
+  #azure/modules/ad_application/examples/default-config
 )
 
 log() {

@@ -24,11 +24,11 @@ Before you begin the following must be configured on the workstation running Ter
 
 Typically, the [AWS CLI](https://aws.amazon.com/cli/) will have been previously installed and `aws configure` run and with `$AWS_PROFILE` set to the appropriate credential profile in `~/.aws/credentials`
 
-Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
+Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk/wiki/CLI-Documentation) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
 
 ## Usage
 
-**IMPORTANT:** We use the `master` branch in source just as an example. In your code, *do NOT pin to master* because there may
+**IMPORTANT:** We use the `master` branch in source just as an example. In your code, **do NOT pin to master** because there may
 be breaking changes between releases. Instead we recommend to pin to the release tag (e.g. `?ref=tags/v0.1.0`) of one of
 our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
 

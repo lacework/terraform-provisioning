@@ -3,11 +3,11 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/config?ref=master"
+  source = "./modules/config"
 }
 
 module "aws_cloudtrail" {
-  source                = "git::https://github.com/lacework/terraform-provisioning.git//aws/modules/cloudtrail?ref=master"
+  source                = "./modules/cloudtrail"
   bucket_force_destroy  = true
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name

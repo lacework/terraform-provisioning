@@ -8,11 +8,6 @@ output "name" {
   description = "The Service Account name"
 }
 
-output "email" {
-  value       = local.service_account_email
-  description = "The Service Account email"
-}
-
 output "project_id" {
   value       = local.project_id
   description = "The Project ID"
