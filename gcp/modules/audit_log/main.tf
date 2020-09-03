@@ -1,11 +1,10 @@
 locals {
   resource_level = var.org_integration ? "ORGANIZATION" : "PROJECT"
   resource_id    = var.org_integration ? var.organization_id : module.lacework_at_svc_account.project_id
+  project_id     = data.google_project.selected.project_id
   bucket_name = length(var.existing_bucket_name) > 0 ? var.existing_bucket_name : (
     length(google_storage_bucket.lacework_bucket) > 0 ? google_storage_bucket.lacework_bucket[0].name : var.existing_bucket_name
   )
-  project_id     = data.google_project.selected.project_id
-  project_number = data.google_project.selected.number
   logging_sink_writer_identity = var.org_integration ? (
     google_logging_organization_sink.lacework_organization_sink[0].writer_identity
     ) : (
@@ -74,14 +73,27 @@ resource "google_pubsub_topic" "lacework_topic" {
   depends_on = [google_project_service.required_apis]
 }
 
+# By calling this data source we are accessing the storage service
+# account and therefore, Google will created for us. If we don't
+# ask for it, Google doens't create it by default, more docs at:
+# => https://cloud.google.com/storage/docs/projects#service-accounts
+#
+# If the service account is not there, we could add a local-exec
+# provisioner to call an API that is documeted at:
+# => https://cloud.google.com/storage-transfer/docs/reference/rest/v1/googleServiceAccounts/get
+data "google_storage_project_service_account" "lw" {
+  project = local.project_id
+}
+
 resource "google_pubsub_topic_iam_binding" "topic_publisher" {
-  members = ["serviceAccount:service-${local.project_number}@gs-project-accounts.iam.gserviceaccount.com"]
+  members = ["serviceAccount:${data.google_storage_project_service_account.lw.email_address}"]
   role    = "roles/pubsub.publisher"
+  project = local.project_id
   topic   = google_pubsub_topic.lacework_topic.name
 }
 
 resource "google_pubsub_subscription" "lacework_subscription" {
-  project                    = var.project_id
+  project                    = local.project_id
   name                       = "${var.prefix}-${local.project_id}-lacework-subscription"
   topic                      = google_pubsub_topic.lacework_topic.name
   ack_deadline_seconds       = 300
@@ -117,7 +129,7 @@ resource "google_pubsub_subscription_iam_binding" "lacework" {
 resource "google_storage_notification" "lacework_notification" {
   bucket         = local.bucket_name
   payload_format = "JSON_API_V1"
-  topic          = google_pubsub_topic.lacework_topic.name
+  topic          = google_pubsub_topic.lacework_topic.id
   event_types    = ["OBJECT_FINALIZE"]
 
   depends_on = [
