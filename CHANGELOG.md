@@ -1,3 +1,10 @@
+# v0.1.1
+
+## Refactor
+* refactor: modules azure config, activity_log and ad_application (#67) (Salim Afiune)([133de8a](https://github.com/lacework/terraform-provisioning/commit/133de8a9be3316f03df752458a74e54e4089148b))
+## Bug Fixes
+* fix(gcp): use correct Service Account Email (#65) (Salim Afiune)([d4777a1](https://github.com/lacework/terraform-provisioning/commit/d4777a19e9d155f30c7f23de985ca5b91e296723))
+---
 # v0.1.0
 
 ## Features
