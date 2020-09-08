@@ -98,7 +98,7 @@ resource "azurerm_role_assignment" "grant_reader_role_to_subscriptions" {
   count = var.create ? length(data.azurerm_subscriptions.available.subscriptions) : 0
   scope = "/subscriptions/${data.azurerm_subscriptions.available.subscriptions[count.index].subscription_id}"
 
-  principal_id         = azuread_service_principal.lacework[0].id
+  principal_id         = local.service_principal_id
   role_definition_name = "Reader"
 }
 
@@ -109,7 +109,7 @@ resource "random_password" "generator" {
 
 resource "azuread_application_password" "client_secret" {
   count                 = var.create ? 1 : 0
-  application_object_id = local.service_principal_id
+  application_object_id = azuread_application.lacework[count.index].object_id
   value                 = random_password.generator[count.index].result
   end_date              = "2299-12-31T01:02:03Z"
   depends_on            = [azuread_service_principal.lacework]
