@@ -10,7 +10,7 @@ output "application_id" {
 }
 
 output "service_principal_id" {
-  value       = module.az_cfg_ad_application.service_principal_id
+  value       = module.az_al_ad_application.service_principal_id
   description = "The Lacework Service Principal id"
 }
 
