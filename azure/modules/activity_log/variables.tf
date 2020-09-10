@@ -28,6 +28,18 @@ variable "application_identifier_uris" {
   ]
 }
 
+variable "subscription_ids" {
+  type        = list(string)
+  description = "List of subscriptions to grant read access to, by default the module will only use the primary subscription"
+  default     = []
+}
+
+variable "all_subscriptions" {
+  type        = bool
+  default     = false
+  description = "If set to true, grant read access to ALL subscriptions within the selected Tenant (overrides 'subscription_ids')"
+}
+
 # If some of the subscriptions use Key Vault services, we need to the
 # Azure App to have access to each Key Vault used in your subscriptions.
 variable "key_vault_ids" {

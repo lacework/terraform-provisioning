@@ -9,6 +9,8 @@ module "az_al_ad_application" {
   create                      = var.use_existing_ad_application ? false : true
   application_name            = var.application_name
   application_identifier_uris = var.application_identifier_uris
+  subscription_ids            = var.subscription_ids
+  all_subscriptions           = var.all_subscriptions
   key_vault_ids               = var.key_vault_ids
   tenant_id                   = var.tenant_id
   password_length             = var.password_length

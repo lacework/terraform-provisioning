@@ -1,5 +1,12 @@
 locals {
   tenant_id = length(var.tenant_id) > 0 ? var.tenant_id : data.azurerm_subscription.primary.tenant_id
+  subscription_ids = var.all_subscriptions ? (
+    // the user wants to grant access to all subscriptions
+    [for s in data.azurerm_subscriptions.available.subscriptions : s.subscription_id]
+    ) : (
+    // or, if the user wants to grant a list of subscriptions, if none then we default to the primary subscription
+    length(var.subscription_ids) > 0 ? var.subscription_ids : [data.azurerm_subscription.primary.subscription_id]
+  )
   application_id = var.create ? (
     length(azuread_application.lacework) > 0 ? azuread_application.lacework[0].application_id : ""
   ) : ""
@@ -95,8 +102,8 @@ resource "azurerm_key_vault_access_policy" "default" {
 
 data "azurerm_subscriptions" "available" {}
 resource "azurerm_role_assignment" "grant_reader_role_to_subscriptions" {
-  count = var.create ? length(data.azurerm_subscriptions.available.subscriptions) : 0
-  scope = "/subscriptions/${data.azurerm_subscriptions.available.subscriptions[count.index].subscription_id}"
+  count = var.create ? length(local.subscription_ids) : 0
+  scope = "/subscriptions/${local.subscription_ids[count.index]}"
 
   principal_id         = local.service_principal_id
   role_definition_name = "Reader"
