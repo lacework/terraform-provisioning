@@ -3,6 +3,11 @@ output "bucket_name" {
   description = "S3 Bucket name"
 }
 
+output "bucket_arn" {
+  value       = local.bucket_arn
+  description = "S3 Bucket ARN"
+}
+
 output "sqs_name" {
   value       = local.sqs_queue_name
   description = "SQS Queue name"
@@ -19,16 +24,16 @@ output "sns_arn" {
 }
 
 output "external_id" {
-  value       = local.external_id
+  value       = local.iam_role_external_id
   description = "The External ID configured into the IAM role"
 }
 
 output "iam_role_name" {
-  value       = local.iam_role_name
-  description = "IAM Role name"
+  value       = var.iam_role_name
+  description = "The IAM Role name"
 }
 
 output "iam_role_arn" {
-  value       = module.lacework_ct_iam_role.arn
-  description = "IAM Role ARN"
+  value       = local.iam_role_arn
+  description = "The IAM Role ARN"
 }

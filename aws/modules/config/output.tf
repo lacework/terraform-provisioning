@@ -1,14 +1,14 @@
 output "external_id" {
-  value       = module.lacework_cfg_iam_role.external_id
+  value       = local.iam_role_external_id
   description = "The External ID configured into the IAM role"
 }
 
 output "iam_role_name" {
-  value       = module.lacework_cfg_iam_role.name
-  description = "IAM Role name"
+  value       = var.iam_role_name
+  description = "The IAM Role name"
 }
 
 output "iam_role_arn" {
-  value       = module.lacework_cfg_iam_role.arn
-  description = "IAM Role ARN"
+  value       = local.iam_role_arn
+  description = "The IAM Role ARN"
 }

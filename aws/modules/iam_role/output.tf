@@ -9,11 +9,11 @@ output "name" {
 }
 
 output "arn" {
-  value       = data.aws_iam_role.selected.arn
+  value       = var.create ? aws_iam_role.lacework_iam_role[0].arn : ""
   description = "IAM Role ARN"
 }
 
 output "external_id" {
-  value       = var.create ? random_string.external_id.result : ""
+  value       = var.create ? random_string.external_id[0].result : ""
   description = "The External ID configured into the IAM role"
 }

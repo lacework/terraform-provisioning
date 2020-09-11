@@ -22,7 +22,7 @@ resource "aws_sqs_queue" "lw_ct_sqs_sub_accounts" {
 }
 
 module "main_cloudtrail" {
-	source    = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+	source    = "../../"
 	providers = {
 		aws      = aws.main
 		lacework = lacework.main

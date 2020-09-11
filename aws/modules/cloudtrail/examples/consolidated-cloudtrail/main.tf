@@ -7,7 +7,7 @@ provider "aws" {
 }
 
 module "main_cloudtrail" {
-	source    = "github.com/lacework/terraform-provisioning/aws/modules/cloudtrail"
+	source = "../../"
 	providers = {
 		aws      = aws.main
 		lacework = lacework.main
