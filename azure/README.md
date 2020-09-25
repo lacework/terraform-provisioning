@@ -1,17 +1,19 @@
-# Azure Provisioning - Step By Step
-This document describes the step-by-step process to connect Lacework with Azure Cloud. This code
-creates the required resources for Azure Compliance assessment, as well as Azure Activity Log
-Trail analysis.
+# Lacework Terraform Provisioning for Azure
+Terraform modules that create Azure resources required to integrate Azure Tenants and Subscriptions
+with the Lacework Cloud Security Platform.
 
 ## Requirements
-- Terraform `v.0.12.x`
+Before using these modules you must meet the following requirements:
+
+- [Terraform](terraform.io/downloads.html) `v0.12.x`
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 - [Azure User](https://cloud.google.com/iam/docs/service-accounts) with the following permissions:
   - *Global Administrator* privileges in Active Directory
   - *Owner Role* at the Subscription level
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens) 
 
-Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk/wiki/CLI-Documentation) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
+We also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk/wiki/CLI-Documentation) is installed and the `[default]`
+profile is associated with the applicable Lacework Account `api_key` and `api_secret` inside the `~/.lacework.toml` configuration file.
 
 ## Login via the Azure CLI
 In order to integrate Lacework with Azure you will need to login to your Azure console via
@@ -55,8 +57,10 @@ module "az_activity_log" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| application_name | The name of the Azure Active Directory Applicaiton | `string` | lacework_security_audit | no |
+| application_name | The name of the Azure Active Directory Application | `string` | lacework_security_audit | no |
 | application_identifier_uris | A list of user-defined URI(s) for the Lacework AD Application | `list(string)` | ["https://securityaudit.lacework.net"] | no |
+| subscription_ids | A list of subscriptions to grant read access to, by default the modules will only use the primary subscription | `list(string)` | `[]` | no |
+| all_subscriptions | If set to true, grant read access to ALL subscriptions within the selected Tenant (overrides `subscription_ids`) | `bool` | false | no |
 | key_vault_ids | A list of Key Vault Ids used in your subscription for the Lacework AD App to have access to | `list(string)` | [] | no |
 | tenant_id | A Tenant ID different from the default defined inside the provider | `string` | "" | no |
 | password_length | The length of the Lacework AD Application password | `number` | 30 | no |

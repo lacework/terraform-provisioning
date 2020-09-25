@@ -4,10 +4,22 @@ variable "create" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
+variable "subscription_ids" {
+  type        = list(string)
+  description = "List of subscriptions to grant read access to, by default the module will only use the primary subscription"
+  default     = []
+}
+
+variable "all_subscriptions" {
+  type        = bool
+  default     = false
+  description = "If set to true, grant read access to ALL subscriptions within the selected Tenant (overrides 'subscription_ids')"
+}
+
 variable "application_name" {
   type        = string
   default     = "lacework_security_audit"
-  description = "The name of the Azure Active Directory Applicaiton"
+  description = "The name of the Azure Active Directory Application"
 }
 
 variable "tenant_id" {
