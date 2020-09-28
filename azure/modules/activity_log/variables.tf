@@ -40,6 +40,12 @@ variable "all_subscriptions" {
   description = "If set to true, grant read access to ALL subscriptions within the selected Tenant (overrides 'subscription_ids')"
 }
 
+variable "log_profile_name" {
+  type        = string
+  default     = ""
+  description = "The name of the log profile to use"
+}
+
 # If some of the subscriptions use Key Vault services, we need to the
 # Azure App to have access to each Key Vault used in your subscriptions.
 variable "key_vault_ids" {

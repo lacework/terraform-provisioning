@@ -2,6 +2,7 @@ locals {
   application_id       = var.use_existing_ad_application ? var.application_id : module.az_al_ad_application.application_id
   application_password = var.use_existing_ad_application ? var.application_password : module.az_al_ad_application.application_password
   service_principal_id = var.use_existing_ad_application ? var.service_principal_id : module.az_al_ad_application.service_principal_id
+  log_profile_name     = length(var.log_profile_name) > 0 ? var.log_profile_name : "${var.prefix}-log-profile"
 }
 
 module "az_al_ad_application" {
@@ -58,7 +59,7 @@ resource "azurerm_eventgrid_event_subscription" "lacework" {
 }
 
 resource "azurerm_monitor_log_profile" "lacework" {
-  name               = "${var.prefix}-log-profile"
+  name               = local.log_profile_name
   locations          = var.log_profile_locations
   storage_account_id = azurerm_storage_account.lacework.id
 
