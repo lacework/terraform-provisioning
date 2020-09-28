@@ -2,7 +2,8 @@
 
 # Lacework Provisioning with Terraform
 
-[![lacework](https://circleci.com/gh/lacework/terraform-provisioning.svg?style=shield)](https://circleci.com/gh/lacework/terraform-provisioning)
+[![GitHub release](https://img.shields.io/github/release/lacework/terraform-provisioning.svg)](https://github.com/lacework/terraform-provisioning/releases/)
+[![CircleCI status](https://circleci.com/gh/lacework/terraform-provisioning.svg?style=shield)](https://circleci.com/gh/lacework/terraform-provisioning)
 
 This repository contains [Terraform](https://terraform.io) code for provisioning resources
 required to integrate public cloud environments (AWS, GCP, Azure) into Lacework's automated
