@@ -2,8 +2,15 @@
 Terraform modules that create Azure resources required to integrate Azure Tenants and Subscriptions
 with the Lacework Cloud Security Platform.
 
+## Use your Azure Portal
+
+This couldn't be easier!
+
+Follow [these instructions](AZURE_CLOUD_SHELL.md) to use the Azure Cloud Shell to run these modules from
+the comfort of you Azure Portal.
+
 ## Requirements
-Before using these modules you must meet the following requirements:
+If you prefer to use these modules locally, you must meet the following requirements:
 
 - [Terraform](terraform.io/downloads.html) `v0.12.x`
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
