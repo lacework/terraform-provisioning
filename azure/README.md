@@ -14,7 +14,7 @@ If you prefer to use these modules locally, you must meet the following requirem
 
 - [Terraform](terraform.io/downloads.html) `v0.12.x`
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-- [Azure User](https://cloud.google.com/iam/docs/service-accounts) with the following permissions:
+- [Azure User](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-users-azure-active-directory) with the following permissions:
   - *Global Administrator* privileges in Active Directory
   - *Owner Role* at the Subscription level
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens) 

@@ -1,10 +1,10 @@
 # Azure Cloud Shell
 The Azure Cloud Shell is an embedded terminal/command-line interface that can be used within the Azure
-Portal.  Cloud Shell automatically authenticates you with Azure AD and comes with tools like the Azure
+Portal. This shell automatically authenticates you with Azure AD and comes with tools like the Azure
 CLI and Terraform pre-installed to manage and automate your Azure environment.
 
 These instructions will show you how to get up-and-running with Lacework, Terraform and the Azure Cloud Shell.
-The only requirement we need is that your [Azure User](https://cloud.google.com/iam/docs/service-accounts) has
+The only requirement we need is that your [Azure User](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-users-azure-active-directory) has
 the following permissions:
 - **Global Administrator** privileges in Active Directory
 - **Owner Role** at the Subscription level
@@ -42,7 +42,7 @@ Proceed to configure the Lacework CLI by using the command `lacework configure`.
 
 The Azure Cloud Shell allows you to drag-and-drop the generated `KEY.json` to upload it automatically.
 
-![Download-Drag-and-Drop Lacework API key](https://techally-artifacts.s3-us-west-2.amazonaws.com/github-terraform-provisioning-imgs/cloud-shell-drap-drop-api-key.gif)
+![Download-Drag-and-Drop Lacework API key](https://techally-artifacts.s3-us-west-2.amazonaws.com/github-terraform-provisioning-imgs/azure-cloud-shell-drag-drop-api-key.gif)
 
 Finally, run the command:
 ```
@@ -111,7 +111,7 @@ for you to type `yes` to proceed.
 $ terraform apply
 ```
 
-![Hit Yes](https://techally-artifacts.s3-us-west-2.amazonaws.com/github-terraform-provisioning-imgs/cloud-shell-editor-terraform-apply.png)
+![Hit Yes](https://techally-artifacts.s3-us-west-2.amazonaws.com/github-terraform-provisioning-imgs/azure-cloud-shell-editor-terraform-apply.png)
 
 **Hit yes!**
 
