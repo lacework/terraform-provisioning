@@ -7,7 +7,7 @@ with the Lacework Cloud Security Platform.
 This couldn't be easier!
 
 Follow [these instructions](AZURE_CLOUD_SHELL.md) to use the Azure Cloud Shell to run these modules from
-the comfort of you Azure Portal.
+the comfort of your Azure Portal.
 
 ## Requirements
 If you prefer to use these modules locally, you must meet the following requirements:

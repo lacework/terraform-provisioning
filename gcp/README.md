@@ -7,7 +7,7 @@ with the Lacework Cloud Security Platform.
 This couldn't be easier!
 
 Follow [these instructions](GOOGLE_CLOUD_SHELL.md) to use the Google Cloud Shell to run these modules from
-the comfort of you Google Console.
+the comfort of your Google Console.
 
 ## Requirements
 If you prefer to use these modules locally, you must meet the following requirements:
