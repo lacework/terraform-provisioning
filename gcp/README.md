@@ -2,14 +2,21 @@
 Terraform modules that create GCP resources required to integrate GCP Organizations or Projects
 with the Lacework Cloud Security Platform.
 
+## Use your Google Console
+
+This couldn't be easier!
+
+Follow [these instructions](GOOGLE_CLOUD_SHELL.md) to use the Google Cloud Shell to run these modules from
+the comfort of you Google Console.
+
 ## Requirements
-Before using these modules you must meet the following requirements:
+If you prefer to use these modules locally, you must meet the following requirements:
 
 - [Terraform](terraform.io/downloads.html) `v0.12.x`
 - [GCP Service Account](https://cloud.google.com/iam/docs/service-accounts)
 - [Lacework API Key](https://support.lacework.com/hc/en-us/articles/360011403853-Generate-API-Access-Keys-and-Tokens) 
 
-Also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk/wiki/CLI-Documentation) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
+We also recommend that the [Lacework CLI](https://github.com/lacework/go-sdk/wiki/CLI-Documentation) be installed and the `[default]` profile is associated with the applicable Lacework Account `api_key` and `api_secret` in `~/.lacework.toml`
 
 ## GCP Organziation Level Integrations
 The following section covers how to integrate GCP configuration assessment and Audit Log for
@@ -49,8 +56,8 @@ module "gcp_organization_audit_log" {
 	bucket_force_destroy         = true
 	org_integration              = true
 	use_existing_service_account = true
-	service_account_name         = module.gcp_project_config.service_account_name
-	service_account_private_key  = module.gcp_project_config.service_account_private_key
+	service_account_name         = module.gcp_organization_config.service_account_name
+	service_account_private_key  = module.gcp_organization_config.service_account_private_key
 	organization_id              = "my-organization-id"
 }
 ```
@@ -90,6 +97,7 @@ module "gcp_project_audit_log" {
 	bucket_force_destroy         = true
 	use_existing_service_account = true
 	service_account_name         = module.gcp_project_config.service_account_name
+	service_account_private_key  = module.gcp_project_config.service_account_private_key
 }
 ```
 More information on adding GCP credentials for Terraform can be found [here](https://www.terraform.io/docs/providers/google/guides/getting_started.html#adding-credentials)
