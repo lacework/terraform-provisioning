@@ -19,6 +19,5 @@ if [ ! -f "$HOME/bin/terraform" ]; then
     rm $HOME/bin/terraform.zip
 fi
 
-export PATH="$HOME/bin:$PATH"
 echo ""
-echo "Your shell is ready to work with the Lacework platform!"
+echo "Your shell is almost ready, please restart your terminal before running any Lacework CLI command!"

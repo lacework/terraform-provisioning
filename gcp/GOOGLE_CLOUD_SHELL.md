@@ -1,7 +1,7 @@
 # Google Cloud Shell
 The Google Cloud Shell is an embedded terminal/command-line interface that can be used within the Google
-Console. This shell is fully authenticated and comes with tools like the [Cloud SDK `gcloud`](https://cloud.google.com/sdk/gcloud/)
-command-line tool and Terraform pre-installed to manage and automate your projects and resources in your
+Console. This shell is fully authenticated and comes with tools like the [Google Cloud SDK](https://cloud.google.com/sdk/gcloud/),
+`gcloud`command-line tool and Terraform pre-installed to manage and automate your projects and resources in your
 environment.
 
 These instructions will show you how to get up-and-running with Lacework, Terraform and the Google Cloud Shell.
@@ -30,6 +30,8 @@ variables required by Terraform.
 ```
 afiune@cloudshell:~ $ curl https://raw.githubusercontent.com/lacework/terraform-provisioning/master/gcp/shell_startup.sh | bash
 ```
+
+Make sure to open a new terminal or restart your shell before proceeding to the next step.
 
 ## Configure the Lacework CLI
 
@@ -145,4 +147,3 @@ To verify if the two integrations have been configured successfully, run the com
 ```
 afiune@cloudshell:~ $ lacework integrations list
 ```
-
