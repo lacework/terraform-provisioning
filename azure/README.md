@@ -41,6 +41,7 @@ our [latest releases](https://github.com/lacework/terraform-provisioning/release
 provider "azuread" {}
 
 provider "azurerm" {
+  version = "2.26"
   features {}
 }
 
