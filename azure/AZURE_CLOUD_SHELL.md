@@ -27,7 +27,8 @@ script to install all the neccessary tools and configure some environment variab
 PS /home/salim> curl https://raw.githubusercontent.com/lacework/terraform-provisioning/master/azure/shell_startup.sh | bash
 ```
 
-Make sure to restart your shell before proceeding to the next step.
+When the script completes you need to type `exit` followed by enter to exit your shell. After a few seconds you will 
+be prompted to reconnect to your shell. Once reconnected, the Lacework CLI will be ready for use. 
 
 ## Configure the Lacework CLI
 
