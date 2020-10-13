@@ -20,4 +20,4 @@ if [ ! -f "$HOME/bin/terraform" ]; then
 fi
 
 echo ""
-echo "Your shell is almost ready, please restart your terminal before running any Lacework CLI command!"
+echo "Your shell is almost ready. Type 'exit' then hit enter before running any Lacework CLI command. Open the Cloud Shell again and the Lacework CLI will be ready for use!"

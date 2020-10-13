@@ -37,4 +37,4 @@ else
 fi
 
 echo ""
-echo "Your shell is almost ready. Type `exit` then hit enter before running any Lacework CLI command. You will then be prompted to 'reconnect' to your shell"
+echo "Your shell is almost ready. Type 'exit' then hit enter before running any Lacework CLI command. You will then be prompted to 'reconnect' to your shell"
