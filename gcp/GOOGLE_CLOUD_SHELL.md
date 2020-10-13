@@ -31,7 +31,8 @@ variables required by Terraform.
 afiune@cloudshell:~ $ curl https://raw.githubusercontent.com/lacework/terraform-provisioning/master/gcp/shell_startup.sh | bash
 ```
 
-Make sure to open a new terminal or restart your shell before proceeding to the next step.
+When the script completes you need to type `exit` followed by enter to exit your shell. Once the shell has exited you can open 
+the Cloud Shell again and the Lacework CLI will be ready for use!
 
 ## Configure the Lacework CLI
 
