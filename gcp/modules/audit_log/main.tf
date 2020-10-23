@@ -31,6 +31,10 @@ locals {
   }
 }
 
+resource "random_id" "uniq" {
+  byte_length = 4
+}
+
 data "google_project" "selected" {
   project_id = var.project_id
 }
@@ -55,7 +59,7 @@ module "lacework_at_svc_account" {
 resource "google_storage_bucket" "lacework_bucket" {
   count         = length(var.existing_bucket_name) > 0 ? 0 : 1
   project       = local.project_id
-  name          = "${var.prefix}-lacework-bucket"
+  name          = "${var.prefix}-lacework-bucket-${random_id.uniq.hex}"
   force_destroy = var.bucket_force_destroy
   depends_on    = [google_project_service.required_apis]
 }
