@@ -11,7 +11,7 @@ It is important to keep in mind that when using the Terraform Modules from Lacew
 If you are using custom resources from the Terraform Provider for Lacework, you will need to have an API Key. The easiest way to configure the Terraform Provider for Lacework is by leveraging the configuration from the [Lacework Command Line Interface (CLI)](https://github.com/lacework/go-sdk/wiki/CLI-Documentation)
 
 ### Terraform Provider for Lacework and The Lacework CLI
-The Terraform Provider for Lacework has the ability to leverage configuration from Lacework CLI. Once the Lacework CLI is installed and configured on the system that you plan to run Terraform on you can leverage any profile stored. 
+The Terraform Provider for Lacework has the ability to leverage configuration from the Lacework CLI. Once the Lacework CLI is installed and configured on the system that you plan to run Terraform on you can leverage any profile stored. 
 
 The following example shows how you can use two different configurations from the Lacework CLI...
 
@@ -53,4 +53,3 @@ The following sections describe in detail the steps you will need to follow to u
 - [Integrate Microsoft Azure with Lacework using Terraform and the Azure Cloud Shell]()
 - [Manage Alert Channels in Lacework using Terraform]()
 - [Manage Integrations with Container Registries using Terraform]()
-
