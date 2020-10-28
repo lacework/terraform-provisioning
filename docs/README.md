@@ -41,7 +41,7 @@ provider "lacework" {
 }
 ```
 
-It is highly recommended you install and configure the Lacework CLI when using the Terraform Provider for Lacework. For more information on installing/configuring the Lacework CLI visit the documentation [here](https://github.com/lacework/go-sdk/wiki/CLI-Documentation#installation)
+It is highly recommended you install and configure the Lacework CLI when using the Terraform Provider for Lacework. For more information on installing and configuring the Lacework CLI visit the documentation [here](https://github.com/lacework/go-sdk/wiki/CLI-Documentation#installation)
 
 ## Terraform to manage integrations with public cloud accounts and Lacework
 
