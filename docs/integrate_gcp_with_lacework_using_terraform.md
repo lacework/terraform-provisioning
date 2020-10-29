@@ -24,7 +24,7 @@ In order to integrate at an Organization or Project level Lacework requires the 
 There are two main ways to run Lacework Terraform modules to integrate Google Cloud with Lacework:
 
 ### Google Cloud Shell
-This method uses [Google Cloud Shell](https://cloud.google.com/shell) to which is installed by default in Cloud Shell. Google Cloud Shell leverages the permisions of the person logged in that launches Cloud Shell. 
+This method uses [Google Cloud Shell](https://cloud.google.com/shell) to which is installed by default in Cloud Shell. Google Cloud Shell leverages the permissions of the person logged in that launches Cloud Shell. 
 
 This method is suitable for one-off integrations where the user does not plan to continue to use Terraform to manage Lacework and Google Cloud.
 
