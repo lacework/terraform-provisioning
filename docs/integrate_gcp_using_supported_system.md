@@ -3,7 +3,7 @@ In this method, Terraform is installed, configured, and run from any supported s
 
 This method is geared towards companies that store Terraform code in source control, and plan to continue to manage the state of the integration between Lacework and Google cloud using Terraform. 
 
-These instructions will show you how to get up-and-running with Lacework Terraform modules to integrate Google Cloud and Lacework at either an Organization Level, or a per Project Level.
+These instructions will show you how to get up-and-running with Lacework Terraform modules to integrate Google Cloud and Lacework at either an Organization Level or a per Project Level.
 
 ### Requirements
 - Google Cloud Console Access
