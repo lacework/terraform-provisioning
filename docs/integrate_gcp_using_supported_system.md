@@ -106,7 +106,7 @@ Once Terraform completes you can validate the integration using the Lacework CLI
 ## Integrate Google Cloud with Lacework at a Project level
 The following section covers integrating Google Cloud and Lacework for analysis of Cloud Audit Logs and configuration assessment at a Project level. 
 
-In this method Terraform provisions all of the required resources in the the project being integrated into Lacework.
+In this method Terraform provisions all of the required resources in the project being integrated into Lacework.
 
 ### Create a Service Account for Terraform
 In order to integrate GCP and Lacework at a Project level Terraform needs an service account with the following permissions in the Project being integrated:
