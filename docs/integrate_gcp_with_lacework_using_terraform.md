@@ -1,7 +1,7 @@
 # Integrate Google Cloud Platform with Lacework using Terraform
 Lacework integrates with Google Cloud Platform to analyze Cloud Audit Logs and to assess cloud resource configurations at an Organization level or at a per Project level. 
 
-Organzation level integrations covers all of the existing projects in the organization, and will automatically add any new projects added after the initial integration. 
+Organization level integrations cover all of the existing projects in the organization, and will automatically add any new projects added after the initial integration. 
 
 A Project level integration only covers specific projects and any new projects will need to be added as required.
 
