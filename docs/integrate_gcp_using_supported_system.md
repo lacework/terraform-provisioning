@@ -15,7 +15,7 @@ The following section covers integrating Google Cloud and Lacework for analysis 
 
 
 ### Create a GCP Project using the GCP Console
-Before you can execute Terraform you will need to create a GCP Project to provision the required resouces for the integration between Google Cloud and Lacework.
+Before you can execute Terraform you will need to create a GCP Project to provision the required resources for the integration between Google Cloud and Lacework.
 ![Create GCP Project](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_project_create_1024px.gif)
 1. Login to the Google Cloud Console
 2. Select the Project drop-down and click **NEW PROJECT**
