@@ -109,7 +109,7 @@ The following section covers integrating Google Cloud and Lacework for analysis 
 In this method Terraform provisions all of the required resources in the project being integrated into Lacework.
 
 ### Create a Service Account for Terraform
-In order to integrate GCP and Lacework at a Project level Terraform needs an service account with the following permissions in the Project being integrated:
+In order to integrate GCP and Lacework at a Project level Terraform needs a service account with the following permissions in the Project being integrated:
 
 - `roles/owner`
 
