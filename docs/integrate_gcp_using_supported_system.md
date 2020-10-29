@@ -96,7 +96,7 @@ module "gcp_organization_audit_log" {
 ```
 
 3. Update both the `credentials` and the `project` in the `provider "google"` to reference your credentials file downloaded in the previous section and the Google Project ID
-4. Open a terminal, change directory to the location where you have saved the `main.tf` and run the command `terraform init` to initialize the project
+4. Open a terminal, change the directory to the location where you have saved the `main.tf` and run the command `terraform init` to initialize the project
 5. Run `terraform plan` to review the changes, and then run `terraform apply` when you are ready to apply the changes
 
 Once Terraform completes you can validate the integration using the Lacework CLI with the command `lacework integration list`
