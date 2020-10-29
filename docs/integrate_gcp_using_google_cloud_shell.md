@@ -1,5 +1,5 @@
 # Integrate Google Cloud and Lacework using Google Cloud Shell
-Google Cloud Shell is an embedded terminal/command-line interface that can be used within the Google Console. This shell is fully authenticated and comes with tools pre-installed like the [Google Cloud SDK](https://cloud.google.com/sdk/gcloud/), `gcloud`command-line tool, and Terraform pre-installed to manage and automate your projects and resources in your environment.
+Google Cloud Shell is an embedded terminal/command-line interface that can be used within the Google Console. This shell is fully authenticated and comes with tools pre-installed like the [Google Cloud SDK](https://cloud.google.com/sdk/gcloud/), `gcloud` command-line tool, and Terraform pre-installed to manage and automate your projects and resources in your environment.
 
 This is suitable for one-off integrations where the user does not plan to continue to use Terraform to manage Lacework and Google Cloud. If you plan to continue to manage the state of the integration between Google Cloud and Lacework, please review the following documentation [here]().
 
