@@ -1,5 +1,5 @@
 # Integrate Google Cloud and Lacework using Terraform on any supported host
-In this method Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows) and leverages a Service Account of choice to run Terraform. 
+In this method, Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows) and leverages a Service Account of choice to run Terraform. 
 
 This method is geared towards companies that store Terraform code in source control, and plan to continue to manage the state of the integration between Lacework and Google cloud using Terraform. 
 
