@@ -33,6 +33,6 @@ For instructions on using Google Cloud Shell to run Lacework Terraform modules c
 ### Terraform installed on any supported host
 In this method, Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows) and leverages a Service Account of choice to run Terraform. 
 
-This method is suitable for companies that store Terraform code in source control, and plan to continue to manage the state of the integration between Lacework and Google cloud going forward
+This method is suitable for companies that store Terraform code in source control, and plan to continue to manage the state of the integration between Lacework and Google cloud going forward.
 
 For instructions on how to run Lacework Terraform modules from any supported platform click [here]()
