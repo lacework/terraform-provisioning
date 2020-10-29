@@ -23,7 +23,7 @@ Before you can execute Terraform you will need to create a GCP Project to provis
 3. Click **CREATE** to create the new project
 
 ### Create a Service Account for Terraform
-In order to integrate GCP and Lacework at an Organizational level Terraform needs an service account with the following permissions:
+In order to integrate GCP and Lacework at an Organizational level Terraform needs a service account with the following permissions:
 
 - `roles/owner`
 - `roles/resourcemanager.organizationAdmin`
