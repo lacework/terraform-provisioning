@@ -141,7 +141,7 @@ This section covers creating a service key and downloading to the local system a
 7. Click **Create** to download the key locally
 
 ### Run Terraform to integrate GCP at Project Level
-This section covers executing Terraform. It is recommended you use a developer's code editor such as [VSCode](https://code.visualstudio.com/download), [Atom](https://atom.io/), or [Sublime](https://www.sublimetext.com/3). You will also need a terminal to run `terraform` commands such as `bash`, `zsh`, `powershell` or `cmd`
+This section covers executing Terraform. It is recommended you use a developer's code editor such as [VSCode](https://code.visualstudio.com/download), [Atom](https://atom.io/), or [Sublime](https://www.sublimetext.com/3). You will also need a terminal to run `terraform` commands such as `bash`, `zsh`, `powershell`, or `cmd`
 ![Terraform Code](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_project_terraform_init_1024px.gif)
 1. Open an EDITOR of choice and create a new file called `main.tf`
 2. Copy/paste the following code into the `main.tf` and save the file
