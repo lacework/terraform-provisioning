@@ -11,7 +11,7 @@ These instructions will show you how to get up-and-running with Lacework Terrafo
 - Lacework Console Access
 
 ## Integrate Google Cloud with Lacework at an Organzational level
-The following section covers integrating Google Cloud and Lacework for analysis of Cloud Audit Logs and ressource configuration assessment at an Organizational level. Organzation level integrations covers all of the existing projects in the organization, and will automatically add any new projects added after the initial integration.
+The following section covers integrating Google Cloud and Lacework for analysis of Cloud Audit Logs and configuration assessment at an Organizational level. Organization level integrations cover all of the existing projects in the organization, and will automatically add any new projects added after the initial integration.
 
 
 ### Create a GCP Project using the GCP Console
