@@ -32,7 +32,7 @@ In order to integrate GCP and Lacework at an Organizational level Terraform need
 If you already have an account configured with these permissions you can skip the next section
 
 #### Creating a Service Account using the GCP Console
-This section convers creating a Google Cloud Service Account with the required permissions to integrate Lacework at an Organization level.
+This section covers creating a Google Cloud Service Account with the required permissions to integrate Lacework at an Organization level.
 ![Service Account Project Owner](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_service_account_create_complete_1024px.gif)
 
 1. Login to the Google Cloud Console
