@@ -44,7 +44,7 @@ This section covers creating a Google Cloud Service Account with the required pe
 7. Click **SAVE**
 
 #### Add Service Account to Organization with required permissions
-This section covers adding the service account as a member of the organziation and configure the required organization permisions for Terraform to configure the organization
+This section covers adding the service account as a member of the organization and configures the required organization permissions for Terraform to configure the organization.
 
 1. Select the organization you are going to integrate with Lacework, select **IAM** from the Navigation Menu, and then click the **+ADD** button to add a member or role to the organization
 2. Search for the service account then add permissions for **Organization Administrator** and **Logs Configuration Writer**
