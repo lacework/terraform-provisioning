@@ -7,10 +7,10 @@ A Project level integration only covers specific projects and any new projects w
 
 In order to integrate at an Organization or Project level Lacework requires the following resources be provisioned in Google Cloud:
 
-* **Google Cloud Project** - A project to contain the required cloud resources with billing enabled (It is recommended that a project is created specifically for Lacework)
+* **Google Cloud Project** - A project to contain the required cloud resources with billing enabled. When integrating at an Organization level, it is recommended that a project is created specifically for Lacework resources. When integrating at a project level all required resources for Lacework may be provisioned within the project being integrated.
 * **Google Storage Bucket** - A storage bucket for Stack Driver logs
-* **Google Pub/Sub Topic** - For Audit Logs events
-* **Google Logging Sink** - To export Audit Logs to Cloud Storage Bucket
+* **Google Pub/Sub Topic** - For Cloud Audit Logs events
+* **Google Logging Sink** - To export Cloud Audit Logs to Cloud Storage Bucket
 * **Service Account for Lacework** - A service account will be created to provide Lacework read-only access to Google Cloud Platform with the following roles:
 	* Organziation Level Integration
 		- `roles/resourcemanager.organizationViewer`
@@ -31,8 +31,8 @@ This method is suitable for one-off integrations where the user does not plan to
 For instructions on using Google Cloud Shell to run Lacework Terraform modules click [here](integrate_gcp_using_google_cloud_shell.md)
 
 ### Terraform installed on any supported host
-In this method, Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows) and leverages a Service Account of choice to run Terraform. 
+In this method, Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows) and leverages a user account or Service Account of choice with proper permissions to administer Google Cloud using Terraform. 
 
 This method is suitable for companies that store Terraform code in source control, and plan to continue to manage the state of the integration between Lacework and Google cloud going forward.
 
-For instructions on how to run Lacework Terraform modules from any supported platform click [here]()
+For instructions on how to run Lacework Terraform modules from any supported platform click [here](integrate_gcp_using_supported_system.md)
