@@ -13,7 +13,7 @@ locals {
   service_account_name = var.use_existing_service_account ? (
     var.service_account_name
     ) : (
-    length(var.service_account_name) > 0 ? var.service_account_name : "${var.prefix}-lacework-svc-account"
+    length(var.service_account_name) > 0 ? var.service_account_name : "${var.prefix}-lacework-svc-account-${random_id.uniq.hex}"
   )
   service_account_json_key = jsondecode(var.use_existing_service_account ? (
     base64decode(var.service_account_private_key)
@@ -72,7 +72,7 @@ resource "google_storage_bucket_iam_binding" "policies" {
 }
 
 resource "google_pubsub_topic" "lacework_topic" {
-  name       = "${var.prefix}-lacework-topic"
+  name       = "${var.prefix}-lacework-topic-${random_id.uniq.hex}"
   project    = local.project_id
   depends_on = [google_project_service.required_apis]
 }
@@ -98,7 +98,7 @@ resource "google_pubsub_topic_iam_binding" "topic_publisher" {
 
 resource "google_pubsub_subscription" "lacework_subscription" {
   project                    = local.project_id
-  name                       = "${var.prefix}-${local.project_id}-lacework-subscription"
+  name                       = "${var.prefix}-${local.project_id}-lacework-subscription-${random_id.uniq.hex}"
   topic                      = google_pubsub_topic.lacework_topic.name
   ack_deadline_seconds       = 300
   message_retention_duration = "432000s"
@@ -107,7 +107,7 @@ resource "google_pubsub_subscription" "lacework_subscription" {
 resource "google_logging_project_sink" "lacework_project_sink" {
   count                  = var.org_integration ? 0 : 1
   project                = local.project_id
-  name                   = "${var.prefix}-lacework-sink"
+  name                   = "${var.prefix}-lacework-sink-${random_id.uniq.hex}"
   destination            = "storage.googleapis.com/${local.bucket_name}"
   unique_writer_identity = true
 
@@ -116,7 +116,7 @@ resource "google_logging_project_sink" "lacework_project_sink" {
 
 resource "google_logging_organization_sink" "lacework_organization_sink" {
   count            = var.org_integration ? 1 : 0
-  name             = "${var.prefix}-${var.organization_id}-lacework-sink"
+  name             = "${var.prefix}-${var.organization_id}-lacework-sink-${random_id.uniq.hex}"
   org_id           = var.organization_id
   destination      = "storage.googleapis.com/${local.bucket_name}"
   include_children = true
