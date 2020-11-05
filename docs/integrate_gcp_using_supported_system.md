@@ -1,5 +1,5 @@
 # Integrate Google Cloud and Lacework using Terraform on any supported host
-In this method, Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows) and leverages a user account or Google Cloud service account with proper permissions to run Terraform. 
+The following document covers integrating Google Cloud with Lacework where Terraform is installed, configured, and run from any supported system (Linux/macOS/Windows). This approach leverages a user account or Google Cloud service account with proper permissions to run Terraform. 
 
 The approach outlined in this document is geared towards companies that store Terraform code in source control, and plan to continue to manage the state of the integration between Lacework and Google cloud using Terraform. 
 
@@ -19,7 +19,7 @@ Before you can execute Terraform you will need to create a GCP Project to provis
 
 ![Create GCP Project](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_project_create_1024px.gif)
 
-1. Login to the [Google Cloud Console](https://console.cloud.google.com/)
+1. Log in to the [Google Cloud Console](https://console.cloud.google.com/)
 2. Select the Project drop-down and click **NEW PROJECT**
 3. Give the project a **Project Name**, select a **Billing Account**, select the **Organization** you are integrating
 3. Click **CREATE** to create the new project
@@ -38,7 +38,7 @@ The following steps covers how to create a Google Cloud Service Account within t
 
 ![Service Account Project Owner](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_service_account_create_complete_1024px.gif)
 
-1. Login to the [Google Cloud Console](https://console.cloud.google.com/)
+1. Log in to the [Google Cloud Console](https://console.cloud.google.com/)
 2. Select the Project created for Lacework Resources
 3. Click on the **Navigation Menu** and select **IAM & Admin** -> **Service Accounts**
 4. Click **CREATE SERVICE ACCOUNT**
@@ -61,7 +61,7 @@ In order to run Terraform locally, you must create and download a key for the se
 
 ![Create Key](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_create_key_1024px.gif)
 
-1. Login to the [Google Cloud Console](https://console.cloud.google.com/)
+1. Log in to the [Google Cloud Console](https://console.cloud.google.com/)
 2. Select the Project created for Lacework Resources
 3. Click on the **Navigation Menu** and select **IAM & Admin** -> **Service Accounts**
 4. Click on the Actions menu next to the service account
@@ -107,7 +107,13 @@ module "gcp_organization_audit_log" {
 4. Open a terminal, change the directory to the location where you have saved the `main.tf` and run the command `terraform init` to initialize the project
 5. Run `terraform plan` to review the changes, and then run `terraform apply` when you are ready to apply the changes
 
-Once Terraform completes you can validate the integration using the Lacework CLI with the command `lacework integration list`
+### Validate The Configuration
+
+Once Terraform finishes applying changes, you can use the Lacework CLI or the UI to confirm the integration is working. 
+
+For the CLI open a Terminal and run `lacework integrations list` (you should see the two `GCP_CFG` and `GCP_AT_SEQ` Integrations listed)
+
+To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts`
 
 
 
@@ -127,7 +133,7 @@ If you already have an account configured with these permissions you can skip th
 This section covers creating a Google Cloud Service Account with the required permissions to integrate Lacework at a Project level.
 ![Service Account Project Owner](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_service_account_create_complete_1024px.gif)
 
-1. Login to the [Google Cloud Console](https://console.cloud.google.com/)
+1. Log in to the [Google Cloud Console](https://console.cloud.google.com/)
 2. Select the Project being integrated with Lacework
 3. Click on the **Navigation Menu** and select **IAM & Admin** -> **Service Accounts**
 4. Click **CREATE SERVICE ACCOUNT**
@@ -140,7 +146,7 @@ This section covers creating a service key and downloading to the local system a
 
 ![Create Key](https://techally-artifacts.s3-us-west-2.amazonaws.com/terraform-module-docs/gcp_create_key_1024px.gif)
 
-1. Login to the [Google Cloud Console](https://console.cloud.google.com/)
+1. Log in to the [Google Cloud Console](https://console.cloud.google.com/)
 2. Select the Project being integrated with Lacework
 3. Click on the **Navigation Menu** and select **IAM & Admin** -> **Service Accounts**
 4. Locate the Service Account created for Terraform and click on the Actions menu next to the service account
@@ -183,4 +189,10 @@ module "gcp_project_audit_log" {
 4. Open a terminal, change the directory to the location where you have saved the `main.tf` and run the command `terraform init` to initialize the project
 5. Run `terraform plan` to review the changes, and then run `terraform apply` when you are ready to apply the changes
 
-Once Terraform completes you can validate the integration using the Lacework CLI with the command `lacework integration list`
+### Validate The Configuration
+
+Once Terraform finishes applying changes, you can use the Lacework CLI or the UI to confirm the integration is working. 
+
+For the CLI open a Terminal and run `lacework integrations list` (you should see the two `GCP_CFG` and `GCP_AT_SEQ` Integrations listed)
+
+To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts`
