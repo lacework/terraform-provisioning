@@ -119,4 +119,4 @@ Once Terraform finishes applying changes, use the Lacework CLI or the Lacework c
 
 For the CLI open a Terminal and run `lacework integrations list` (you should see the two `AZURE_CFG` and `AZURE_AL_SEQ` Integrations listed)
 
-To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts*
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
