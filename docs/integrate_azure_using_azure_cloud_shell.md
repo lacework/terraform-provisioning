@@ -1,32 +1,36 @@
 # Integrate Azure and Lacework Using Azure Cloud Shell
-The Azure Cloud Shell is an embedded terminal/command-line interface that can be used within the Azure Portal. This shell automatically authenticates you with Azure AD and comes with tools like the Azure CLI and Terraform pre-installed to manage and automate your Azure environment.
+The Azure Cloud Shell is an embedded terminal/command-line interface that can be used within the Azure Portal. This shell automatically authenticates the user that launches Cloud Shell with Azure AD and comes with tools pre-installed such as the Azure CLI and Terraform to manage and automate your Azure environment.
 
-These instructions will show you how to get up-and-running with Lacework, Terraform and the Azure Cloud Shell.
-The only requirement we need is that your [Azure User](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-users-azure-active-directory) has the following permissions:
+These instructions cover how to get up-and-running with Lacework, Terraform and the Azure Cloud Shell.
+
+## Requirements
+The only requirement needed is the [Azure User](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-users-azure-active-directory) has the following permissions:
 
 - **Global Administrator** privileges in Active Directory
 - **Owner Role** at the Subscription level
 
 ## Open Azure Cloud Shell within Azure Portal
-To open the Azure Cloud Shell, you simply click on the Cloud Shell icon in the header bar of the Azure Portal, and it will open the Cloud Shell in a pane at the bottom of the browser. Cloud Shell defaults to PowerShell, but you can also switch to a Bash prompt if you prefer.
+To open the Azure Cloud Shell, click on the Cloud Shell icon in the header bar of the Azure Portal, and it will open the Cloud Shell in a pane at the bottom of the browser. Cloud Shell defaults to PowerShell, but also supports a Bash prompt if preferred.
 
 ![Open Azure Cloud Shell](https://techally-artifacts.s3-us-west-2.amazonaws.com/github-terraform-provisioning-imgs/azure-cloud-shell-open.png)
 
-## Prepare your Cloud Shell
+## Install and Configure the Lacework CLI in Azure Cloud Shell
 
-Regardless of the prompt you choose to use, Powershell or Bash, we will need to run the `shell_startup.sh` script to install all the neccessary tools and configure some environment variables required by Terraform.
+The Terraform Provider for Lacework leverages configuration from the Lacework CLI to authenticate with Lacework's API server to configure accounts. Lacework has created a shell script to install the Lacework CLI to Azure Cloud Shell.
 
-**NOTE:** Weather you are in Powershell or Bash you can run these commands.
+### Install the Lacework CLI Using the shell_startup.sh Script
+
+Open Cloud Shell and run the following command:
 
 ```
-PS /home/user> curl https://raw.githubusercontent.com/lacework/terraform-provisioning/master/azure/shell_startup.sh | bash
+curl https://raw.githubusercontent.com/lacework/terraform-provisioning/master/azure/shell_startup.sh | bash
 ```
 
-When the script completes you need to type `exit` followed by enter to exit your shell. After a few seconds you will be prompted to reconnect to your shell. Once reconnected, the Lacework CLI will be ready for use. 
+When the script completes, type `exit` followed by hitting the **ENTER** key to exit your shell. After a few seconds a prompt will appear to reconnect to Azure Shell. Once reconnected, the Lacework CLI will be ready for use. 
 
-## Configure the Lacework CLI
+### Configure the Lacework CLI
 
-Proceed to configure the Lacework CLI by using the command `lacework configure`. You will need three things:
+Proceed to configure the Lacework CLI by using the command `lacework configure`. The  need three things:
 * `account`: Account subdomain of URL (i.e. `<ACCOUNT>.lacework.net`)
 * `api_key`: API Access Key
 * `api_secret`: API Access Secret
