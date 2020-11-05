@@ -61,6 +61,15 @@ our [latest releases](https://github.com/lacework/terraform-provisioning/release
 
 ### Enable New Azure Compliance and Activity Log Integrations
 ```hcl
+terraform {
+  required_providers {
+    lacework = {
+      source = "lacework/lacework"
+      version = "0.2.5"
+    }
+  }
+}
+
 provider "azuread" {}
 
 provider "azurerm" {

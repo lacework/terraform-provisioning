@@ -9,6 +9,8 @@ The only requirement needed is the [Azure User](https://docs.microsoft.com/en-us
 - **Global Administrator** privileges in Active Directory
 - **Owner Role** at the Subscription level
 
+TODO: Confirm the least privileges for integration!
+
 ## Open Azure Cloud Shell within Azure Portal
 To open the Azure Cloud Shell, click on the Cloud Shell icon in the header bar of the Azure Portal, and it will open the Cloud Shell in a pane at the bottom of the browser. Cloud Shell defaults to PowerShell, but also supports a Bash prompt if preferred.
 
@@ -68,6 +70,15 @@ The following code snippet configures monitoring of Azure Cloud resource configu
 Copy/Paste the following code snippet into the `main.tf` file and save it.
 
 ```hcl
+terraform {
+  required_providers {
+    lacework = {
+      source = "lacework/lacework"
+      version = "0.2.5"
+    }
+  }
+}
+
 provider "azuread" {}
 
 provider "azurerm" {
