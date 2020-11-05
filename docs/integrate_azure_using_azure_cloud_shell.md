@@ -30,7 +30,8 @@ When the script completes, type `exit` followed by hitting the **ENTER** key to 
 
 ### Configure the Lacework CLI
 
-Proceed to configure the Lacework CLI by using the command `lacework configure`. The  need three things:
+Proceed to configure the Lacework CLI by using the command `lacework configure`. The Lacework CLI needs the following:
+
 * `account`: Account subdomain of URL (i.e. `<ACCOUNT>.lacework.net`)
 * `api_key`: API Access Key
 * `api_secret`: API Access Secret
@@ -56,15 +57,15 @@ You are all set!
 For more information about the Lacework CLI, see https://github.com/lacework/go-sdk/wiki/CLI-Documentation.
 
 ## Enable Azure Compliance and Activity Log Integrations
-Cloud Shell also has a built-in file editor that will give you a more graphically appealing experience for
-editing files, use the following command to create a Terraform template named `main.tf`.
+Cloud Shell also has a built-in IDE for editing files, use the following command to create a Terraform template named `main.tf`.
+
 ```
 $ code main.tf
 ```
 
-Inside this file add the following code snippet that will configure both, Azure Compliance and Activity Log
-Integrations. The code leverages our Terraform modules to create resources in you Azure Portal as well as
-connecting such resources to you Lacework account. To customize these modules look at the [following input parameters](https://github.com/lacework/terraform-provisioning/tree/master/azure#inputs).
+The following code snippet configures monitoring of Azure Cloud resource configuration for compliance, and monitoring of Activity Log. The code leverages Lacework Terraform modules to create required resources in Azure Portal as well as connecting such resources to Lacework. 
+
+Copy/Paste the following code snippet into the `main.tf` file and save it.
 
 ```hcl
 provider "azuread" {}
@@ -91,17 +92,18 @@ module "az_activity_log" {
   service_principal_id        = module.az_config.service_principal_id
 }
 ```
+To customize these modules look at the [following input parameters](https://github.com/lacework/terraform-provisioning/tree/master/azure#inputs).
 
-__NOTE: Don't forget to save the file with `Ctrl + S` on Windows or `Cmd + S` on MacOS__
+__NOTE: Do not forget to save the file with `Ctrl + S` on Windows or `Cmd + S` on MacOS__
 
-### Run the Automation. Run Terraform!
+### Run Terraform
 
 Run the command `terraform init` to download the necessary plugins and modules required to run this automation.
 ```
 $ terraform init
 ```
 
-Then, run `terraform apply`, this command will create a "plan" of the resources that will be created and stop for you to type `yes` to proceed.
+Next run `terraform apply` to create a "plan" of the resources that will be created
 
 ```
 $ terraform apply
@@ -109,12 +111,12 @@ $ terraform apply
 
 ![Hit Yes](https://techally-artifacts.s3-us-west-2.amazonaws.com/github-terraform-provisioning-imgs/azure-cloud-shell-editor-terraform-apply.png)
 
-**Hit yes!**
+Once the plan has been reviewed, type 'yes' to proceed with running Terraform and configure the integration with Azure and Lacework.
 
 ### Validate The Configuration
 
-Once Terraform finishes applying changes, you can use the Lacework CLI or the UI to confirm the integration is working. 
+Once Terraform finishes applying changes, use the Lacework CLI or the Lacework console to confirm the integration is working. 
 
 For the CLI open a Terminal and run `lacework integrations list` (you should see the two `AZURE_CFG` and `AZURE_AL_SEQ` Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts*
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts*

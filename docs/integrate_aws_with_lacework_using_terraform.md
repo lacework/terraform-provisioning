@@ -61,11 +61,11 @@ module "aws_cloudtrail" {
 
 #### Validate The Configuration
 
-Once Terraform finishes applying changes, you can use the Lacework CLI or the UI to confirm the integration is working. 
+Once Terraform finishes applying changes, you can use the Lacework CLI or the Lacework Console to confirm the integration is working. 
 
 For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
 
 ## Scenario 2 - Integrate Existing CloudTrail and add Configuration Assessment
 In this scenario Terraform configures a cross-account IAM role to provide Lacework access to monitor an existing CloudTrail. That same cross-account role also provides Lacework permissions to audit AWS resource configurations, and integrate the AWS account into Lacework. An SQS queue will be created for Lacework, and optionally you can deploy an SNS topic for that SQS queue if one does not already exist.
@@ -111,9 +111,9 @@ module "aws_cloudtrail" {
 
 #### Validate The Configuration
 
-Once Terraform finishes, you can use the CLI or the UI to confirm the integration is working. For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
+Once Terraform finishes, you can use the CLI or the Lacework Console to confirm the integration is working. For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
 
 ## Scenario 3 -  Deploy New Consolidated CloudTrail and Configuration Assessment
 Lacework supports the integration of consolidated CloudTrail deployments where multiple sub accounts send CloudTrail logs to a master CloudTrail account.
@@ -186,9 +186,9 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 
 #### Validate The Configuration
 
-Once Terraform finishes, you can use the CLI or the UI to confirm the integration is working. For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
+Once Terraform finishes, you can use the CLI or the Lacework Console to confirm the integration is working. For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
 
 ## Scenario 4 - Integrate Existing Consolidated CloudTrail and Configuration Assessment
 Lacework supports the integration of consolidated CloudTrail deployments where multiple sub accounts send CloudTrail logs to a master CloudTrail account.
@@ -261,7 +261,7 @@ resource "aws_cloudtrail" "lw_sub_account_cloudtrail" {
 
 #### Validate The Configuration
 
-Once Terraform finishes, you can use the CLI or the UI to confirm the integration is working. For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
+Once Terraform finishes, you can use the CLI or the Lacework Console to confirm the integration is working. For the CLI open a Terminal and run `lacework integrations list` (you will see the two AWS CloudTrail and AWS Configuration Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts**
 

@@ -109,11 +109,11 @@ module "gcp_organization_audit_log" {
 
 ### Validate The Configuration
 
-Once Terraform finishes applying changes, you can use the Lacework CLI or the UI to confirm the integration is working. 
+Once Terraform finishes applying changes, you can use the Lacework CLI or the Lacework Console to confirm the integration is working. 
 
 For the CLI open a Terminal and run `lacework integrations list` (you should see the two `GCP_CFG` and `GCP_AT_SEQ` Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts`
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts`
 
 
 
@@ -191,8 +191,8 @@ module "gcp_project_audit_log" {
 
 ### Validate The Configuration
 
-Once Terraform finishes applying changes, you can use the Lacework CLI or the UI to confirm the integration is working. 
+Once Terraform finishes applying changes, you can use the Lacework CLI or the Lacework Console to confirm the integration is working. 
 
 For the CLI open a Terminal and run `lacework integrations list` (you should see the two `GCP_CFG` and `GCP_AT_SEQ` Integrations listed)
 
-To validate the integration via the UI, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts`
+To validate the integration via the Lacework Console, Log in to your account and go to **Settings** -> **Integrations** -> **Cloud Accounts`
