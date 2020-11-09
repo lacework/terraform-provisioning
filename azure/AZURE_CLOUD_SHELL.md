@@ -74,21 +74,29 @@ because there may be breaking changes between releases. Instead we recommend to 
 `?ref=tags/v0.1.0`) of one of our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
 
 ```hcl
-provider "azuread" {}
-
-provider "azurerm" {
-  version = "2.26"
-  features {}
+terraform {
+  required_providers {
+    azuread = {
+      source = "hashicorp/azuread"
+    }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "2.26"
+    }
+    lacework = {
+      source = "lacework/lacework"
+    }
+  }
 }
 
-provider "lacework" {}
-
 module "az_config" {
-  source = "git::https://github.com/lacework/terraform-provisioning.git//azure/modules/config?ref=master"
+  source  = "lacework/config/azure"
+  version = "0.1.0"
 }
 
 module "az_activity_log" {
-  source = "git::https://github.com/lacework/terraform-provisioning.git//azure/modules/activity_log?ref=master"
+  source  = "lacework/activity-log/azure"
+  version = "0.1.0"
 
   use_existing_ad_application = true
   application_id              = module.az_config.application_id
