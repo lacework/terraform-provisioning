@@ -69,10 +69,6 @@ Integrations. The code leverages our Terraform modules to create resources in yo
 connecting such resources to you Lacework account. To customize these modules look at the [following input
 parameters](https://github.com/lacework/terraform-provisioning/tree/master/azure#inputs).
 
-**IMPORTANT:** We use the `master` branch in source just as an example. In your code, **do NOT pin to master**
-because there may be breaking changes between releases. Instead we recommend to pin to the release tag (e.g.
-`?ref=tags/v0.1.0`) of one of our [latest releases](https://github.com/lacework/terraform-provisioning/releases).
-
 ```hcl
 terraform {
   required_providers {
@@ -87,6 +83,10 @@ terraform {
       source = "lacework/lacework"
     }
   }
+}
+
+provider "azurerm" {
+  features {}
 }
 
 module "az_config" {
