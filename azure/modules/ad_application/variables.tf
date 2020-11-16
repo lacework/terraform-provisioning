@@ -46,7 +46,5 @@ variable "key_vault_ids" {
 variable "application_identifier_uris" {
   type        = list(string)
   description = "A list of user-defined URI(s) for the Lacework AD Application"
-  default = [
-    "https://securityaudit.lacework.net"
-  ]
+  default     = []
 }

@@ -4,12 +4,12 @@ variable "location" {
   default     = "West US 2"
 }
 
-# NOTE: this prefix is used in all resources and we have a limitatino with the
+# NOTE: this prefix is used in all resources and we have a limitation with the
 # storage name that can only consist of lowercase letters and numbers, and must
 # be between 3 and 24 characters long
 variable "prefix" {
   type        = string
-  default     = "l4c3w0rk"
+  default     = "lacework"
   description = "The prefix that will be use at the beginning of every generated resource"
 }
 
@@ -23,9 +23,7 @@ variable "application_name" {
 variable "application_identifier_uris" {
   type        = list(string)
   description = "A list of user-defined URI(s) for the Lacework AD Application"
-  default = [
-    "https://securityaudit.lacework.net"
-  ]
+  default     = []
 }
 
 variable "subscription_ids" {

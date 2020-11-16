@@ -4,6 +4,10 @@ locals {
   service_principal_id = var.use_existing_ad_application ? var.service_principal_id : module.az_al_ad_application.service_principal_id
 }
 
+resource "random_id" "uniq" {
+  byte_length = 4
+}
+
 module "az_al_ad_application" {
   source                      = "../ad_application"
   create                      = var.use_existing_ad_application ? false : true
@@ -17,14 +21,14 @@ module "az_al_ad_application" {
 }
 
 resource "azurerm_resource_group" "lacework" {
-  name     = "${var.prefix}-group"
+  name     = "${var.prefix}-group-${random_id.uniq.hex}"
   location = var.location
 }
 
 # NOTE: storage name can only consist of lowercase letters and numbers,
 # and must be between 3 and 24 characters long
 resource "azurerm_storage_account" "lacework" {
-  name                      = "${var.prefix}storage"
+  name                      = substr("${var.prefix}storage${random_id.uniq.hex}", 0, 24)
   account_kind              = "StorageV2"
   account_tier              = "Standard"
   account_replication_type  = "LRS"
@@ -35,12 +39,12 @@ resource "azurerm_storage_account" "lacework" {
 }
 
 resource "azurerm_storage_queue" "lacework" {
-  name                 = "${var.prefix}-queue"
+  name                 = "${var.prefix}-queue-${random_id.uniq.hex}"
   storage_account_name = azurerm_storage_account.lacework.name
 }
 
 resource "azurerm_eventgrid_event_subscription" "lacework" {
-  name  = "${var.prefix}-subscription"
+  name  = "${var.prefix}-subscription-${random_id.uniq.hex}"
   scope = azurerm_storage_account.lacework.id
 
   storage_queue_endpoint {
@@ -58,7 +62,7 @@ resource "azurerm_eventgrid_event_subscription" "lacework" {
 }
 
 resource "azurerm_monitor_log_profile" "lacework" {
-  name               = "${var.prefix}-log-profile"
+  name               = "${var.prefix}-log-profile-${random_id.uniq.hex}"
   locations          = var.log_profile_locations
   storage_account_id = azurerm_storage_account.lacework.id
 
@@ -78,7 +82,7 @@ resource "azurerm_monitor_log_profile" "lacework" {
 # TODO @afiune maybe we could add a subscription_id variable
 data "azurerm_subscription" "primary" {}
 resource "azurerm_role_definition" "lacework" {
-  name        = "${var.prefix}-role"
+  name        = "${var.prefix}-role-${random_id.uniq.hex}"
   description = "Used by Lacework to monitor Activity Logs"
   scope       = data.azurerm_subscription.primary.id
 
