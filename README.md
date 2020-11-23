@@ -1,31 +1,34 @@
 <a href="https://lacework.com"><img src="https://techally-content.s3-us-west-1.amazonaws.com/public-content/lacework_logo_full.png" width="600"></a>
 
-# Lacework Provisioning with Terraform
+# DEPRECATED - Lacework Provisioning with Terraform
 
 [![GitHub release](https://img.shields.io/github/release/lacework/terraform-provisioning.svg)](https://github.com/lacework/terraform-provisioning/releases/)
 [![CircleCI status](https://circleci.com/gh/lacework/terraform-provisioning.svg?style=shield)](https://circleci.com/gh/lacework/terraform-provisioning)
 
-This repository contains [Terraform](https://terraform.io) code for provisioning resources
-required to integrate public cloud environments (AWS, GCP, Azure) into Lacework's automated
-security platform.
+## **WARNING - THIS PROJECT IS BEING DEPRECATED**
 
-For more information visit [support.lacework.com](https://support.lacework.com/).
+This project is being deprecated. All modules developed in this repository have been migrated to separate github repositories, and are being published directly to the [Terraform Registry](https://registry.terraform.io/search/modules?q=lacework). This migration provides support for Terraform `0.13` and allows Lacework to release new features and fixes much faster!
 
-## Requirements
-- [Terraform](https://terraform.io) 0.12.x
+### New Project Locations
+* **AWS Modules**
+    * `iam-role` - [Terraform Registry](https://registry.terraform.io/modules/lacework/iam-role/aws/latest) | [Github](github.com/lacework/terraform-aws-iam-role )
+    * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/aws/latest) | [Github](github.com/lacework/terraform-aws-config)
+    * `cloudtrail` - [Terraform Registry](https://registry.terraform.io/modules/lacework/cloudtrail/aws/latest) | [Github](https://github.com/lacework/terraform-aws-cloudtrail)
+* **Google Cloud Modules**
+    * `service-account` - [Terraform Registry](https://registry.terraform.io/modules/lacework/service-account/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-service-account)
+    * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-config)
+    * `audit-log` - [Terraform Registry](https://registry.terraform.io/modules/lacework/audit-log/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-audit-log)
+* **Azure Modules**
+    * `ad-application` - [Terraform Registry](https://registry.terraform.io/modules/lacework/ad-application/azure/latest) **|** [Github](https://github.com/lacework/terraform-azure-ad-application)
+    * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/azure/latest) **|** [Github](https://github.com/lacework/terraform-azure-config)
+    * `activity-log` - [Terraform Registry](https://registry.terraform.io/modules/lacework/activity-log/azure/latest) **|** [Github](https://github.com/lacework/terraform-azure-activity-log)
 
-## Public Cloud Support
-This repository currently supports provisioning of required resources in the following Public Cloud Providers:
 
-- [AWS](aws/)
-- [Google Cloud](gcp/)
-- [Azure](azure/)
+## New Lacework Documentation
 
-Please refer to the `README` for specific documentation and usage.
+For documentation on using Lacework Terraform modules, see the new Terraform documentation on [support.lacework.com](https://support.lacework.com/hc/en-us/search?utf8=%E2%9C%93&query=terraform)
 
-## Reporting Issues
 
-Issues can be reported by using [GitHub Issues](https://github.com/lacework/terraform-provisioning/issues).
 
 ## License and Copyright
 Copyright 2020, Lacework Inc.
