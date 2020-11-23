@@ -10,7 +10,7 @@
 This project is being deprecated. All modules developed in this repository have been migrated to separate github repositories, and are being published directly to the [Terraform Registry](https://registry.terraform.io/search/modules?q=lacework). This migration provides support for Terraform `0.13` and allows Lacework to release new features and fixes much faster!
 
 ### New Project Locations
-* **AWS**
+* **AWS Modules**
     * `iam-role` - [Terraform Registry](https://registry.terraform.io/modules/lacework/iam-role/aws/latest) | [Github](github.com/lacework/terraform-aws-iam-role )
     * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/aws/latest) | [Github](github.com/lacework/terraform-aws-config)
     * `cloudtrail` - [Terraform Registry](https://registry.terraform.io/modules/lacework/cloudtrail/aws/latest) | [Github](https://github.com/lacework/terraform-aws-cloudtrail)
