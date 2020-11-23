@@ -14,7 +14,7 @@ This project is being deprecated. All modules developed in this repository have 
     * `iam-role` - [Terraform Registry](https://registry.terraform.io/modules/lacework/iam-role/aws/latest) | [Github](github.com/lacework/terraform-aws-iam-role )
     * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/aws/latest) | [Github](github.com/lacework/terraform-aws-config)
     * `cloudtrail` - [Terraform Registry](https://registry.terraform.io/modules/lacework/cloudtrail/aws/latest) | [Github](https://github.com/lacework/terraform-aws-cloudtrail)
-* **Google Cloud**
+* **Google Cloud Modules**
     * `service-account` - [Terraform Registry](https://registry.terraform.io/modules/lacework/service-account/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-service-account)
     * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-config)
     * `audit-log` - [Terraform Registry](https://registry.terraform.io/modules/lacework/audit-log/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-audit-log)
