@@ -18,7 +18,7 @@ This project is being deprecated. All modules developed in this repository have 
     * `service-account` - [Terraform Registry](https://registry.terraform.io/modules/lacework/service-account/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-service-account)
     * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-config)
     * `audit-log` - [Terraform Registry](https://registry.terraform.io/modules/lacework/audit-log/gcp/latest) | [Github](https://github.com/lacework/terraform-gcp-audit-log)
-* **Azure**
+* **Azure Modules**
     * `ad-application` - [Terraform Registry](https://registry.terraform.io/modules/lacework/ad-application/azure/latest) **|** [Github](https://github.com/lacework/terraform-azure-ad-application)
     * `config`- [Terraform Registry](https://registry.terraform.io/modules/lacework/config/azure/latest) **|** [Github](https://github.com/lacework/terraform-azure-config)
     * `activity-log` - [Terraform Registry](https://registry.terraform.io/modules/lacework/activity-log/azure/latest) **|** [Github](https://github.com/lacework/terraform-azure-activity-log)
