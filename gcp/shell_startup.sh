@@ -14,7 +14,7 @@ fi
 
 # Install Terraform if it is not installed
 if [ ! -f "$HOME/bin/terraform" ]; then
-    curl https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip --output $HOME/bin/terraform.zip
+    curl https://releases.hashicorp.com/terraform/0.14.4/terraform_0.14.4_linux_amd64.zip --output $HOME/bin/terraform.zip
     unzip $HOME/bin/terraform.zip -d $HOME/bin
     rm $HOME/bin/terraform.zip
 fi
