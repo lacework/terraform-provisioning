@@ -3,11 +3,14 @@ provider "aws" {}
 provider "lacework" {}
 
 module "aws_config" {
-  source = "./modules/config"
+  source  = "lacework/config/aws"
+  version = "~> 0.1.3"
 }
 
 module "aws_cloudtrail" {
-  source                = "./modules/cloudtrail"
+  source  = "lacework/cloudtrail/aws"
+  version = "~> 0.1.3"
+
   bucket_force_destroy  = true
   use_existing_iam_role = true
   iam_role_name         = module.aws_config.iam_role_name
