@@ -31,7 +31,7 @@ fi
 
 echo -n "-> Verifying that your user has the Global Administrator role... "
 export USER_ID=$(az ad signed-in-user show --output=json | jq -r -M '.objectId')
-export GLOBAL_ADMIN_ID=$(az rest --method get --url https://graph.microsoft.com/v1.0/directoryRoles | jq -r -M '.value[] | select(.displayName | contains("Company Administrator")) | .id')
+export GLOBAL_ADMIN_ID=$(az rest --method get --url https://graph.microsoft.com/v1.0/directoryRoles | jq -r -M '.value[] | select(.displayName | contains("Global Administrator")) | .id')
 export GLOBAL_ADMIN_MEMBER=$(az rest --method get --url https://graph.microsoft.com/v1.0/directoryRoles/${GLOBAL_ADMIN_ID}/members)
 
 if [[ $GLOBAL_ADMIN_MEMBER == *"$USER_ID"* ]]; then
