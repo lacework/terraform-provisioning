@@ -2,12 +2,9 @@
 
 # DEPRECATED - Lacework Provisioning with Terraform
 
-[![GitHub release](https://img.shields.io/github/release/lacework/terraform-provisioning.svg)](https://github.com/lacework/terraform-provisioning/releases/)
-[![CircleCI status](https://circleci.com/gh/lacework/terraform-provisioning.svg?style=shield)](https://circleci.com/gh/lacework/terraform-provisioning)
+## **WARNING - THIS PROJECT HAS BEING DEPRECATED**
 
-## **WARNING - THIS PROJECT IS BEING DEPRECATED**
-
-This project is being deprecated. All modules developed in this repository have been migrated to separate github repositories, and are being published directly to the [Terraform Registry](https://registry.terraform.io/search/modules?q=lacework). This migration provides support for Terraform `0.13` and allows Lacework to release new features and fixes much faster!
+This project has being deprecated. All modules developed in this repository have been migrated to separate github repositories, and are being published directly to the [Terraform Registry](https://registry.terraform.io/search/modules?q=lacework). This migration provides support for Terraform `0.13` and allows Lacework to release new features and fixes much faster!
 
 ### New Project Locations
 * **AWS Modules**
@@ -27,8 +24,6 @@ This project is being deprecated. All modules developed in this repository have 
 ## New Lacework Documentation
 
 For documentation on using Lacework Terraform modules, see the new Terraform documentation on [support.lacework.com](https://support.lacework.com/hc/en-us/search?utf8=%E2%9C%93&query=terraform)
-
-
 
 ## License and Copyright
 Copyright 2020, Lacework Inc.
