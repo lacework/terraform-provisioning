@@ -4,7 +4,7 @@
 
 ## **WARNING - THIS PROJECT HAS BEEN DEPRECATED**
 
-This project has being deprecated. All modules developed in this repository have been migrated to separate github repositories, and are being published directly to the [Terraform Registry](https://registry.terraform.io/search/modules?q=lacework). This migration provides support for Terraform `0.13` and allows Lacework to release new features and fixes much faster!
+This project has been deprecated. All modules developed in this repository have been migrated to separate github repositories, and are being published directly to the [Terraform Registry](https://registry.terraform.io/search/modules?q=lacework). This migration provides support for Terraform `0.13` and allows Lacework to release new features and fixes much faster!
 
 ### New Project Locations
 * **AWS Modules**
