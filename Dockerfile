@@ -16,3 +16,17 @@ RUN apk update
 RUN apk add bash
 RUN apk add curl
 RUN apk add make jq
+
+# Tag: 14
+FROM hashicorp/terraform:0.14.11 AS terraform14
+RUN apk update
+RUN apk add bash
+RUN apk add curl
+RUN apk add make jq
+
+# Tag: 15
+FROM hashicorp/terraform:0.15.3 AS terraform15
+RUN apk update
+RUN apk add bash
+RUN apk add curl
+RUN apk add make jq
