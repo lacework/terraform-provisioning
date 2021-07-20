@@ -10,12 +10,12 @@ mkdir -p $HOME/bin
 # Install the Lacework CLI if it is not installed
 if [ ! -f "$HOME/bin/lacework" ]; then
     echo "-> Installing the Lacework CLI..."
-    curl https://raw.githubusercontent.com/lacework/go-sdk/master/cli/install.sh | bash -s -- -d $HOME/bin
+    curl https://raw.githubusercontent.com/lacework/go-sdk/main/cli/install.sh | bash -s -- -d $HOME/bin
 else
     echo "-> The Lacework CLI is already installed!"
     if [[ $(lacework version) == *"A newer version of the Lacework CLI is available"* ]]; then
         echo "-> Upgrading the Lacework CLI..."
-        curl https://raw.githubusercontent.com/lacework/go-sdk/master/cli/install.sh | bash -s -- -d $HOME/bin
+        curl https://raw.githubusercontent.com/lacework/go-sdk/main/cli/install.sh | bash -s -- -d $HOME/bin
     fi
 fi
 
