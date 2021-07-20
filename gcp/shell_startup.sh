@@ -13,7 +13,10 @@ if [ ! -f "$HOME/bin/lacework" ]; then
     curl https://raw.githubusercontent.com/lacework/go-sdk/master/cli/install.sh | bash -s -- -d $HOME/bin
 else
     echo "-> The Lacework CLI is already installed!"
-    lacework version
+    if [[ $(lacework version) == *"A newer version of the Lacework CLI is available"* ]]; then
+        echo "-> Upgrading the Lacework CLI..."
+        curl https://raw.githubusercontent.com/lacework/go-sdk/master/cli/install.sh | bash -s -- -d $HOME/bin
+    fi
 fi
 
 # Install Terraform if it is not installed
