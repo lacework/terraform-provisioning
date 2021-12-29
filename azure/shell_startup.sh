@@ -54,7 +54,7 @@ echo ""
 az account list --output table
 echo ""
 echo -n "-> Verifying that your user has the Owner role for the Subscriptions ID '$SUBSCRIPTION_ID'... "
-export SUBSCRIPTION_ROLE=$(az role assignment list --subscription $SUBSCRIPTION_ID --output json --query '[].{id:principalId, name:roleDefinitionName}' | jq -r -M '.[] | select(.id | contains("'$USER_ID'")) | .name')
+export SUBSCRIPTION_ROLE=$(az role assignment list --all --assignee $USER_ID --subscription $SUBSCRIPTION_ID --output json --query '[].{id:principalId, name:roleDefinitionName}' | jq -r -M '.[] | select(.id | contains("'$USER_ID'")) | .name')
 if [[ "$SUBSCRIPTION_ROLE" == *"Owner"* ]]; then
   echo "SUCCESS!"
   echo ""
