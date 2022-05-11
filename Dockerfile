@@ -38,6 +38,13 @@ RUN apk add bash
 RUN apk add curl
 RUN apk add make jq
 
+# Tag: 1.0
+FROM hashicorp/terraform:1.1.9 AS terraform1.1
+RUN apk update
+RUN apk add bash
+RUN apk add curl
+RUN apk add make jq
+
 # Tag:tf-go-integration
 FROM golang:1.18 AS tf-go-integrations
 RUN apt-get update && apt-get install -y gnupg software-properties-common curl
@@ -46,5 +53,5 @@ RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(ls
 RUN apt-get update && apt-get install terraform
 
 # Tag:ally-releases
-FROM techallylw/tf-go-integrations AS ally-releases
+FROM techallylw/tf-go-integrations:1.18 AS ally-releases
 RUN apt-get update && apt-get install -y jq zip
