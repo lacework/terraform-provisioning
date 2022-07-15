@@ -19,16 +19,17 @@ else
     fi
 fi
 
+minRequiredVersion="1.1.0"
+versionTwo="2.0.0"
+
 # Install Terraform if it is not installed
 if ! type terraform 2>&1; then
-    curl https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip --output "$HOME"/bin/terraform.zip
+    curl https://releases.hashicorp.com/terraform/${minRequiredVersion}/terraform_${minRequiredVersion}_linux_amd64.zip --output "$HOME"/bin/terraform.zip
     unzip "$HOME"/bin/terraform.zip -d "$HOME"/bin
     rm "$HOME"/bin/terraform.zip
 else
     echo "-> Terraform is already installed!"
     currentVersion="$(terraform version | head -n1 | cut -d" " -f2 | cut -d"v" -f2)"
-    minRequiredVersion="0.15.5"
-    versionTwo="2.0.0"
     # if the installed version matches the minimum required version, do nothing
     if [ "$minRequiredVersion" != "$currentVersion" ]; then
       # check if the installed terraform version is lower than the minimum required version &
@@ -40,7 +41,7 @@ else
           unzip -o "$HOME"/bin/terraform.zip -d "$HOME"/bin
           rm "$HOME"/bin/terraform.zip
       # check if the installed terraform version is higher than v1. Terraform v1 is backwards
-      # compatible with 0.15.5. If higher than v1 install the minRequiredVersion
+      # compatible with 1.1.0. If higher than v1 install the minRequiredVersion
       elif [ "$(printf '%s\n' "$versionTwo" "$currentVersion" | sort -V | head -n1)" = "$versionTwo" ]; then
           echo "Installed version: ${currentVersion} is higher than our current supported version."
           echo "-> Installing Terraform version v${minRequiredVersion}..."
