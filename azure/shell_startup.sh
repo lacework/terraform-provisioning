@@ -40,12 +40,10 @@ export GLOBAL_ADMIN_MEMBER=$(az rest --method get --url https://graph.microsoft.
 if [[ $GLOBAL_ADMIN_MEMBER == *"$USER_ID"* ]]; then
   echo "SUCCESS!"
 else
-  echo "Not Found!"
   echo ""
-  echo "ERROR: You do NOT have the required role 'Global Administrator', the following people have it:"
+  echo "WARNING: We haven't detected if you have the required role 'Global Administrator' (or PIM is not enabled for your session). If you want Lacework integration to read from Azure AD, you need User Admin Rights, which is often granted to Global Administrators. The following people have it:"
   echo ""
   echo $GLOBAL_ADMIN_MEMBER | jq -r -M '.value[] | "  * \(.displayName) <\(.userPrincipalName)>"'
-  exit 1
 fi
 
 echo "-> Verifying the Subscriptions that you have access to:"
