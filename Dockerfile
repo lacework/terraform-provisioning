@@ -46,12 +46,19 @@ RUN apk add curl
 RUN apk add make jq
 
 # Tag:tf-go-integration
-FROM golang:1.18 AS tf-go-integrations
+FROM golang:1.21.0 AS tf-go-integrations
 RUN apt-get update && apt-get install -y gnupg software-properties-common curl
-RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-RUN apt-get update && apt-get install terraform
+RUN apt-get update && apt-get install -y jq zip
+RUN apt-get update && apt-get install -y gnupg software-properties-common
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+RUN gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
+RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
+RUN apt update
+RUN apt-get install terraform
 
 # Tag:ally-releases
 FROM techallylw/tf-go-integrations AS ally-releases
-RUN apt-get update && apt-get install -y jq zip
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+
